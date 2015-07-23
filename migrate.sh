@@ -20,3 +20,5 @@ replace '\"../../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.esl
 replace '\"../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/shared
 
 hg commit -m "Bug 912121 - Adjust ESLint files. r=bgrins"
+
+hg import Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_bgrins.patch

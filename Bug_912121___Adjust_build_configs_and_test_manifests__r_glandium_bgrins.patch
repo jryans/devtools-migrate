@@ -1,0 +1,200 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1437614014 18000
+#      Wed Jul 22 20:13:34 2015 -0500
+# Node ID b9d4c1088d16c8a66f950a0d95caaf2e5062e471
+# Parent  3c949ca3afb5e99095c7f5fe2d259b7259d55e20
+Bug 912121 - Adjust build configs and test manifests. r=glandium,bgrins
+
+This step resumes shipping client and server DevTools components to the correct
+products, and is enough for "mach build" to complete successfully.
+
+diff --git a/browser/app.mozbuild b/browser/app.mozbuild
+--- a/browser/app.mozbuild
++++ b/browser/app.mozbuild
+@@ -9,12 +9,13 @@ if not CONFIG['LIBXUL_SDK']:
+ if CONFIG['MOZ_EXTENSIONS']:
+     DIRS += ['/extensions']
+ 
+ DIRS += ['/%s' % CONFIG['MOZ_BRANDING_DIRECTORY']]
+ 
+ if CONFIG['MOZ_WEBAPP_RUNTIME']:
+     DIRS += ['/webapprt']
+ 
++DIRS += ['/devtools/client']
++
+ # Never add dirs after browser because they apparently won't get
+ # packaged properly on Mac.
+ DIRS += ['/browser']
+-
+diff --git a/browser/moz.build b/browser/moz.build
+--- a/browser/moz.build
++++ b/browser/moz.build
+@@ -15,17 +15,16 @@ DIRS += [
+     'fuel',
+     'locales',
+     'modules',
+     'themes',
+     'extensions',
+ ]
+ 
+ DIRS += [
+-    'devtools',
+     'app',
+ ]
+ 
+ if CONFIG['MAKENSISU']:
+     DIRS += ['installer/windows']
+ 
+ DIST_SUBDIR = 'browser'
+ export('DIST_SUBDIR')
+diff --git a/devtools/client/framework/test/browser.ini b/devtools/client/framework/test/browser.ini
+--- a/devtools/client/framework/test/browser.ini
++++ b/devtools/client/framework/test/browser.ini
+@@ -68,10 +68,9 @@ skip-if = os == "mac" && os_version == "
+ [browser_toolbox_window_title_changes.js]
+ [browser_toolbox_zoom.js]
+ [browser_toolbox_custom_host.js]
+ [browser_toolbox_theme_registration.js]
+ [browser_toolbox_options_enable_serviceworkers_testing.js]
+ [browser_toolbox_selected_tool_unavailable.js]
+ 
+ # We want this test to run for mochitest-dt as well, so we include it here:
+-[../../../base/content/test/general/browser_parsable_css.js]
+-
++[../../../../browser/base/content/test/general/browser_parsable_css.js]
+diff --git a/devtools/server/moz.build b/devtools/server/moz.build
+--- a/devtools/server/moz.build
++++ b/devtools/server/moz.build
+@@ -64,16 +64,17 @@ EXTRA_JS_MODULES.devtools.server.actors 
+     'actors/common.js',
+     'actors/csscoverage.js',
+     'actors/device.js',
+     'actors/director-manager.js',
+     'actors/director-registry.js',
+     'actors/eventlooplag.js',
+     'actors/framerate.js',
+     'actors/gcli.js',
++    'actors/highlighter.css',
+     'actors/highlighter.js',
+     'actors/inspector.js',
+     'actors/layout.js',
+     'actors/memory.js',
+     'actors/monitor.js',
+     'actors/object.js',
+     'actors/preference.js',
+     'actors/pretty-print-worker.js',
+diff --git a/devtools/server/tests/gtest/moz.build b/devtools/server/tests/gtest/moz.build
+--- a/devtools/server/tests/gtest/moz.build
++++ b/devtools/server/tests/gtest/moz.build
+@@ -2,17 +2,17 @@
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, you can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ Library('devtoolstests')
+ 
+ LOCAL_INCLUDES += [
+-    '/toolkit/devtools/server',
++    '../..',
+ ]
+ 
+ UNIFIED_SOURCES = [
+     'DeserializedNodeUbiNodes.cpp',
+     'DoesCrossZoneBoundaries.cpp',
+     'DoesntCrossZoneBoundaries.cpp',
+     'SerializesEdgeNames.cpp',
+     'SerializesEverythingInHeapGraphOnce.cpp',
+diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
+--- a/devtools/shared/moz.build
++++ b/devtools/shared/moz.build
+@@ -9,17 +9,16 @@ DIRS += [
+     'apps',
+     'client',
+     'discovery',
+     'gcli',
+     'jsbeautify',
+     'pretty-fast',
+     'qrcode',
+     'security',
+-    'server',
+     'sourcemap',
+     'shared',
+     'styleinspector',
+     'tern',
+     'transport',
+     'webconsole'
+ ]
+ 
+@@ -42,12 +41,8 @@ EXTRA_JS_MODULES.devtools += [
+ 
+ EXTRA_JS_MODULES.devtools += [
+     'Console.jsm',
+     'DevToolsUtils.jsm',
+     'LayoutHelpers.jsm',
+     'Loader.jsm',
+     'Require.jsm',
+ ]
+-
+-EXTRA_JS_MODULES.devtools.server.actors += [
+-    'server/actors/highlighter.css'
+-]
+diff --git a/devtools/shared/shared/tests/browser/browser.ini b/devtools/shared/shared/tests/browser/browser.ini
+--- a/devtools/shared/shared/tests/browser/browser.ini
++++ b/devtools/shared/shared/tests/browser/browser.ini
+@@ -1,10 +1,10 @@
+ [DEFAULT]
+ tags = devtools
+ subsuite = devtools
+ support-files =
+-  ../../../server/tests/browser/head.js
++  ../../../../server/tests/browser/head.js
+ 
+ [browser_async_storage.js]
+ [browser_worker-01.js]
+ [browser_worker-02.js]
+ [browser_worker-03.js]
+diff --git a/toolkit/moz.build b/toolkit/moz.build
+--- a/toolkit/moz.build
++++ b/toolkit/moz.build
+@@ -2,17 +2,16 @@
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ DIRS += [
+     'components',
+     'content',
+-    'devtools',
+     'forgetaboutsite',
+     'identity',
+     'locales',
+     'modules',
+     'mozapps/downloads',
+     'mozapps/extensions',
+     'mozapps/handling',
+     'mozapps/preferences',
+diff --git a/toolkit/toolkit.mozbuild b/toolkit/toolkit.mozbuild
+--- a/toolkit/toolkit.mozbuild
++++ b/toolkit/toolkit.mozbuild
+@@ -136,16 +136,18 @@ DIRS += [
+     '/security/manager',
+     '/toolkit',
+ ]
+ 
+ if CONFIG['MOZ_PREF_EXTENSIONS']:
+     DIRS += ['/extensions/pref']
+ 
+ DIRS += [
++    '/devtools/server',
++    '/devtools/shared',
+     '/services',
+     '/startupcache',
+     '/js/ductwork/debugger',
+     '/other-licenses/snappy',
+ ]
+ 
+ if CONFIG['MOZ_GIO_COMPONENT']:
+     DIRS += ['/extensions/gio']
