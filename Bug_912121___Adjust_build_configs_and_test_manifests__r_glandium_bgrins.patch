@@ -2,7 +2,7 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1437614014 18000
 #      Wed Jul 22 20:13:34 2015 -0500
-# Node ID b9d4c1088d16c8a66f950a0d95caaf2e5062e471
+# Node ID 51d89645435df21fda657d30a71b4abb3686cdcb
 # Parent  3c949ca3afb5e99095c7f5fe2d259b7259d55e20
 Bug 912121 - Adjust build configs and test manifests. r=glandium,bgrins
 
@@ -12,17 +12,12 @@ products, and is enough for "mach build" to complete successfully.
 diff --git a/browser/app.mozbuild b/browser/app.mozbuild
 --- a/browser/app.mozbuild
 +++ b/browser/app.mozbuild
-@@ -9,12 +9,13 @@ if not CONFIG['LIBXUL_SDK']:
- if CONFIG['MOZ_EXTENSIONS']:
-     DIRS += ['/extensions']
- 
+@@ -12,9 +12,8 @@ if CONFIG['MOZ_EXTENSIONS']:
  DIRS += ['/%s' % CONFIG['MOZ_BRANDING_DIRECTORY']]
  
  if CONFIG['MOZ_WEBAPP_RUNTIME']:
      DIRS += ['/webapprt']
  
-+DIRS += ['/devtools/client']
-+
  # Never add dirs after browser because they apparently won't get
  # packaged properly on Mac.
  DIRS += ['/browser']
@@ -30,12 +25,16 @@ diff --git a/browser/app.mozbuild b/browser/app.mozbuild
 diff --git a/browser/moz.build b/browser/moz.build
 --- a/browser/moz.build
 +++ b/browser/moz.build
-@@ -15,17 +15,16 @@ DIRS += [
+@@ -12,20 +12,20 @@ DIRS += [
+     'base',
+     'components',
+     'experiments',
      'fuel',
      'locales',
      'modules',
      'themes',
      'extensions',
++    '/devtools/client',
  ]
  
  DIRS += [
