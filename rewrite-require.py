@@ -80,16 +80,17 @@ def normalize_ext(resource):
         return resource
     return resource + '.js'
 
-def rewrite_require(path):
+def rewrite_source(path):
     print("Updating %s" % path)
     with open(path, 'r') as file:
         for line in file:
-            require_match = re.search(r"require\([\"'](.*?)[\"']\)", line)
-            if not require_match:
+            basic_match = re.search(r"(Cu.import|require)\([\"'](.*?)[\"']", line)
+            if not basic_match:
                 continue
-            require_id = require_match.group(1)
-            print("Current: %s" % require_id)
-            resource = resolve(require_id)
+            is_import = basic_match.group(1) == "Cu.import"
+            id = basic_match.group(2)
+            print("Current: %s" % line, end = "")
+            resource = resolve(id)
             print("Resource: %s" % resource)
             if not "devtools" in resource:
                 continue
@@ -105,7 +106,16 @@ def rewrite_require(path):
             base, ext = os.path.splitext(source)
             if ext == ".js":
                 source = base
-            print("Updated: %s" % source)
+            if is_import:
+                is_client = source.startswith("devtools/client")
+                if is_client:
+                    updated = "resource:///modules/" + source
+                else:
+                    updated = "resource://gre/modules/" + source
+            else:
+                updated = source
+            updated_line = line.replace(id, updated)
+            print("Updated: %s" % updated_line, end = "")
 
 for root, dirs, files in os.walk("devtools"):
     for file in files:
@@ -115,6 +125,6 @@ for root, dirs, files in os.walk("devtools"):
 for root, dirs, files in os.walk("devtools"):
     for file in files:
         try:
-            rewrite_require(os.path.join(root, file))
+            rewrite_source(os.path.join(root, file))
         except UnicodeDecodeError:
             continue
