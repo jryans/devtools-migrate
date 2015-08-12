@@ -84,24 +84,33 @@ def rewrite_source(path):
     print("Updating %s" % path)
     with open(path, 'r') as file:
         contents = file.read()
+        changed = False
         for match in re.finditer(r"(Cu.import|require)\([\"'](.*?)[\"']", contents):
             current = match.group(0)
             id = match.group(2)
             is_import = match.group(1) == "Cu.import"
-            rewrite_block(current, id, is_import)
+            rewritten = rewrite_block(current, id, is_import)
+            if rewritten:
+                contents = contents.replace(current, rewritten, 1)
+                changed = True
         for match in re.finditer(r"(lazyImporter|lazyRequireGetter)\(.+?,.+?,.+?[\"'](.*?)[\"']", contents, re.DOTALL):
             current = match.group(0)
             id = match.group(2)
             is_import = match.group(1) == "lazyImporter"
-            print("File: %s" % path)
-            rewrite_block(current, id, is_import)
+            rewritten = rewrite_block(current, id, is_import)
+            if rewritten:
+                contents = contents.replace(current, rewritten, 1)
+                changed = True
+        if changed:
+            with open(path, 'w') as writable_file:
+                writable_file.write(contents)
 
 def rewrite_block(current, id, is_import):
     print("Current: %s" % current)
     resource = resolve(id)
     print("Resource: %s" % resource)
     if not "devtools" in resource:
-        return
+        return None
     try:
         source = resource_to_source[resource]
     except KeyError:
@@ -110,7 +119,7 @@ def rewrite_block(current, id, is_import):
             source = resource_to_source[resource]
         else:
             print("WARNING! No mapping for: %s" % resource)
-            return
+            return None
     base, ext = os.path.splitext(source)
     if ext == ".js":
         source = base
@@ -124,6 +133,7 @@ def rewrite_block(current, id, is_import):
         updated_id = source
     rewritten = current.replace(id, updated_id)
     print("Updated: %s" % rewritten)
+    return rewritten
 
 for root, dirs, files in os.walk("devtools"):
     for file in files:
