@@ -83,39 +83,47 @@ def normalize_ext(resource):
 def rewrite_source(path):
     print("Updating %s" % path)
     with open(path, 'r') as file:
-        for line in file:
-            basic_match = re.search(r"(Cu.import|require)\([\"'](.*?)[\"']", line)
-            if not basic_match:
-                continue
-            is_import = basic_match.group(1) == "Cu.import"
-            id = basic_match.group(2)
-            print("Current: %s" % line, end = "")
-            resource = resolve(id)
-            print("Resource: %s" % resource)
-            if not "devtools" in resource:
-                continue
-            try:
-                source = resource_to_source[resource]
-            except KeyError:
-                if resource.startswith("resource:///"):
-                    resource = resource.replace("resource:///", "resource://gre/")
-                    source = resource_to_source[resource]
-                else:
-                    print("WARNING! No mapping for: %s" % resource)
-                    continue
-            base, ext = os.path.splitext(source)
-            if ext == ".js":
-                source = base
-            if is_import:
-                is_client = source.startswith("devtools/client")
-                if is_client:
-                    updated = "resource:///modules/" + source
-                else:
-                    updated = "resource://gre/modules/" + source
-            else:
-                updated = source
-            updated_line = line.replace(id, updated)
-            print("Updated: %s" % updated_line, end = "")
+        contents = file.read()
+        for match in re.finditer(r"(Cu.import|require)\([\"'](.*?)[\"']", contents):
+            current = match.group(0)
+            id = match.group(2)
+            is_import = match.group(1) == "Cu.import"
+            rewrite_block(current, id, is_import)
+        for match in re.finditer(r"(lazyImporter|lazyRequireGetter)\(.+?,.+?,.+?[\"'](.*?)[\"']", contents, re.DOTALL):
+            current = match.group(0)
+            id = match.group(2)
+            is_import = match.group(1) == "lazyImporter"
+            print("File: %s" % path)
+            rewrite_block(current, id, is_import)
+
+def rewrite_block(current, id, is_import):
+    print("Current: %s" % current)
+    resource = resolve(id)
+    print("Resource: %s" % resource)
+    if not "devtools" in resource:
+        return
+    try:
+        source = resource_to_source[resource]
+    except KeyError:
+        if resource.startswith("resource:///"):
+            resource = resource.replace("resource:///", "resource://gre/")
+            source = resource_to_source[resource]
+        else:
+            print("WARNING! No mapping for: %s" % resource)
+            return
+    base, ext = os.path.splitext(source)
+    if ext == ".js":
+        source = base
+    if is_import:
+        is_client = source.startswith("devtools/client")
+        if is_client:
+            updated_id = "resource:///modules/" + source
+        else:
+            updated_id = "resource://gre/modules/" + source
+    else:
+        updated_id = source
+    rewritten = current.replace(id, updated_id)
+    print("Updated: %s" % rewritten)
 
 for root, dirs, files in os.walk("devtools"):
     for file in files:
