@@ -1,0 +1,88 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1438908822 18000
+#      Thu Aug 06 19:53:42 2015 -0500
+# Node ID 38ddcd16679e8b209871f1990fd8557a3b8b1165
+# Parent  e125d9da58763e79e605b6300ddc9ff37e41e284
+Bug 912121 - Define DevToolsModules template for installing JS modules. r=glandium
+
+The DevToolsModules moz.build template installs JS modules to the same path as
+the current directory in the source tree.
+
+diff --git a/devtools/client/moz.build b/devtools/client/moz.build
+--- a/devtools/client/moz.build
++++ b/devtools/client/moz.build
+@@ -1,14 +1,16 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++include('../templates.mozbuild')
++
+ DIRS += [
+     'animationinspector',
+     'app-manager',
+     'canvasdebugger',
+     'commandline',
+     'debugger',
+     'eyedropper',
+     'fontinspector',
+diff --git a/devtools/server/moz.build b/devtools/server/moz.build
+--- a/devtools/server/moz.build
++++ b/devtools/server/moz.build
+@@ -1,14 +1,16 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++include('../templates.mozbuild')
++
+ BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
+ MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
+ XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
+ 
+ if CONFIG['ENABLE_TESTS']:
+     DIRS += ['tests/gtest']
+ 
+ XPIDL_SOURCES += [
+diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
+--- a/devtools/shared/moz.build
++++ b/devtools/shared/moz.build
+@@ -1,14 +1,16 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++include('../templates.mozbuild')
++
+ DIRS += [
+     'acorn',
+     'apps',
+     'client',
+     'discovery',
+     'gcli',
+     'jsbeautify',
+     'pretty-fast',
+diff --git a/devtools/templates.mozbuild b/devtools/templates.mozbuild
+new file mode 100644
+--- /dev/null
++++ b/devtools/templates.mozbuild
+@@ -0,0 +1,12 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++@template
++def DevToolsModules(*modules):
++    base = EXTRA_JS_MODULES
++    for dir in RELATIVEDIR.split('/'):
++        base = base[dir]
++    base += [m for m in modules]

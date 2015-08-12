@@ -38,3 +38,7 @@ chrome://browser/content/devtools/
 to
 
 chrome://devtools/content/"
+
+hg import Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
+
+perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs' devtools/client/moz.build
