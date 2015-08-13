@@ -4,6 +4,8 @@
 
 set -ex
 
+SCRIPT_DIR=$(dirname $0)
+
 hg mv browser/devtools devtools/client
 hg mv toolkit/devtools/server devtools/server
 hg mv toolkit/devtools devtools/shared
@@ -22,7 +24,7 @@ replace '\"../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslint
 hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
 
 # hg export -o %m.patch
-hg import Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ochameau.patch
 
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
@@ -40,8 +42,8 @@ to
 
 chrome://devtools/content/"
 
-hg import Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
 
-hg import Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
 
 # perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs' devtools/client/moz.build
