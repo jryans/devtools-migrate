@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1438908822 18000
-#      Thu Aug 06 19:53:42 2015 -0500
-# Node ID 38ddcd16679e8b209871f1990fd8557a3b8b1165
-# Parent  e125d9da58763e79e605b6300ddc9ff37e41e284
+# Date 1439502567 18000
+#      Thu Aug 13 16:49:27 2015 -0500
+# Node ID aca70f751a472e663dcddcc541314b0b43075140
+# Parent  ba042939e06bae5f27133d4224a04f65a0492a50
 Bug 912121 - Define DevToolsModules template for installing JS modules. r=glandium
 
 The DevToolsModules moz.build template installs JS modules to the same path as
@@ -68,7 +68,7 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'discovery',
      'gcli',
      'jsbeautify',
-     'pretty-fast',
+     'performance',
 diff --git a/devtools/templates.mozbuild b/devtools/templates.mozbuild
 new file mode 100644
 --- /dev/null

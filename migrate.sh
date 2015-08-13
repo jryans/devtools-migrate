@@ -20,6 +20,7 @@ replace '\"../../../../../browser/devtools/.eslintrc.mochitests\"' '"../../../.e
 replace '\"../../../.eslintrc.xpcshell\"' '"../../../../.eslintrc.xpcshell"' -r devtools/client
 replace '\"../../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/server
 replace '\"../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/shared
+# TODO: .eslintignore
 
 hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
 
@@ -42,8 +43,25 @@ to
 
 chrome://devtools/content/"
 
-hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
-
 hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
 
-# perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs' devtools/client/moz.build
+${SCRIPT_DIR}/rewrite-require.py
+hg commit -m "Bug 912121 - Rewrite require / import to match source tree. r=ochameau
+
+In a following patch, all DevTools moz.build files will use DevToolsModules to
+install JS modules at a path that corresponds directly to their source tree
+location.  Here we all require and import calls to match the new location that
+these files are installed to."
+
+# TODO: Unsure what to do about GCLI
+hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
+
+find devtools -name moz.build | xargs -L 1 perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs'
+hg revert devtools/shared/gcli/moz.build
+hg commit -m "Bug 912121 - Use DevToolsModules in devtools moz.build. r=ochameau
+
+This step finally installs all DevTools JS modules at a path that corresponds
+directly to their source tree location."
+
+# TODO: Check GCLI and other stragglers
+hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch

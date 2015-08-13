@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439499883 18000
-#      Thu Aug 13 16:04:43 2015 -0500
-# Node ID fdab222bca53430a146c03c2604e506bc8bb1e88
-# Parent  f2070fb6fd86779b8b27c4a08cc42bbe8db69764
+# Date 1439502945 18000
+#      Thu Aug 13 16:55:45 2015 -0500
+# Node ID 894053a5daf23087275c46d4494b79a499c91fde
+# Parent  d9206b118d784b4b9339eaa34b5db65e36da767e
 Bug 912121 - Only one JS modules section per moz.build. r=ochameau
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -626,12 +626,14 @@ new file mode 100644
 diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 --- a/devtools/server/moz.build
 +++ b/devtools/server/moz.build
-@@ -1,14 +1,18 @@
+@@ -1,16 +1,20 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ include('../templates.mozbuild')
  
 +DIRS += [
 +    'actors',
@@ -645,7 +647,7 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      DIRS += ['tests/gtest']
  
  XPIDL_SOURCES += [
-@@ -34,81 +38,19 @@ SOURCES += [
+@@ -36,81 +40,19 @@ SOURCES += [
      'ZeroCopyNSIOutputStream.cpp',
  ]
  
@@ -751,7 +753,7 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -24,24 +24,21 @@ DIRS += [
+@@ -26,24 +26,21 @@ DIRS += [
      'webconsole'
  ]
  
