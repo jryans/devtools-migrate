@@ -27,7 +27,7 @@ hg import Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ocham
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
 replace 'content/browser/devtools/' 'content/' devtools/client/jar.mn
-# TODO: Redo on entire tree
+# TODO: Redo on entire tree?
 replace 'chrome://browser/content/devtools/' 'chrome://devtools/content/' -r browser devtools
 hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar
 
@@ -40,6 +40,8 @@ to
 
 chrome://devtools/content/"
 
+hg import Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
+
 hg import Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
 
-perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs' devtools/client/moz.build
+# perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs' devtools/client/moz.build

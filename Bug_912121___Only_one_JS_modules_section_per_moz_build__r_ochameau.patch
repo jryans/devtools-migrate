@@ -1,0 +1,493 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1439493293 18000
+#      Thu Aug 13 14:14:53 2015 -0500
+# Node ID 8dabfb4440b1bfc7013a6f1c7d9e27d0b32a0c2d
+# Parent  38ddcd16679e8b209871f1990fd8557a3b8b1165
+Bug 912121 - Only one JS modules section per moz.build. r=ochameau
+
+In a following patch, all DevTools moz.build files will use DevToolsModules to
+install JS modules at a path that corresponds directly to their source tree
+location.  Prior to this step, we must ensure each moz.build only defines a
+single block of JS modules for easier automatic conversion.
+
+diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz.build
+--- a/devtools/client/framework/moz.build
++++ b/devtools/client/framework/moz.build
+@@ -1,22 +1,19 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+ 
+-EXTRA_JS_MODULES.devtools += [
++EXTRA_JS_MODULES.devtools.framework += [
+     'gDevTools.jsm',
+-    'ToolboxProcess.jsm',
+-]
+-
+-EXTRA_JS_MODULES.devtools.framework += [
+     'selection.js',
+     'sidebar.js',
+     'target.js',
+     'toolbox-highlighter-utils.js',
+     'toolbox-hosts.js',
+     'toolbox-options.js',
+     'toolbox.js',
++    'ToolboxProcess.jsm',
+ ]
+diff --git a/devtools/client/projecteditor/lib/helpers/moz.build b/devtools/client/projecteditor/lib/helpers/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/helpers/moz.build
+@@ -0,0 +1,14 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.helpers += [
++    'event.js',
++    'file-picker.js',
++    'l10n.js',
++    'promise.js',
++    'prompts.js',
++    'readdir.js',
++]
+diff --git a/devtools/client/projecteditor/lib/moz.build b/devtools/client/projecteditor/lib/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/moz.build
+@@ -0,0 +1,19 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++DIRS += [
++    'helpers',
++    'plugins',
++    'stores',
++]
++
++EXTRA_JS_MODULES.devtools.projecteditor += [
++    'editors.js',
++    'project.js',
++    'projecteditor.js',
++    'shells.js',
++    'tree.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/app-manager/moz.build b/devtools/client/projecteditor/lib/plugins/app-manager/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/app-manager/moz.build
+@@ -0,0 +1,10 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins['app-manager'] += [
++    'app-project-editor.js',
++    'plugin.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/delete/moz.build b/devtools/client/projecteditor/lib/plugins/delete/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/delete/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins.delete += [
++    'delete.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/dirty/moz.build b/devtools/client/projecteditor/lib/plugins/dirty/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/dirty/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins.dirty += [
++    'dirty.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/image-view/moz.build b/devtools/client/projecteditor/lib/plugins/image-view/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/image-view/moz.build
+@@ -0,0 +1,10 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins['image-view'] += [
++    'image-editor.js',
++    'plugin.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/logging/moz.build b/devtools/client/projecteditor/lib/plugins/logging/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/logging/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins.logging += [
++    'logging.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/moz.build b/devtools/client/projecteditor/lib/plugins/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/moz.build
+@@ -0,0 +1,21 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++DIRS += [
++    'app-manager',
++    'delete',
++    'dirty',
++    'image-view',
++    'logging',
++    'new',
++    'rename',
++    'save',
++    'status-bar',
++]
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins += [
++    'lib/plugins/core.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/new/moz.build b/devtools/client/projecteditor/lib/plugins/new/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/new/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins.new += [
++    'new.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/rename/moz.build b/devtools/client/projecteditor/lib/plugins/rename/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/rename/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins.rename += [
++    'rename.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/save/moz.build b/devtools/client/projecteditor/lib/plugins/save/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/save/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins.save += [
++    'save.js',
++]
+diff --git a/devtools/client/projecteditor/lib/plugins/status-bar/moz.build b/devtools/client/projecteditor/lib/plugins/status-bar/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/plugins/status-bar/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.plugins['status-bar'] += [
++    'plugin.js',
++]
+diff --git a/devtools/client/projecteditor/lib/stores/moz.build b/devtools/client/projecteditor/lib/stores/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/projecteditor/lib/stores/moz.build
+@@ -0,0 +1,11 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.projecteditor.stores += [
++    'base.js',
++    'local.js',
++    'resource.js',
++]
+diff --git a/devtools/client/projecteditor/moz.build b/devtools/client/projecteditor/moz.build
+--- a/devtools/client/projecteditor/moz.build
++++ b/devtools/client/projecteditor/moz.build
+@@ -1,71 +1,11 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+ 
+-EXTRA_JS_MODULES.devtools.projecteditor += [
+-    'lib/editors.js',
+-    'lib/project.js',
+-    'lib/projecteditor.js',
+-    'lib/shells.js',
+-    'lib/tree.js',
++DIRS += [
++    'lib',
+ ]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.helpers += [
+-    'lib/helpers/event.js',
+-    'lib/helpers/file-picker.js',
+-    'lib/helpers/l10n.js',
+-    'lib/helpers/promise.js',
+-    'lib/helpers/prompts.js',
+-    'lib/helpers/readdir.js',
+-]
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins += [
+-    'lib/plugins/core.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins['app-manager'] += [
+-    'lib/plugins/app-manager/app-project-editor.js',
+-    'lib/plugins/app-manager/plugin.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins.delete += [
+-    'lib/plugins/delete/delete.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins.dirty += [
+-    'lib/plugins/dirty/dirty.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins['image-view'] += [
+-    'lib/plugins/image-view/image-editor.js',
+-    'lib/plugins/image-view/plugin.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins.logging += [
+-    'lib/plugins/logging/logging.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins.new += [
+-    'lib/plugins/new/new.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins.rename += [
+-    'lib/plugins/rename/rename.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins.save += [
+-    'lib/plugins/save/save.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.plugins['status-bar'] += [
+-    'lib/plugins/status-bar/plugin.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.projecteditor.stores += [
+-    'lib/stores/base.js',
+-    'lib/stores/local.js',
+-    'lib/stores/resource.js',
+-]
+diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/moz.build
+--- a/devtools/client/scratchpad/moz.build
++++ b/devtools/client/scratchpad/moz.build
+@@ -1,16 +1,13 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-EXTRA_JS_MODULES.devtools += [
+-    'scratchpad-manager.jsm',
+-]
+-
+ EXTRA_JS_MODULES.devtools.scratchpad += [
+     'scratchpad-commands.js',
++    'scratchpad-manager.jsm',
+     'scratchpad-panel.js',
+ ]
+ 
+ BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
+--- a/devtools/client/shared/moz.build
++++ b/devtools/client/shared/moz.build
+@@ -1,65 +1,37 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'widgets',
++]
++
+ BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+ XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
+ 
+-EXTRA_JS_MODULES.devtools += [
++EXTRA_JS_MODULES.devtools.shared += [
+     'AppCacheUtils.jsm',
++    'autocomplete-popup.js',
+     'Curl.jsm',
+     'DeveloperToolbar.jsm',
++    'devices.js',
+     'DOMHelpers.jsm',
+-    'Jsbeautify.jsm',
+-    'Parser.jsm',
+-    'SplitView.jsm',
+-]
+-
+-EXTRA_JS_MODULES.devtools += [
+-    'widgets/AbstractTreeItem.jsm',
+-    'widgets/BreadcrumbsWidget.jsm',
+-    'widgets/Chart.jsm',
+-    'widgets/GraphsWorker.js',
+-    'widgets/SideMenuWidget.jsm',
+-    'widgets/SimpleListWidget.jsm',
+-    'widgets/VariablesView.jsm',
+-    'widgets/VariablesViewController.jsm',
+-    'widgets/ViewHelpers.jsm',
+-]
+-
+-EXTRA_JS_MODULES.devtools.shared += [
+-    'autocomplete-popup.js',
+-    'devices.js',
+     'doorhanger.js',
+     'frame-script-utils.js',
+     'getjson.js',
+     'inplace-editor.js',
++    'Jsbeautify.jsm',
+     'node-attribute-parser.js',
+     'observable-object.js',
+     'options-view.js',
++    'Parser.jsm',
+     'poller.js',
+     'source-utils.js',
++    'SplitView.jsm',
+     'telemetry.js',
+     'theme-switching.js',
+     'theme.js',
+     'undo.js'
+ ]
+-
+-EXTRA_JS_MODULES.devtools.shared.widgets += [
+-    'widgets/BarGraphWidget.js',
+-    'widgets/CubicBezierPresets.js',
+-    'widgets/CubicBezierWidget.js',
+-    'widgets/FastListWidget.js',
+-    'widgets/FilterWidget.js',
+-    'widgets/FlameGraph.js',
+-    'widgets/Graphs.js',
+-    'widgets/LineGraphWidget.js',
+-    'widgets/MdnDocsWidget.js',
+-    'widgets/MountainGraphWidget.js',
+-    'widgets/Spectrum.js',
+-    'widgets/TableWidget.js',
+-    'widgets/Tooltip.js',
+-    'widgets/TreeWidget.js',
+-]
+diff --git a/devtools/client/shared/widgets/moz.build b/devtools/client/shared/widgets/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/shared/widgets/moz.build
+@@ -0,0 +1,31 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.shared.widgets += [
++    'AbstractTreeItem.jsm',
++    'BarGraphWidget.js',
++    'BreadcrumbsWidget.jsm',
++    'Chart.jsm',
++    'CubicBezierPresets.js',
++    'CubicBezierWidget.js',
++    'FastListWidget.js',
++    'FilterWidget.js',
++    'FlameGraph.js',
++    'Graphs.js',
++    'GraphsWorker.js',
++    'LineGraphWidget.js',
++    'MdnDocsWidget.js',
++    'MountainGraphWidget.js',
++    'SideMenuWidget.jsm',
++    'SimpleListWidget.jsm',
++    'Spectrum.js',
++    'TableWidget.js',
++    'Tooltip.js',
++    'TreeWidget.js',
++    'VariablesView.jsm',
++    'VariablesViewController.jsm',
++    'ViewHelpers.jsm',
++]
+diff --git a/devtools/client/styleeditor/moz.build b/devtools/client/styleeditor/moz.build
+--- a/devtools/client/styleeditor/moz.build
++++ b/devtools/client/styleeditor/moz.build
+@@ -1,19 +1,16 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+ 
+-EXTRA_JS_MODULES.devtools += [
++EXTRA_JS_MODULES.devtools.styleeditor += [
++    'styleeditor-commands.js',
++    'styleeditor-panel.js',
+     'StyleEditorUI.jsm',
+     'StyleEditorUtil.jsm',
+     'StyleSheetEditor.jsm',
+-]
+-
+-EXTRA_JS_MODULES.devtools.styleeditor += [
+-    'styleeditor-commands.js',
+-    'styleeditor-panel.js',
+     'utils.js',
+ ]
