@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439493293 18000
-#      Thu Aug 13 14:14:53 2015 -0500
-# Node ID 8dabfb4440b1bfc7013a6f1c7d9e27d0b32a0c2d
-# Parent  38ddcd16679e8b209871f1990fd8557a3b8b1165
+# Date 1439499883 18000
+#      Thu Aug 13 16:04:43 2015 -0500
+# Node ID fdab222bca53430a146c03c2604e506bc8bb1e88
+# Parent  f2070fb6fd86779b8b27c4a08cc42bbe8db69764
 Bug 912121 - Only one JS modules section per moz.build. r=ochameau
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -43,7 +43,7 @@ diff --git a/devtools/client/projecteditor/lib/helpers/moz.build b/devtools/clie
 new file mode 100644
 --- /dev/null
 +++ b/devtools/client/projecteditor/lib/helpers/moz.build
-@@ -0,0 +1,14 @@
+@@ -0,0 +1,13 @@
 +# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
@@ -54,7 +54,6 @@ new file mode 100644
 +    'event.js',
 +    'file-picker.js',
 +    'l10n.js',
-+    'promise.js',
 +    'prompts.js',
 +    'readdir.js',
 +]
@@ -178,7 +177,7 @@ new file mode 100644
 +]
 +
 +EXTRA_JS_MODULES.devtools.projecteditor.plugins += [
-+    'lib/plugins/core.js',
++    'core.js',
 +]
 diff --git a/devtools/client/projecteditor/lib/plugins/new/moz.build b/devtools/client/projecteditor/lib/plugins/new/moz.build
 new file mode 100644
@@ -255,30 +254,29 @@ new file mode 100644
 diff --git a/devtools/client/projecteditor/moz.build b/devtools/client/projecteditor/moz.build
 --- a/devtools/client/projecteditor/moz.build
 +++ b/devtools/client/projecteditor/moz.build
-@@ -1,71 +1,11 @@
+@@ -1,70 +1,9 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
++DIRS += ['lib']
++
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
- 
+-
 -EXTRA_JS_MODULES.devtools.projecteditor += [
 -    'lib/editors.js',
 -    'lib/project.js',
 -    'lib/projecteditor.js',
 -    'lib/shells.js',
 -    'lib/tree.js',
-+DIRS += [
-+    'lib',
- ]
+-]
 -
 -EXTRA_JS_MODULES.devtools.projecteditor.helpers += [
 -    'lib/helpers/event.js',
 -    'lib/helpers/file-picker.js',
 -    'lib/helpers/l10n.js',
--    'lib/helpers/promise.js',
 -    'lib/helpers/prompts.js',
 -    'lib/helpers/readdir.js',
 -]
@@ -329,6 +327,28 @@ diff --git a/devtools/client/projecteditor/moz.build b/devtools/client/projected
 -    'lib/stores/local.js',
 -    'lib/stores/resource.js',
 -]
+diff --git a/devtools/client/responsivedesign/moz.build b/devtools/client/responsivedesign/moz.build
+--- a/devtools/client/responsivedesign/moz.build
++++ b/devtools/client/responsivedesign/moz.build
+@@ -1,14 +1,11 @@
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
++
+ EXTRA_JS_MODULES.devtools += [
++    'resize-commands.js',
+     'responsivedesign-child.js',
+-    'responsivedesign.jsm'
++    'responsivedesign.jsm',
+ ]
+-EXTRA_JS_MODULES.devtools.responsivedesign += [
+-    'resize-commands.js'
+-]
+-
+-
+-BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
 diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/moz.build
 --- a/devtools/client/scratchpad/moz.build
 +++ b/devtools/client/scratchpad/moz.build
@@ -350,10 +370,29 @@ diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/m
  ]
  
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/content/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/shared/content/moz.build
+@@ -0,0 +1,14 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.shared.content += [
++    'react.js'
++]
++
++if CONFIG['DEBUG_JS_MODULES']:
++    EXTRA_JS_MODULES.devtools.shared.content += [
++        'react-dev.js'
++    ]
 diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 --- a/devtools/client/shared/moz.build
 +++ b/devtools/client/shared/moz.build
-@@ -1,65 +1,37 @@
+@@ -1,74 +1,38 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
@@ -361,6 +400,7 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
 +DIRS += [
++    'content',
 +    'widgets',
 +]
 +
@@ -412,6 +452,15 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
      'theme.js',
      'undo.js'
  ]
+-
+-EXTRA_JS_MODULES.devtools.shared.content += [
+-    'content/react.js'
+-]
+-
+-if CONFIG['DEBUG_JS_MODULES']:
+-    EXTRA_JS_MODULES.devtools.shared.content += [
+-        'content/react-dev.js'
+-    ]
 -
 -EXTRA_JS_MODULES.devtools.shared.widgets += [
 -    'widgets/BarGraphWidget.js',
@@ -491,3 +540,284 @@ diff --git a/devtools/client/styleeditor/moz.build b/devtools/client/styleeditor
 -    'styleeditor-panel.js',
      'utils.js',
  ]
+diff --git a/devtools/server/actors/moz.build b/devtools/server/actors/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/server/actors/moz.build
+@@ -0,0 +1,57 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++DIRS += [
++    'utils',
++]
++
++EXTRA_JS_MODULES.devtools.server.actors += [
++    'actor-registry.js',
++    'addon.js',
++    'animation.js',
++    'call-watcher.js',
++    'canvas.js',
++    'child-process.js',
++    'childtab.js',
++    'chrome.js',
++    'common.js',
++    'csscoverage.js',
++    'device.js',
++    'director-manager.js',
++    'director-registry.js',
++    'eventlooplag.js',
++    'framerate.js',
++    'gcli.js',
++    'highlighter.css',
++    'highlighter.js',
++    'inspector.js',
++    'layout.js',
++    'memory.js',
++    'monitor.js',
++    'object.js',
++    'performance-entries.js',
++    'performance-recording.js',
++    'performance.js',
++    'preference.js',
++    'pretty-print-worker.js',
++    'profiler.js',
++    'promises.js',
++    'root.js',
++    'script.js',
++    'settings.js',
++    'storage.js',
++    'string.js',
++    'styleeditor.js',
++    'styles.js',
++    'stylesheets.js',
++    'timeline.js',
++    'webapps.js',
++    'webaudio.js',
++    'webbrowser.js',
++    'webconsole.js',
++    'webgl.js',
++    'worker.js',
++]
+diff --git a/devtools/server/actors/utils/moz.build b/devtools/server/actors/utils/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/server/actors/utils/moz.build
+@@ -0,0 +1,16 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.server.actors.utils += [
++    'actor-registry-utils.js',
++    'audionodes.json',
++    'automation-timeline.js',
++    'make-debugger.js',
++    'map-uri-to-addon-id.js',
++    'ScriptStore.js',
++    'stack.js',
++    'TabSources.js'
++]
+diff --git a/devtools/server/moz.build b/devtools/server/moz.build
+--- a/devtools/server/moz.build
++++ b/devtools/server/moz.build
+@@ -1,14 +1,18 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'actors',
++]
++
+ BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
+ MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
+ XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
+ 
+ if CONFIG['ENABLE_TESTS']:
+     DIRS += ['tests/gtest']
+ 
+ XPIDL_SOURCES += [
+@@ -34,81 +38,19 @@ SOURCES += [
+     'ZeroCopyNSIOutputStream.cpp',
+ ]
+ 
+ # Disable RTTI in google protocol buffer
+ DEFINES['GOOGLE_PROTOBUF_NO_RTTI'] = True
+ 
+ FINAL_LIBRARY = 'xul'
+ 
+-EXTRA_JS_MODULES.devtools += [
+-    'content-server.jsm',
+-    'dbg-server.jsm',
+-]
+-
+ EXTRA_JS_MODULES.devtools.server += [
+     'child.js',
+     'content-globals.js',
++    'content-server.jsm',
++    'dbg-server.jsm',
+     'main.js',
+     'protocol.js',
+     'worker.js'
+ ]
+ 
+-EXTRA_JS_MODULES.devtools.server.actors += [
+-    'actors/actor-registry.js',
+-    'actors/addon.js',
+-    'actors/animation.js',
+-    'actors/call-watcher.js',
+-    'actors/canvas.js',
+-    'actors/child-process.js',
+-    'actors/childtab.js',
+-    'actors/chrome.js',
+-    'actors/common.js',
+-    'actors/csscoverage.js',
+-    'actors/device.js',
+-    'actors/director-manager.js',
+-    'actors/director-registry.js',
+-    'actors/eventlooplag.js',
+-    'actors/framerate.js',
+-    'actors/gcli.js',
+-    'actors/highlighter.css',
+-    'actors/highlighter.js',
+-    'actors/inspector.js',
+-    'actors/layout.js',
+-    'actors/memory.js',
+-    'actors/monitor.js',
+-    'actors/object.js',
+-    'actors/performance-entries.js',
+-    'actors/performance-recording.js',
+-    'actors/performance.js',
+-    'actors/preference.js',
+-    'actors/pretty-print-worker.js',
+-    'actors/profiler.js',
+-    'actors/promises.js',
+-    'actors/root.js',
+-    'actors/script.js',
+-    'actors/settings.js',
+-    'actors/storage.js',
+-    'actors/string.js',
+-    'actors/styleeditor.js',
+-    'actors/styles.js',
+-    'actors/stylesheets.js',
+-    'actors/timeline.js',
+-    'actors/webapps.js',
+-    'actors/webaudio.js',
+-    'actors/webbrowser.js',
+-    'actors/webconsole.js',
+-    'actors/webgl.js',
+-    'actors/worker.js',
+-]
+-
+-EXTRA_JS_MODULES.devtools.server.actors.utils += [
+-    'actors/utils/actor-registry-utils.js',
+-    'actors/utils/audionodes.json',
+-    'actors/utils/automation-timeline.js',
+-    'actors/utils/make-debugger.js',
+-    'actors/utils/map-uri-to-addon-id.js',
+-    'actors/utils/ScriptStore.js',
+-    'actors/utils/stack.js',
+-    'actors/utils/TabSources.js'
+-]
+-
+ FAIL_ON_WARNINGS = True
+diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
+--- a/devtools/shared/client/moz.build
++++ b/devtools/shared/client/moz.build
+@@ -1,14 +1,11 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-EXTRA_JS_MODULES.devtools += [
+-    'dbg-client.jsm',
+-]
+-
+ EXTRA_JS_MODULES.devtools.client += [
+     'connection-manager.js',
++    'dbg-client.jsm',
+     'main.js',
+ ]
+diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
+--- a/devtools/shared/moz.build
++++ b/devtools/shared/moz.build
+@@ -24,24 +24,21 @@ DIRS += [
+     'webconsole'
+ ]
+ 
+ MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
+ XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
+ 
+ EXTRA_JS_MODULES.devtools += [
+     'async-utils.js',
++    'Console.jsm',
+     'content-observer.js',
+     'css-color.js',
+     'deprecated-sync-thenables.js',
+     'DevToolsUtils.js',
+     'event-emitter.js',
+     'event-parsers.js',
+     'layout-helpers.js',
++    'Loader.jsm',
+     'output-parser.js',
+     'path.js',
+     'worker-loader.js',
+ ]
+-
+-EXTRA_JS_MODULES.devtools += [
+-    'Console.jsm',
+-    'Loader.jsm',
+-]
+diff --git a/devtools/shared/performance/legacy/moz.build b/devtools/shared/performance/legacy/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/shared/performance/legacy/moz.build
+@@ -0,0 +1,12 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.performance.legacy += [
++  'actors.js',
++  'compatibility.js',
++  'front.js',
++  'recording.js',
++]
+diff --git a/devtools/shared/performance/moz.build b/devtools/shared/performance/moz.build
+--- a/devtools/shared/performance/moz.build
++++ b/devtools/shared/performance/moz.build
+@@ -1,18 +1,15 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'legacy',
++]
++
+ EXTRA_JS_MODULES.devtools.performance += [
+   'io.js',
+   'recorder.js',
+   'utils.js',
+ ]
+-
+-EXTRA_JS_MODULES.devtools.performance.legacy += [
+-  'legacy/actors.js',
+-  'legacy/compatibility.js',
+-  'legacy/front.js',
+-  'legacy/recording.js',
+-]

@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1437614014 18000
-#      Wed Jul 22 20:13:34 2015 -0500
-# Node ID 51d89645435df21fda657d30a71b4abb3686cdcb
-# Parent  3c949ca3afb5e99095c7f5fe2d259b7259d55e20
+# Date 1439499967 18000
+#      Thu Aug 13 16:06:07 2015 -0500
+# Node ID c92a7072536d8d179654251f27a4c4424ed5dfef
+# Parent  a3432bc57c2d20c31857f41d897a2993c0424d3a
 Bug 912121 - Adjust build configs and test manifests. r=glandium,ochameau
 
 This step resumes shipping client and server DevTools components to the correct
@@ -81,8 +81,8 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'actors/memory.js',
      'actors/monitor.js',
      'actors/object.js',
-     'actors/preference.js',
-     'actors/pretty-print-worker.js',
+     'actors/performance-entries.js',
+     'actors/performance-recording.js',
 diff --git a/devtools/server/tests/gtest/moz.build b/devtools/server/tests/gtest/moz.build
 --- a/devtools/server/tests/gtest/moz.build
 +++ b/devtools/server/tests/gtest/moz.build
@@ -108,12 +108,12 @@ diff --git a/devtools/server/tests/gtest/moz.build b/devtools/server/tests/gtest
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -9,17 +9,16 @@ DIRS += [
-     'apps',
+@@ -10,17 +10,16 @@ DIRS += [
      'client',
      'discovery',
      'gcli',
      'jsbeautify',
+     'performance',
      'pretty-fast',
      'qrcode',
      'security',
@@ -122,18 +122,18 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'shared',
      'styleinspector',
      'tern',
+     'touch',
      'transport',
      'webconsole'
  ]
- 
-@@ -42,12 +41,8 @@ EXTRA_JS_MODULES.devtools += [
+@@ -41,12 +40,8 @@ EXTRA_JS_MODULES.devtools += [
+     'path.js',
+     'worker-loader.js',
+ ]
  
  EXTRA_JS_MODULES.devtools += [
      'Console.jsm',
-     'DevToolsUtils.jsm',
-     'LayoutHelpers.jsm',
      'Loader.jsm',
-     'Require.jsm',
  ]
 -
 -EXTRA_JS_MODULES.devtools.server.actors += [
