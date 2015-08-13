@@ -27,6 +27,7 @@ hg import Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_bgrin
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
 replace 'content/browser/devtools/' 'content/' devtools/client/jar.mn
+# TODO: Redo on entire tree
 replace 'chrome://browser/content/devtools/' 'chrome://devtools/content/' -r browser devtools
 hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar
 

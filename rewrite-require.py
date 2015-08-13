@@ -106,9 +106,13 @@ def rewrite_source(path):
                 writable_file.write(contents)
 
 def rewrite_block(current, id, is_import):
+    # Ignore "main" used in addon-sdk files
+    if id == "main":
+        return None
     print("Current: %s" % current)
     resource = resolve(id)
     print("Resource: %s" % resource)
+    # Ignore resources outside of devtools
     if not "devtools" in resource:
         return None
     try:
@@ -120,9 +124,6 @@ def rewrite_block(current, id, is_import):
         else:
             print("WARNING! No mapping for: %s" % resource)
             return None
-    base, ext = os.path.splitext(source)
-    if ext == ".js":
-        source = base
     if is_import:
         is_client = source.startswith("devtools/client")
         if is_client:
@@ -130,17 +131,28 @@ def rewrite_block(current, id, is_import):
         else:
             updated_id = "resource://gre/modules/" + source
     else:
+        base, ext = os.path.splitext(source)
+        # require() calls don't need the .js extension
+        if ext == ".js":
+            source = base
         updated_id = source
     rewritten = current.replace(id, updated_id)
     print("Updated: %s" % rewritten)
     return rewritten
 
+# Scan all devtools moz.build files to record the mapping of paths in the source
+# tree to resource:// URIs.
 for root, dirs, files in os.walk("devtools"):
     for file in files:
         if file == "moz.build":
             record_source_to_resource(os.path.join(root, file))
 
-for root, dirs, files in os.walk("devtools"):
+# Visit all files in the tree to update various require and import paths to be
+# based on source tree locations instead of arbitrary names
+for root, dirs, files in os.walk("."):
+    for dir in dirs:
+        if dir == ".hg" or dir == ".git" or dir.startswith("obj-"):
+            dirs.remove(dir)
     for file in files:
         try:
             rewrite_source(os.path.join(root, file))
