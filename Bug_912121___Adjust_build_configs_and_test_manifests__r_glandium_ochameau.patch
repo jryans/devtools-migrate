@@ -4,7 +4,7 @@
 #      Wed Jul 22 20:13:34 2015 -0500
 # Node ID 51d89645435df21fda657d30a71b4abb3686cdcb
 # Parent  3c949ca3afb5e99095c7f5fe2d259b7259d55e20
-Bug 912121 - Adjust build configs and test manifests. r=glandium,bgrins
+Bug 912121 - Adjust build configs and test manifests. r=glandium,ochameau
 
 This step resumes shipping client and server DevTools components to the correct
 products, and is enough for "mach build" to complete successfully.

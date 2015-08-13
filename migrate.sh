@@ -8,7 +8,7 @@ hg mv browser/devtools devtools/client
 hg mv toolkit/devtools/server devtools/server
 hg mv toolkit/devtools devtools/shared
 
-hg commit -m "Bug 912121 - Migrate major DevTools directories. r=bgrins"
+hg commit -m "Bug 912121 - Migrate major DevTools directories. r=ochameau"
 
 hg mv devtools/client/.eslintrc* devtools
 hg rm devtools/shared/.eslintrc
@@ -19,10 +19,10 @@ replace '\"../../../.eslintrc.xpcshell\"' '"../../../../.eslintrc.xpcshell"' -r 
 replace '\"../../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/server
 replace '\"../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/shared
 
-hg commit -m "Bug 912121 - Adjust ESLint files. r=bgrins"
+hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
 
 # hg export -o %m.patch
-hg import Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_bgrins.patch
+hg import Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ochameau.patch
 
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
