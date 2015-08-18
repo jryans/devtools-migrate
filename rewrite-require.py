@@ -33,6 +33,14 @@ loader_map = {
     "xpcshell-test": "resource://test"
 }
 
+ignored_prefixes = [
+    "gcli",
+    "acorn",
+    "tern",
+    "source-map",
+    "xpcshell-test"
+]
+
 def record_source_to_resource(path):
     print("Reading %s" % path)
     is_client = path.split("/")[1] == "client"
@@ -66,6 +74,9 @@ resolve_map.sort(key = len, reverse = True)
 resolve_map = [[x, loader_map[x]] for x in resolve_map]
 # print(resolve_map)
 
+def is_relative(id):
+    return id[0] == "."
+
 def resolve(id):
     if id.startswith("resource://"):
         return normalize_ext(id)
@@ -89,7 +100,7 @@ def rewrite_source(path):
             current = match.group(0)
             id = match.group(2)
             is_import = match.group(1) == "Cu.import"
-            rewritten = rewrite_block(current, id, is_import)
+            rewritten = rewrite_block(current, id, is_import, path)
             if rewritten:
                 contents = contents.replace(current, rewritten, 1)
                 changed = True
@@ -97,7 +108,7 @@ def rewrite_source(path):
             current = match.group(0)
             id = match.group(2)
             is_import = match.group(1) == "lazyImporter"
-            rewritten = rewrite_block(current, id, is_import)
+            rewritten = rewrite_block(current, id, is_import, path)
             if rewritten:
                 contents = contents.replace(current, rewritten, 1)
                 changed = True
@@ -105,10 +116,17 @@ def rewrite_source(path):
             with open(path, 'w') as writable_file:
                 writable_file.write(contents)
 
-def rewrite_block(current, id, is_import):
-    # Ignore "main" used in addon-sdk files
-    if id == "main":
+def rewrite_block(current, id, is_import, path):
+    # Ignore relative IDs, they should be okay
+    if is_relative(id):
         return None
+    # Ignore "main" used in addon-sdk files
+    if path.startswith("./addon-sdk") and id == "main":
+        return None
+    # Allow libs from external repos to remain special for now
+    for prefix in ignored_prefixes:
+        if id.startswith(prefix):
+            return None
     print("Current: %s" % current)
     resource = resolve(id)
     print("Resource: %s" % resource)

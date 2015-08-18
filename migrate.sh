@@ -50,18 +50,22 @@ hg commit -m "Bug 912121 - Rewrite require / import to match source tree. r=ocha
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
 install JS modules at a path that corresponds directly to their source tree
-location.  Here we all require and import calls to match the new location that
-these files are installed to."
+location.  Here we rewrite all require and import calls to match the new
+location that these files are installed to."
 
-# TODO: Unsure what to do about GCLI
 hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
 
 find devtools -name moz.build | xargs -L 1 perl -0777 -pi -e 's/EXTRA_JS_MODULES[\w. +=]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs'
-hg revert devtools/shared/gcli/moz.build
+
+# Revert changes to libs from external repos
+hg revert -C devtools/shared/gcli/moz.build
+hg revert -C devtools/shared/acorn/moz.build
+hg revert -C devtools/shared/tern/moz.build
+hg revert -C devtools/shared/sourcemap/moz.build
+
 hg commit -m "Bug 912121 - Use DevToolsModules in devtools moz.build. r=ochameau
 
 This step finally installs all DevTools JS modules at a path that corresponds
 directly to their source tree location."
 
-# TODO: Check GCLI and other stragglers
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
