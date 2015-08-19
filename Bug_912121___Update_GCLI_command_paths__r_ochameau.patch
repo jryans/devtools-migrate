@@ -1,0 +1,190 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1439943723 18000
+#      Tue Aug 18 19:22:03 2015 -0500
+# Node ID d2cf6bb2921eec75f9b7e106cec5e394cb8b0d44
+# Parent  6169242f7586782112b83d4a0a7dda218bfc0734
+Bug 912121 - Update GCLI command paths. r=ochameau
+
+diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
+--- a/devtools/client/definitions.js
++++ b/devtools/client/definitions.js
+@@ -89,19 +89,19 @@ Tools.inspector = {
+   label: l10n("inspector.label", inspectorStrings),
+   panelLabel: l10n("inspector.panelLabel", inspectorStrings),
+   get tooltip() {
+     return l10n("inspector.tooltip2", inspectorStrings,
+     ( osString == "Darwin" ? "Cmd+Opt+" : "Ctrl+Shift+" ) + this.key);
+   },
+   inMenu: true,
+   commands: [
+-    "devtools/responsivedesign/resize-commands",
+-    "devtools/inspector/inspector-commands",
+-    "devtools/eyedropper/commands.js"
++    "devtools/client/responsivedesign/resize-commands",
++    "devtools/client/inspector/inspector-commands",
++    "devtools/client/eyedropper/commands.js"
+   ],
+ 
+   preventClosingOnKey: true,
+   onkey: function(panel) {
+     panel.toolbox.highlighterUtils.togglePicker();
+   },
+ 
+   isTargetSupported: function(target) {
+@@ -125,17 +125,17 @@ Tools.webConsole = {
+   label: l10n("ToolboxTabWebconsole.label", webConsoleStrings),
+   menuLabel: l10n("MenuWebconsole.label", webConsoleStrings),
+   panelLabel: l10n("ToolboxWebConsole.panelLabel", webConsoleStrings),
+   get tooltip() {
+     return l10n("ToolboxWebconsole.tooltip2", webConsoleStrings,
+     ( osString == "Darwin" ? "Cmd+Opt+" : "Ctrl+Shift+" ) + this.key);
+   },
+   inMenu: true,
+-  commands: "devtools/webconsole/console-commands",
++  commands: "devtools/client/webconsole/console-commands",
+ 
+   preventClosingOnKey: true,
+   onkey: function(panel, toolbox) {
+     if (toolbox.splitConsole)
+       return toolbox.focusConsoleInput();
+ 
+     panel.focusInput();
+   },
+@@ -161,17 +161,17 @@ Tools.jsdebugger = {
+   url: "chrome://devtools/content/debugger.xul",
+   label: l10n("ToolboxDebugger.label", debuggerStrings),
+   panelLabel: l10n("ToolboxDebugger.panelLabel", debuggerStrings),
+   get tooltip() {
+     return l10n("ToolboxDebugger.tooltip2", debuggerStrings,
+     ( osString == "Darwin" ? "Cmd+Opt+" : "Ctrl+Shift+" ) + this.key);
+   },
+   inMenu: true,
+-  commands: "devtools/debugger/debugger-commands",
++  commands: "devtools/client/debugger/debugger-commands",
+ 
+   isTargetSupported: function(target) {
+     return true;
+   },
+ 
+   build: function(iframeWindow, toolbox) {
+     return new DebuggerPanel(iframeWindow, toolbox);
+   }
+@@ -188,17 +188,17 @@ Tools.styleEditor = {
+   url: "chrome://devtools/content/styleeditor.xul",
+   label: l10n("ToolboxStyleEditor.label", styleEditorStrings),
+   panelLabel: l10n("ToolboxStyleEditor.panelLabel", styleEditorStrings),
+   get tooltip() {
+     return l10n("ToolboxStyleEditor.tooltip3", styleEditorStrings,
+     "Shift+" + functionkey(this.key));
+   },
+   inMenu: true,
+-  commands: "devtools/styleeditor/styleeditor-commands",
++  commands: "devtools/client/styleeditor/styleeditor-commands",
+ 
+   isTargetSupported: function(target) {
+     return target.hasActor("styleEditor") || target.hasActor("styleSheets");
+   },
+ 
+   build: function(iframeWindow, toolbox) {
+     return new StyleEditorPanel(iframeWindow, toolbox);
+   }
+@@ -357,17 +357,17 @@ Tools.scratchpad = {
+   visibilityswitch: "devtools.scratchpad.enabled",
+   icon: "chrome://browser/skin/devtools/tool-scratchpad.svg",
+   invertIconForLightTheme: true,
+   url: "chrome://devtools/content/scratchpad.xul",
+   label: l10n("scratchpad.label", scratchpadStrings),
+   panelLabel: l10n("scratchpad.panelLabel", scratchpadStrings),
+   tooltip: l10n("scratchpad.tooltip", scratchpadStrings),
+   inMenu: false,
+-  commands: "devtools/scratchpad/scratchpad-commands",
++  commands: "devtools/client/scratchpad/scratchpad-commands",
+ 
+   isTargetSupported: function(target) {
+     return target.isRemote;
+   },
+ 
+   build: function(iframeWindow, toolbox) {
+     return new ScratchpadPanel(iframeWindow, toolbox);
+   }
+diff --git a/devtools/client/framework/toolbox.js b/devtools/client/framework/toolbox.js
+--- a/devtools/client/framework/toolbox.js
++++ b/devtools/client/framework/toolbox.js
+@@ -83,17 +83,17 @@ const ToolboxButtons = exports.ToolboxBu
+       return target.activeTab && target.activeTab.traits.frames;
+     }
+   },
+   { id: "command-button-splitconsole",
+     isTargetSupported: target => !target.isAddon },
+   { id: "command-button-responsive" },
+   { id: "command-button-paintflashing" },
+   { id: "command-button-tilt",
+-    commands: "devtools/tilt/tilt-commands" },
++    commands: "devtools/client/tilt/tilt-commands" },
+   { id: "command-button-scratchpad" },
+   { id: "command-button-eyedropper" },
+   { id: "command-button-screenshot" },
+   { id: "command-button-rulers"}
+ ];
+ 
+ /**
+  * A "Toolbox" is the component that holds all the tools for one specific
+diff --git a/devtools/shared/gcli/commands/index.js b/devtools/shared/gcli/commands/index.js
+--- a/devtools/shared/gcli/commands/index.js
++++ b/devtools/shared/gcli/commands/index.js
+@@ -49,35 +49,35 @@ exports.baseModules = [
+   "gcli/commands/pref",
+ ];
+ 
+ /**
+  * Some commands belong to a tool (see getToolModules). This is a list of the
+  * modules that are *not* owned by a tool.
+  */
+ exports.devtoolsModules = [
+-  "devtools/toolkit/gcli/commands/addon",
+-  "devtools/toolkit/gcli/commands/appcache",
+-  "devtools/toolkit/gcli/commands/calllog",
+-  "devtools/toolkit/gcli/commands/cmd",
+-  "devtools/toolkit/gcli/commands/cookie",
+-  "devtools/toolkit/gcli/commands/csscoverage",
+-  "devtools/toolkit/gcli/commands/folder",
+-  "devtools/toolkit/gcli/commands/highlight",
+-  "devtools/toolkit/gcli/commands/inject",
+-  "devtools/toolkit/gcli/commands/jsb",
+-  "devtools/toolkit/gcli/commands/listen",
+-  "devtools/toolkit/gcli/commands/media",
+-  "devtools/toolkit/gcli/commands/pagemod",
+-  "devtools/toolkit/gcli/commands/paintflashing",
+-  "devtools/toolkit/gcli/commands/restart",
+-  "devtools/toolkit/gcli/commands/rulers",
+-  "devtools/toolkit/gcli/commands/screenshot",
+-  "devtools/toolkit/gcli/commands/security",
+-  "devtools/toolkit/gcli/commands/tools",
++  "devtools/shared/gcli/commands/addon",
++  "devtools/shared/gcli/commands/appcache",
++  "devtools/shared/gcli/commands/calllog",
++  "devtools/shared/gcli/commands/cmd",
++  "devtools/shared/gcli/commands/cookie",
++  "devtools/shared/gcli/commands/csscoverage",
++  "devtools/shared/gcli/commands/folder",
++  "devtools/shared/gcli/commands/highlight",
++  "devtools/shared/gcli/commands/inject",
++  "devtools/shared/gcli/commands/jsb",
++  "devtools/shared/gcli/commands/listen",
++  "devtools/shared/gcli/commands/media",
++  "devtools/shared/gcli/commands/pagemod",
++  "devtools/shared/gcli/commands/paintflashing",
++  "devtools/shared/gcli/commands/restart",
++  "devtools/shared/gcli/commands/rulers",
++  "devtools/shared/gcli/commands/screenshot",
++  "devtools/shared/gcli/commands/security",
++  "devtools/shared/gcli/commands/tools",
+ ];
+ 
+ /**
+  * Register commands from tools with 'command: [ "some/module" ]' definitions.
+  * The map/reduce incantation squashes the array of arrays to a single array.
+  */
+ try {
+   const defaultTools = require("devtools/client/definitions").defaultTools;
