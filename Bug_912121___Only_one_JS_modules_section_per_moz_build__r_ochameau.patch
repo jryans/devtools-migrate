@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439502945 18000
-#      Thu Aug 13 16:55:45 2015 -0500
-# Node ID 894053a5daf23087275c46d4494b79a499c91fde
-# Parent  d9206b118d784b4b9339eaa34b5db65e36da767e
+# Date 1439939676 18000
+#      Tue Aug 18 18:14:36 2015 -0500
+# Node ID 02d4b1292e6f5ac61c280e6169db874d68688fa4
+# Parent  1b1fd09fc0435ad6ccc28d8ae5868c57824f7145
 Bug 912121 - Only one JS modules section per moz.build. r=ochameau
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -750,6 +750,80 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
 +    'dbg-client.jsm',
      'main.js',
  ]
+diff --git a/devtools/shared/gcli/commands/moz.build b/devtools/shared/gcli/commands/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/shared/gcli/commands/moz.build
+@@ -0,0 +1,28 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.gcli.commands += [
++    'addon.js',
++    'appcache.js',
++    'calllog.js',
++    'cmd.js',
++    'cookie.js',
++    'csscoverage.js',
++    'folder.js',
++    'highlight.js',
++    'index.js',
++    'inject.js',
++    'jsb.js',
++    'listen.js',
++    'media.js',
++    'pagemod.js',
++    'paintflashing.js',
++    'restart.js',
++    'rulers.js',
++    'screenshot.js',
++    'security.js',
++    'tools.js',
++]
+diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
+--- a/devtools/shared/gcli/moz.build
++++ b/devtools/shared/gcli/moz.build
+@@ -1,35 +1,16 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-EXTRA_JS_MODULES.devtools.gcli.commands += [
+-    'commands/addon.js',
+-    'commands/appcache.js',
+-    'commands/calllog.js',
+-    'commands/cmd.js',
+-    'commands/cookie.js',
+-    'commands/csscoverage.js',
+-    'commands/folder.js',
+-    'commands/highlight.js',
+-    'commands/index.js',
+-    'commands/inject.js',
+-    'commands/jsb.js',
+-    'commands/listen.js',
+-    'commands/media.js',
+-    'commands/pagemod.js',
+-    'commands/paintflashing.js',
+-    'commands/restart.js',
+-    'commands/rulers.js',
+-    'commands/screenshot.js',
+-    'commands/security.js',
+-    'commands/tools.js',
++DIRS += [
++    'commands',
+ ]
+ 
+ EXTRA_JS_MODULES.devtools.gcli.commands += [
+     'source/lib/gcli/commands/clear.js',
+     'source/lib/gcli/commands/commands.js',
+     'source/lib/gcli/commands/connect.js',
+     'source/lib/gcli/commands/context.js',
+     'source/lib/gcli/commands/exec.js',
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build

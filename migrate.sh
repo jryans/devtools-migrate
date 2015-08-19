@@ -68,4 +68,6 @@ hg commit -m "Bug 912121 - Use DevToolsModules in devtools moz.build. r=ochameau
 This step finally installs all DevTools JS modules at a path that corresponds
 directly to their source tree location."
 
+hg import ${SCRIPT_DIR}/Bug_912121___Correct_GCLI_JSM_install_location__r_ochameau.patch
+
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
