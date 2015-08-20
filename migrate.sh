@@ -53,6 +53,8 @@ install JS modules at a path that corresponds directly to their source tree
 location.  Here we rewrite all require and import calls to match the new
 location that these files are installed to."
 
+hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____r_ochameau.patch
+
 hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
 
 find devtools -name moz.build | xargs -L 1 perl -0777 -pi -e "s/EXTRA_JS_MODULES[\w. +=\[\]\"'-]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs"
