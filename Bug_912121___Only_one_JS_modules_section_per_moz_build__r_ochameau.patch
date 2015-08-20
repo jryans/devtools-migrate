@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439939676 18000
-#      Tue Aug 18 18:14:36 2015 -0500
-# Node ID ecddc556faefcaa93ccf559aa8198c75b1638d4f
-# Parent  31419e66df0da4dc4a8b26735b0fe7b605570ab1
+# Date 1440038949 18000
+#      Wed Aug 19 21:49:09 2015 -0500
+# Node ID 5b8844e9c4486cfa2c519f0b494e5042867b8d5f
+# Parent  7d5a4d85d586fbb6eb3577cd65bc01134edc0a73
 Bug 912121 - Only one JS modules section per moz.build. r=ochameau
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -39,6 +39,60 @@ diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz
      'toolbox.js',
 +    'ToolboxProcess.jsm',
  ]
+diff --git a/devtools/client/performance/modules/logic/moz.build b/devtools/client/performance/modules/logic/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/performance/modules/logic/moz.build
+@@ -0,0 +1,12 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.performance += [
++    'frame-utils.js',
++    'jit.js',
++    'marker-utils.js',
++    'tree-model.js',
++    'waterfall-utils.js',
++]
+diff --git a/devtools/client/performance/modules/moz.build b/devtools/client/performance/modules/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/performance/modules/moz.build
+@@ -0,0 +1,14 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++DIRS += [
++    'logic',
++    'widgets',
++]
++
++EXTRA_JS_MODULES.devtools.performance += [
++    'global.js',
++    'markers.js',
++]
+diff --git a/devtools/client/performance/modules/widgets/moz.build b/devtools/client/performance/modules/widgets/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/performance/modules/widgets/moz.build
+@@ -0,0 +1,13 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.performance += [
++    'graphs.js',
++    'marker-details.js',
++    'marker-view.js',
++    'markers-overview.js',
++    'tree-view.js',
++    'waterfall-ticks.js',
++]
 diff --git a/devtools/client/performance/moz.build b/devtools/client/performance/moz.build
 --- a/devtools/client/performance/moz.build
 +++ b/devtools/client/performance/moz.build
@@ -573,6 +627,30 @@ diff --git a/devtools/client/styleeditor/moz.build b/devtools/client/styleeditor
 -    'styleeditor-panel.js',
      'utils.js',
  ]
+diff --git a/devtools/client/webide/modules/moz.build b/devtools/client/webide/modules/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/webide/modules/moz.build
+@@ -0,0 +1,19 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.webide += [
++    'addons.js',
++    'app-manager.js',
++    'build.js',
++    'config-view.js',
++    'project-list.js',
++    'runtime-list.js',
++    'runtimes.js',
++    'simulator-process.js',
++    'simulators.js',
++    'tab-store.js',
++    'utils.js'
++]
 diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
 --- a/devtools/client/webide/moz.build
 +++ b/devtools/client/webide/moz.build
