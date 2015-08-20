@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1439939676 18000
 #      Tue Aug 18 18:14:36 2015 -0500
-# Node ID 02d4b1292e6f5ac61c280e6169db874d68688fa4
-# Parent  1b1fd09fc0435ad6ccc28d8ae5868c57824f7145
+# Node ID ecddc556faefcaa93ccf559aa8198c75b1638d4f
+# Parent  31419e66df0da4dc4a8b26735b0fe7b605570ab1
 Bug 912121 - Only one JS modules section per moz.build. r=ochameau
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -39,6 +39,39 @@ diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz
      'toolbox.js',
 +    'ToolboxProcess.jsm',
  ]
+diff --git a/devtools/client/performance/moz.build b/devtools/client/performance/moz.build
+--- a/devtools/client/performance/moz.build
++++ b/devtools/client/performance/moz.build
+@@ -1,24 +1,15 @@
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'modules',
++]
++
+ EXTRA_JS_MODULES.devtools.performance += [
+-    'modules/global.js',
+-    'modules/logic/frame-utils.js',
+-    'modules/logic/jit.js',
+-    'modules/logic/marker-utils.js',
+-    'modules/logic/tree-model.js',
+-    'modules/logic/waterfall-utils.js',
+-    'modules/markers.js',
+-    'modules/widgets/graphs.js',
+-    'modules/widgets/marker-details.js',
+-    'modules/widgets/marker-view.js',
+-    'modules/widgets/markers-overview.js',
+-    'modules/widgets/tree-view.js',
+-    'modules/widgets/waterfall-ticks.js',
+-    'panel.js'
++    'panel.js',
+ ]
+ 
+ BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
+ XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
 diff --git a/devtools/client/projecteditor/lib/helpers/moz.build b/devtools/client/projecteditor/lib/helpers/moz.build
 new file mode 100644
 --- /dev/null
@@ -540,6 +573,49 @@ diff --git a/devtools/client/styleeditor/moz.build b/devtools/client/styleeditor
 -    'styleeditor-panel.js',
      'utils.js',
  ]
+diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
+--- a/devtools/client/webide/moz.build
++++ b/devtools/client/webide/moz.build
+@@ -2,38 +2,24 @@
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ DIRS += [
+     'content',
+     'components',
++    'modules',
+     'themes',
+ ]
+ 
+ BROWSER_CHROME_MANIFESTS += [
+     'test/browser.ini',
+     'test/sidebars/browser.ini'
+ ]
+ MOCHITEST_CHROME_MANIFESTS += [
+     'test/chrome.ini',
+     'test/sidebars/chrome.ini'
+ ]
+ 
+-EXTRA_JS_MODULES.devtools.webide += [
+-    'modules/addons.js',
+-    'modules/app-manager.js',
+-    'modules/build.js',
+-    'modules/config-view.js',
+-    'modules/project-list.js',
+-    'modules/runtime-list.js',
+-    'modules/runtimes.js',
+-    'modules/simulator-process.js',
+-    'modules/simulators.js',
+-    'modules/tab-store.js',
+-    'modules/utils.js'
+-]
+-
+ JS_PREFERENCE_FILES += [
+     'webide-prefs.js',
+ ]
+-
 diff --git a/devtools/server/actors/moz.build b/devtools/server/actors/moz.build
 new file mode 100644
 --- /dev/null
