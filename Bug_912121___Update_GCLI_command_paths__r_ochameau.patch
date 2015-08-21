@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439943723 18000
-#      Tue Aug 18 19:22:03 2015 -0500
-# Node ID d2cf6bb2921eec75f9b7e106cec5e394cb8b0d44
-# Parent  6169242f7586782112b83d4a0a7dda218bfc0734
+# Date 1440123809 18000
+#      Thu Aug 20 21:23:29 2015 -0500
+# Node ID 3a36d8c7b3fe1cfab75d82e98ae2c5997bbc909c
+# Parent  9e004fb146c913d870cc10c64168660c8ec255b2
 Bug 912121 - Update GCLI command paths. r=ochameau
 
 diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
@@ -52,7 +52,7 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
      panel.focusInput();
    },
 @@ -161,17 +161,17 @@ Tools.jsdebugger = {
-   url: "chrome://devtools/content/debugger.xul",
+   url: "chrome://devtools/content/debugger/debugger.xul",
    label: l10n("ToolboxDebugger.label", debuggerStrings),
    panelLabel: l10n("ToolboxDebugger.panelLabel", debuggerStrings),
    get tooltip() {
@@ -71,7 +71,7 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
      return new DebuggerPanel(iframeWindow, toolbox);
    }
 @@ -188,17 +188,17 @@ Tools.styleEditor = {
-   url: "chrome://devtools/content/styleeditor.xul",
+   url: "chrome://devtools/content/styleeditor/styleeditor.xul",
    label: l10n("ToolboxStyleEditor.label", styleEditorStrings),
    panelLabel: l10n("ToolboxStyleEditor.panelLabel", styleEditorStrings),
    get tooltip() {
@@ -93,7 +93,7 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
    visibilityswitch: "devtools.scratchpad.enabled",
    icon: "chrome://browser/skin/devtools/tool-scratchpad.svg",
    invertIconForLightTheme: true,
-   url: "chrome://devtools/content/scratchpad.xul",
+   url: "chrome://devtools/content/scratchpad/scratchpad.xul",
    label: l10n("scratchpad.label", scratchpadStrings),
    panelLabel: l10n("scratchpad.panelLabel", scratchpadStrings),
    tooltip: l10n("scratchpad.tooltip", scratchpadStrings),
