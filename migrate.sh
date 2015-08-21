@@ -20,7 +20,13 @@ replace '\"../../../../../browser/devtools/.eslintrc.mochitests\"' '"../../../.e
 replace '\"../../../.eslintrc.xpcshell\"' '"../../../../.eslintrc.xpcshell"' -r devtools/client
 replace '\"../../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/server
 replace '\"../../../../browser/devtools/.eslintrc.xpcshell\"' '"../../../.eslintrc.xpcshell"' -r devtools/shared
-# TODO: .eslintignore
+
+hg mv devtools/client/.eslintignore devtools
+echo "" >> devtools/.eslintignore
+cat devtools/shared/.eslintignore >> devtools/.eslintignore
+hg rm devtools/shared/.eslintignore
+replace browser/devtools/ client/ devtools/.eslintignore
+replace toolkit/devtools/ shared/ devtools/.eslintignore
 
 # TODO: Search for comments
 
