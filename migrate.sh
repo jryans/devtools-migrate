@@ -35,11 +35,11 @@ hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
 # hg export -o %m.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ochameau.patch
 
-${SCRIPT_DIR}/rewrite-chrome.py
+${SCRIPT_DIR}/rewrite-chrome-content.py
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
 # TODO: webide jar.mn?
-hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar
+hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar. r=ochameau
 
 Break DevTools content files out of browser.jar and move to a new DevTools
 specific jar.  Update all paths of the form:
@@ -85,3 +85,27 @@ hg import ${SCRIPT_DIR}/Bug_912121___Correct_GCLI_JSM_install_location__r_ochame
 hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__r_ochameau.patch
 
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
+
+hg import ${SCRIPT_DIR}/Bug_912121___Move_responsiveui_home_png_next_to_other_images__r_bgrins.patch
+
+hg mv browser/themes/shared/devtools devtools/client/themes
+
+hg commit -m "Bug 912121 - Migrate DevTools themes. r=bgrins"
+
+${SCRIPT_DIR}/rewrite-chrome-skin.py
+gsed -i -e '/devtools/d' browser/themes/osx/jar.mn
+gsed -i -e '/devtools/d' browser/themes/windows/jar.mn
+gsed -i -e '/devtools/d' browser/themes/linux/jar.mn
+
+hg commit -m "Bug 912121 - Package DevTools client themes in devtools.jar. r=bgrins
+
+Break DevTools theme files out of browser.jar and move to a new DevTools
+specific jar.  Update all paths of the form:
+
+chrome://browser/skin/devtools/<X>
+
+to
+
+chrome://devtools/skin/<Y>
+
+where <Y> is the source tree path that comes after /devtools/client."

@@ -10,8 +10,6 @@ chrome_to_source = {}
 
 def record_source_to_chrome(path):
     print("Reading %s" % path)
-    if not path == "devtools/client/jar.mn":
-        return
     # Use browser.jar as default
     module_name = "browser"
     jar_base = "content/browser/"
@@ -77,10 +75,7 @@ def rewrite_block(current, chrome, path):
 
 # Scan all devtools jar.mn files to record the mapping of paths in the source
 # tree to chrome:// URIs.
-for root, dirs, files in os.walk("devtools"):
-    for file in files:
-        if file == "jar.mn":
-            record_source_to_chrome(os.path.join(root, file))
+record_source_to_chrome("devtools/client/jar.mn")
 
 # Visit all files in the tree to update various require and import paths to be
 # based on source tree locations instead of arbitrary names

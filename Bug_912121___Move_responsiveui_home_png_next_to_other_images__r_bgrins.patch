@@ -1,0 +1,128 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1440184581 18000
+#      Fri Aug 21 14:16:21 2015 -0500
+# Node ID 1bcd2f0e90d01a24d932f26409029f8c95bbf1ad
+# Parent  59f1743fa1818cc933e557d154dc63a4aa7d88c3
+Bug 912121 - Move responsiveui-home.png next to other images. r=bgrins
+
+diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
+--- a/browser/themes/linux/jar.mn
++++ b/browser/themes/linux/jar.mn
+@@ -404,16 +404,17 @@ browser.jar:
+   skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
+   skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
+   skin/classic/browser/devtools/responsiveui-rotate.png          (../shared/devtools/images/responsivemode/responsiveui-rotate.png)
+   skin/classic/browser/devtools/responsiveui-rotate@2x.png       (../shared/devtools/images/responsivemode/responsiveui-rotate@2x.png)
+   skin/classic/browser/devtools/responsiveui-touch.png           (../shared/devtools/images/responsivemode/responsiveui-touch.png)
+   skin/classic/browser/devtools/responsiveui-touch@2x.png        (../shared/devtools/images/responsivemode/responsiveui-touch@2x.png)
+   skin/classic/browser/devtools/responsiveui-screenshot.png      (../shared/devtools/images/responsivemode/responsiveui-screenshot.png)
+   skin/classic/browser/devtools/responsiveui-screenshot@2x.png   (../shared/devtools/images/responsivemode/responsiveui-screenshot@2x.png)
++  skin/classic/browser/devtools/responsiveui-home.png       (../shared/devtools/images/responsivemode/responsiveui-home.png)
+   skin/classic/browser/devtools/toggle-tools.png          (../shared/devtools/images/toggle-tools.png)
+   skin/classic/browser/devtools/toggle-tools@2x.png       (../shared/devtools/images/toggle-tools@2x.png)
+   skin/classic/browser/devtools/dock-bottom@2x.png        (../shared/devtools/images/dock-bottom@2x.png)
+   skin/classic/browser/devtools/dock-bottom-minimize@2x.png (../shared/devtools/images/dock-bottom-minimize@2x.png)
+   skin/classic/browser/devtools/dock-bottom-maximize@2x.png (../shared/devtools/images/dock-bottom-maximize@2x.png)
+   skin/classic/browser/devtools/dock-side@2x.png          (../shared/devtools/images/dock-side@2x.png)
+ * skin/classic/browser/devtools/floating-scrollbars.css   (../shared/devtools/floating-scrollbars.css)
+   skin/classic/browser/devtools/floating-scrollbars-light.css (../shared/devtools/floating-scrollbars-light.css)
+@@ -446,17 +447,16 @@ browser.jar:
+   skin/classic/browser/devtools/vview-open-inspector@2x.png (../shared/devtools/images/vview-open-inspector@2x.png)
+   skin/classic/browser/devtools/cubic-bezier-swatch.png     (../shared/devtools/images/cubic-bezier-swatch.png)
+   skin/classic/browser/devtools/cubic-bezier-swatch@2x.png  (../shared/devtools/images/cubic-bezier-swatch@2x.png)
+   skin/classic/browser/devtools/undock@2x.png               (../shared/devtools/images/undock@2x.png)
+   skin/classic/browser/devtools/font-inspector.css          (../shared/devtools/font-inspector.css)
+   skin/classic/browser/devtools/computedview.css            (../shared/devtools/computedview.css)
+   skin/classic/browser/devtools/arrow-e.png                 (../shared/devtools/images/arrow-e.png)
+   skin/classic/browser/devtools/arrow-e@2x.png              (../shared/devtools/images/arrow-e@2x.png)
+-  skin/classic/browser/devtools/responsiveui-home.png       (../shared/devtools/responsiveui-home.png)
+   skin/classic/browser/devtools/projecteditor/projecteditor.css         (../shared/devtools/projecteditor/projecteditor.css)
+   skin/classic/browser/devtools/app-manager/connection-footer.css     (../shared/devtools/app-manager/connection-footer.css)
+   skin/classic/browser/devtools/app-manager/index.css                 (../shared/devtools/app-manager/index.css)
+   skin/classic/browser/devtools/app-manager/device.css                (../shared/devtools/app-manager/device.css)
+   skin/classic/browser/devtools/app-manager/projects.css              (../shared/devtools/app-manager/projects.css)
+   skin/classic/browser/devtools/app-manager/help.css                  (../shared/devtools/app-manager/help.css)
+   skin/classic/browser/devtools/app-manager/warning.svg               (../shared/devtools/app-manager/images/warning.svg)
+   skin/classic/browser/devtools/app-manager/error.svg                 (../shared/devtools/app-manager/images/error.svg)
+diff --git a/browser/themes/osx/jar.mn b/browser/themes/osx/jar.mn
+--- a/browser/themes/osx/jar.mn
++++ b/browser/themes/osx/jar.mn
+@@ -507,16 +507,17 @@ browser.jar:
+   skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
+   skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
+   skin/classic/browser/devtools/responsiveui-rotate.png          (../shared/devtools/images/responsivemode/responsiveui-rotate.png)
+   skin/classic/browser/devtools/responsiveui-rotate@2x.png       (../shared/devtools/images/responsivemode/responsiveui-rotate@2x.png)
+   skin/classic/browser/devtools/responsiveui-touch.png           (../shared/devtools/images/responsivemode/responsiveui-touch.png)
+   skin/classic/browser/devtools/responsiveui-touch@2x.png        (../shared/devtools/images/responsivemode/responsiveui-touch@2x.png)
+   skin/classic/browser/devtools/responsiveui-screenshot.png      (../shared/devtools/images/responsivemode/responsiveui-screenshot.png)
+   skin/classic/browser/devtools/responsiveui-screenshot@2x.png   (../shared/devtools/images/responsivemode/responsiveui-screenshot@2x.png)
++  skin/classic/browser/devtools/responsiveui-home.png       (../shared/devtools/images/responsivemode/responsiveui-home.png)
+   skin/classic/browser/devtools/toggle-tools.png            (../shared/devtools/images/toggle-tools.png)
+   skin/classic/browser/devtools/toggle-tools@2x.png         (../shared/devtools/images/toggle-tools@2x.png)
+   skin/classic/browser/devtools/dock-bottom@2x.png          (../shared/devtools/images/dock-bottom@2x.png)
+   skin/classic/browser/devtools/dock-bottom-minimize@2x.png (../shared/devtools/images/dock-bottom-minimize@2x.png)
+   skin/classic/browser/devtools/dock-bottom-maximize@2x.png (../shared/devtools/images/dock-bottom-maximize@2x.png)
+   skin/classic/browser/devtools/dock-side@2x.png          (../shared/devtools/images/dock-side@2x.png)
+ * skin/classic/browser/devtools/inspector.css               (../shared/devtools/inspector.css)
+   skin/classic/browser/devtools/profiler-stopwatch.svg      (../shared/devtools/images/profiler-stopwatch.svg)
+@@ -547,17 +548,16 @@ browser.jar:
+   skin/classic/browser/devtools/vview-open-inspector@2x.png (../shared/devtools/images/vview-open-inspector@2x.png)
+   skin/classic/browser/devtools/cubic-bezier-swatch.png     (../shared/devtools/images/cubic-bezier-swatch.png)
+   skin/classic/browser/devtools/cubic-bezier-swatch@2x.png  (../shared/devtools/images/cubic-bezier-swatch@2x.png)
+   skin/classic/browser/devtools/undock@2x.png               (../shared/devtools/images/undock@2x.png)
+   skin/classic/browser/devtools/font-inspector.css          (../shared/devtools/font-inspector.css)
+   skin/classic/browser/devtools/computedview.css            (../shared/devtools/computedview.css)
+   skin/classic/browser/devtools/arrow-e.png                 (../shared/devtools/images/arrow-e.png)
+   skin/classic/browser/devtools/arrow-e@2x.png              (../shared/devtools/images/arrow-e@2x.png)
+-  skin/classic/browser/devtools/responsiveui-home.png       (../shared/devtools/responsiveui-home.png)
+   skin/classic/browser/devtools/projecteditor/projecteditor.css         (../shared/devtools/projecteditor/projecteditor.css)
+   skin/classic/browser/devtools/app-manager/connection-footer.css     (../shared/devtools/app-manager/connection-footer.css)
+   skin/classic/browser/devtools/app-manager/index.css                 (../shared/devtools/app-manager/index.css)
+   skin/classic/browser/devtools/app-manager/device.css                (../shared/devtools/app-manager/device.css)
+   skin/classic/browser/devtools/app-manager/projects.css              (../shared/devtools/app-manager/projects.css)
+   skin/classic/browser/devtools/app-manager/help.css                  (../shared/devtools/app-manager/help.css)
+   skin/classic/browser/devtools/app-manager/warning.svg               (../shared/devtools/app-manager/images/warning.svg)
+   skin/classic/browser/devtools/app-manager/error.svg                 (../shared/devtools/app-manager/images/error.svg)
+diff --git a/browser/themes/shared/devtools/responsiveui-home.png b/browser/themes/shared/devtools/images/responsivemode/responsiveui-home.png
+rename from browser/themes/shared/devtools/responsiveui-home.png
+rename to browser/themes/shared/devtools/images/responsivemode/responsiveui-home.png
+diff --git a/browser/themes/windows/jar.mn b/browser/themes/windows/jar.mn
+--- a/browser/themes/windows/jar.mn
++++ b/browser/themes/windows/jar.mn
+@@ -529,16 +529,17 @@ browser.jar:
+         skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
+         skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
+         skin/classic/browser/devtools/responsiveui-rotate.png       (../shared/devtools/images/responsivemode/responsiveui-rotate.png)
+         skin/classic/browser/devtools/responsiveui-rotate@2x.png       (../shared/devtools/images/responsivemode/responsiveui-rotate@2x.png)
+         skin/classic/browser/devtools/responsiveui-touch.png        (../shared/devtools/images/responsivemode/responsiveui-touch.png)
+         skin/classic/browser/devtools/responsiveui-touch@2x.png        (../shared/devtools/images/responsivemode/responsiveui-touch@2x.png)
+         skin/classic/browser/devtools/responsiveui-screenshot.png   (../shared/devtools/images/responsivemode/responsiveui-screenshot.png)
+         skin/classic/browser/devtools/responsiveui-screenshot@2x.png   (../shared/devtools/images/responsivemode/responsiveui-screenshot@2x.png)
++        skin/classic/browser/devtools/responsiveui-home.png         (../shared/devtools/images/responsivemode/responsiveui-home.png)
+         skin/classic/browser/devtools/toggle-tools.png              (../shared/devtools/images/toggle-tools.png)
+         skin/classic/browser/devtools/toggle-tools@2x.png              (../shared/devtools/images/toggle-tools@2x.png)
+         skin/classic/browser/devtools/dock-bottom@2x.png            (../shared/devtools/images/dock-bottom@2x.png)
+         skin/classic/browser/devtools/dock-bottom-minimize@2x.png   (../shared/devtools/images/dock-bottom-minimize@2x.png)
+         skin/classic/browser/devtools/dock-bottom-maximize@2x.png   (../shared/devtools/images/dock-bottom-maximize@2x.png)
+         skin/classic/browser/devtools/dock-side@2x.png              (../shared/devtools/images/dock-side@2x.png)
+ *       skin/classic/browser/devtools/floating-scrollbars.css       (../shared/devtools/floating-scrollbars.css)
+         skin/classic/browser/devtools/floating-scrollbars-light.css (../shared/devtools/floating-scrollbars-light.css)
+@@ -570,17 +571,16 @@ browser.jar:
+         skin/classic/browser/devtools/vview-open-inspector@2x.png   (../shared/devtools/images/vview-open-inspector@2x.png)
+         skin/classic/browser/devtools/cubic-bezier-swatch.png       (../shared/devtools/images/cubic-bezier-swatch.png)
+         skin/classic/browser/devtools/cubic-bezier-swatch@2x.png    (../shared/devtools/images/cubic-bezier-swatch@2x.png)
+         skin/classic/browser/devtools/undock@2x.png                 (../shared/devtools/images/undock@2x.png)
+         skin/classic/browser/devtools/font-inspector.css            (../shared/devtools/font-inspector.css)
+         skin/classic/browser/devtools/computedview.css              (../shared/devtools/computedview.css)
+         skin/classic/browser/devtools/arrow-e.png                   (../shared/devtools/images/arrow-e.png)
+         skin/classic/browser/devtools/arrow-e@2x.png                (../shared/devtools/images/arrow-e@2x.png)
+-        skin/classic/browser/devtools/responsiveui-home.png         (../shared/devtools/responsiveui-home.png)
+         skin/classic/browser/devtools/projecteditor/projecteditor.css           (../shared/devtools/projecteditor/projecteditor.css)
+         skin/classic/browser/devtools/app-manager/connection-footer.css     (../shared/devtools/app-manager/connection-footer.css)
+         skin/classic/browser/devtools/app-manager/index.css                 (../shared/devtools/app-manager/index.css)
+         skin/classic/browser/devtools/app-manager/device.css                (../shared/devtools/app-manager/device.css)
+         skin/classic/browser/devtools/app-manager/projects.css              (../shared/devtools/app-manager/projects.css)
+         skin/classic/browser/devtools/app-manager/help.css                  (../shared/devtools/app-manager/help.css)
+         skin/classic/browser/devtools/app-manager/warning.svg               (../shared/devtools/app-manager/images/warning.svg)
+         skin/classic/browser/devtools/app-manager/error.svg                 (../shared/devtools/app-manager/images/error.svg)
