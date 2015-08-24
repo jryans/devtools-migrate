@@ -6,12 +6,14 @@ set -ex
 
 SCRIPT_DIR=$(dirname $0)
 
+# *** MOVE FILES ***
 hg mv browser/devtools devtools/client
 hg mv toolkit/devtools/server devtools/server
 hg mv toolkit/devtools devtools/shared
 
 hg commit -m "Bug 912121 - Migrate major DevTools directories. r=ochameau"
 
+# *** ESLINT ***
 hg mv devtools/client/.eslintrc* devtools
 hg rm devtools/shared/.eslintrc
 
@@ -32,9 +34,11 @@ replace toolkit/devtools/ shared/ devtools/.eslintignore
 
 hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
 
+# *** BUILD CONFIG / TEST MANIFESTS ***
 # hg export -o %m.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ochameau.patch
 
+# *** CHROME CONTENT ***
 ${SCRIPT_DIR}/rewrite-chrome-content.py
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
@@ -54,6 +58,7 @@ where <Y> is the source tree path that comes after /devtools/client."
 
 hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_relative_chrome____URLs_in_some_tools__r_ochameau.patch
 
+# *** REQUIRE / JS MODULES ***
 hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium_ochameau.patch
 
 ${SCRIPT_DIR}/rewrite-require.py
@@ -85,8 +90,10 @@ directly to their source tree location."
 hg import ${SCRIPT_DIR}/Bug_912121___Correct_GCLI_JSM_install_location__r_ochameau.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__r_ochameau.patch
 
+# *** LOADER PATHS ***
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
 
+# *** THEMES / CHROME SKIN ***
 hg import ${SCRIPT_DIR}/Bug_912121___Move_responsiveui_home_png_next_to_other_images__r_bgrins.patch
 
 hg mv browser/themes/shared/devtools devtools/client/themes
