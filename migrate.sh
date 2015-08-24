@@ -80,6 +80,7 @@ hg commit -m "Bug 912121 - Use DevToolsModules in devtools moz.build. r=ochameau
 
 This step finally installs all DevTools JS modules at a path that corresponds
 directly to their source tree location."
+# TODO: Check react-dev mode
 
 hg import ${SCRIPT_DIR}/Bug_912121___Correct_GCLI_JSM_install_location__r_ochameau.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__r_ochameau.patch
@@ -96,6 +97,8 @@ ${SCRIPT_DIR}/rewrite-chrome-skin.py
 gsed -i -e '/devtools/d' browser/themes/osx/jar.mn
 gsed -i -e '/devtools/d' browser/themes/windows/jar.mn
 gsed -i -e '/devtools/d' browser/themes/linux/jar.mn
+replace ../shared/devtools/ ../../../devtools/client/themes/ -r browser
+replace ' ../../shared/devtools/' ' ' -r devtools/client/themes
 
 hg commit -m "Bug 912121 - Package DevTools client themes in devtools.jar. r=bgrins
 
