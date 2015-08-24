@@ -104,10 +104,10 @@ def rewrite_source(path):
             if rewritten:
                 contents = contents.replace(current, rewritten, 1)
                 changed = True
-        for match in re.finditer(r"(lazyImporter|lazyRequireGetter)\([^;]+?,[^;]+?,[^;]+?[\"']([^;]*?)[\"']", contents, re.DOTALL):
+        for match in re.finditer(r"(lazyImporter|lazyRequireGetter|defineLazyModuleGetter)\([^;]+?,[^;]+?,[^;]+?[\"']([^;]*?)[\"']", contents, re.DOTALL):
             current = match.group(0)
             id = match.group(2)
-            is_import = match.group(1) == "lazyImporter"
+            is_import = match.group(1) != "lazyRequireGetter"
             rewritten = rewrite_block(current, id, is_import, path)
             if rewritten:
                 contents = contents.replace(current, rewritten, 1)
