@@ -96,10 +96,10 @@ def rewrite_source(path):
     with open(path, 'r') as file:
         contents = file.read()
         changed = False
-        for match in re.finditer(r"(Cu.import|require)\([\"']([^;]*?)[\"']", contents):
+        for match in re.finditer(r"(Components.utils.import|Cu.import|require)\([\"']([^;]*?)[\"']", contents):
             current = match.group(0)
             id = match.group(2)
-            is_import = match.group(1) == "Cu.import"
+            is_import = match.group(1) != "require"
             rewritten = rewrite_block(current, id, is_import, path)
             if rewritten:
                 contents = contents.replace(current, rewritten, 1)
