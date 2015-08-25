@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1440119197 18000
-#      Thu Aug 20 20:06:37 2015 -0500
-# Node ID 59754b22d1354dcb98b7e99812dc4346e34ab756
-# Parent  86c1e461d48ef5d86eb86a15921a00c35e4bd6b9
+# Date 1440469569 18000
+#      Mon Aug 24 21:26:09 2015 -0500
+# Node ID 69c16d536948b2146b6bcc304a7a3cd5fcd700f2
+# Parent  fe4f21c03155bb68248d919bea9debef76131aa2
 Bug 912121 - Clean up relative chrome:// URLs in some tools. r=ochameau
 
 diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client/canvasdebugger/canvasdebugger.xul
@@ -122,7 +122,7 @@ diff --git a/devtools/client/performance/performance.xul b/devtools/client/perfo
 +  <script type="application/javascript" src="performance-view.js"/>
 +  <script type="application/javascript" src="views/overview.js"/>
 +  <script type="application/javascript" src="views/toolbar.js"/>
-+  <script type="application/javascript" src="views/details-subview.js"/>
++  <script type="application/javascript" src="views/details-abstract-subview.js"/>
 +  <script type="application/javascript" src="views/details-waterfall.js"/>
 +  <script type="application/javascript" src="views/details-js-call-tree.js"/>
 +  <script type="application/javascript" src="views/details-js-flamegraph.js"/>
