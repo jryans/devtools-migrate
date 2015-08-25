@@ -101,7 +101,7 @@ def write_manifest_entries(path):
     print("Writing %s" % path)
     jar_base = "skin/classic/browser/"
     with open(path, "a") as file:
-        file.write("%   skin devtools classic/1.0 %skin\n")
+        file.write("%   skin devtools classic/1.0 %skin/\n")
         for (star, jar_path, relative_source) in manifest_entries:
             relative_source = relative_source.replace("../shared/devtools/", "themes/")
             file.write("%s   skin/%s (%s)\n" % (star, relative_source, relative_source))
