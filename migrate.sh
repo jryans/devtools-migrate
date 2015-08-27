@@ -30,8 +30,6 @@ hg rm devtools/shared/.eslintignore
 replace browser/devtools/ client/ devtools/.eslintignore
 replace toolkit/devtools/ shared/ devtools/.eslintignore
 
-# TODO: Search for comments
-
 hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
 
 # *** BUILD CONFIG / TEST MANIFESTS ***
@@ -119,3 +117,11 @@ to
 chrome://devtools/skin/<Y>
 
 where <Y> is the source tree path that comes after /devtools/client."
+
+# *** TEST PATHS / COMMENTS ***
+replace browser/devtools devtools/client -r . --exclude=obj-*
+hg revert -C browser/locales/jar.mn
+replace toolkit/devtools/server devtools/server -r . --exclude=obj-*
+replace toolkit/devtools devtools/shared -r . --exclude=obj-*
+
+hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
