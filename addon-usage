@@ -1,0 +1,598 @@
+/*
+All nodes
+
+let nodes = document.querySelectorAll("a")
+nodes = Array.prototype.slice.call(nodes, 0)
+let rawIds = nodes.filter(node => node.getAttribute("href").match(/\/addons\/source\/(\d+)\/$/))
+                  .map(node => node.getAttribute("href").match(/\/addons\/source\/(\d+)\/$/)[1])
+let ids = new Set()
+for (let id of rawIds) { ids.add(id) }
+JSON.stringify([...ids.values()], null, 2)
+
+Removing Console.jsm
+
+let lines = Array.prototype.slice.call(document.querySelectorAll("li"), 0)
+let matchingLines = lines.filter(l => !l.textContent.match("Console.jsm"))
+let rawIds = matchingLines.map(l => l.parentNode.previousElementSibling.getAttribute("href").match(/\/addons\/source\/(\d+)\//)[1])
+let ids = new Set()
+for (let id of rawIds) { ids.add(id) }
+JSON.stringify([...ids.values()], null, 2)
+
+By file
+
+let lines = Array.prototype.slice.call(document.querySelectorAll("li"), 0)
+let tuples = lines.map(l => [l, l.textContent.match(/\/([\w-]+.jsm)/)[1]])
+let fileToCount = new Map()
+tuples.forEach(([l, file]) => {
+  let id = l.parentNode.previousElementSibling.getAttribute("href").match(/\/addons\/source\/(\d+)\//)[1];
+  let set = fileToCount.get(file) || new Set();
+  set.add(id);
+  fileToCount.set(file, set);
+})
+let results = "";
+for (let file of fileToCount.keys()) {
+  results += `${file},${fileToCount.get(file).size}\n`;
+}
+console.log(results)
+*/
+
+// Count using Console.jsm: 224
+// Count using other JSMs: 106
+
+// Count of JSM using add-ons by file
+
+Console.jsm,224
+scratchpad-manager.jsm,6
+Loader.jsm,38
+dbg-server.jsm,13
+CssLogic.jsm,1
+WebConsoleUtils.jsm,2
+dbg-client.jsm,7
+gcli.jsm,9
+gDevTools.jsm,28
+DevToolsUtils.jsm,3
+SimpleListWidget.jsm,1
+VariablesView.jsm,3
+DevToolsExtensions.jsm,7
+Target.jsm,6
+inspector.jsm,1
+EventEmitter.jsm,1
+NetworkHelper.jsm,2
+responsivedesign.jsm,3
+_Promise.jsm,1
+Require.jsm,2
+WebConsoleClient.jsm,1
+SourceMap.jsm,2
+Toolbox.jsm,1
+LayoutHelpers.jsm,3
+Devices.jsm,4
+Templater.jsm,1
+DeveloperToolbar.jsm,1
+Simulator.jsm,1
+ViewHelpers.jsm,3
+source-editor.jsm,2
+Tracer.jsm,23
+BuiltinCommands.jsm,1
+SideMenuWidget.jsm,1
+ToolboxProcess.jsm,1
+
+// All from https://mxr.mozilla.org/addons/search?string=devtools%2F.*jsm&regexp=on&find=&findi=&filter=^[^\0]*%24&hitlimit=&tree=addons
+[
+  "68",
+  "115",
+  "138",
+  "249",
+  "492",
+  "748",
+  "1117",
+  "1803",
+  "1812",
+  "1843",
+  "1933",
+  "2108",
+  "2109",
+  "2942",
+  "3895",
+  "4364",
+  "6152",
+  "6952",
+  "7545",
+  "7699",
+  "7913",
+  "7931",
+  "7943",
+  "8282",
+  "8398",
+  "8438",
+  "10345",
+  "10358",
+  "10869",
+  "11097",
+  "12632",
+  "13505",
+  "13564",
+  "13587",
+  "13860",
+  "71418",
+  "87078",
+  "99845",
+  "146354",
+  "162063",
+  "184617",
+  "212319",
+  "219725",
+  "266853",
+  "270827",
+  "271768",
+  "281358",
+  "285807",
+  "296534",
+  "301683",
+  "308417",
+  "318228",
+  "319232",
+  "328031",
+  "328839",
+  "332239",
+  "337359",
+  "337408",
+  "353480",
+  "357582",
+  "358590",
+  "362175",
+  "369865",
+  "371508",
+  "376972",
+  "379715",
+  "383721",
+  "384171",
+  "386649",
+  "390885",
+  "391555",
+  "393247",
+  "396546",
+  "396752",
+  "401142",
+  "402580",
+  "403310",
+  "404785",
+  "406684",
+  "410914",
+  "411918",
+  "412584",
+  "413598",
+  "419214",
+  "421954",
+  "424270",
+  "429384",
+  "429576",
+  "429680",
+  "431238",
+  "437514",
+  "437516",
+  "437526",
+  "439154",
+  "440614",
+  "442222",
+  "442304",
+  "443918",
+  "444626",
+  "445646",
+  "448172",
+  "453416",
+  "455456",
+  "455684",
+  "458849",
+  "459192",
+  "462699",
+  "464285",
+  "464386",
+  "465078",
+  "465236",
+  "465542",
+  "466748",
+  "470970",
+  "473368",
+  "473851",
+  "474185",
+  "474434",
+  "474601",
+  "475940",
+  "478000",
+  "478335",
+  "478380",
+  "478677",
+  "479500",
+  "479520",
+  "480458",
+  "480567",
+  "481410",
+  "482339",
+  "483485",
+  "488812",
+  "493156",
+  "493380",
+  "497094",
+  "501278",
+  "501358",
+  "502644",
+  "503456",
+  "503614",
+  "508050",
+  "509330",
+  "518610",
+  "518808",
+  "519670",
+  "519910",
+  "521254",
+  "522184",
+  "522556",
+  "523580",
+  "523652",
+  "524566",
+  "526042",
+  "526230",
+  "527000",
+  "527578",
+  "530508",
+  "530890",
+  "531326",
+  "533060",
+  "533722",
+  "540654",
+  "540732",
+  "540930",
+  "542906",
+  "544340",
+  "547750",
+  "550588",
+  "552088",
+  "553038",
+  "553224",
+  "553572",
+  "553742",
+  "561402",
+  "561802",
+  "563038",
+  "563126",
+  "565206",
+  "565678",
+  "565748",
+  "565984",
+  "566232",
+  "567282",
+  "569632",
+  "570242",
+  "576580",
+  "580724",
+  "581168",
+  "583010",
+  "587118",
+  "588488",
+  "589186",
+  "592288",
+  "592362",
+  "593772",
+  "595582",
+  "598416",
+  "598838",
+  "600004",
+  "600338",
+  "601070",
+  "602114",
+  "602838",
+  "603942",
+  "607454",
+  "607756",
+  "608156",
+  "609072",
+  "609234",
+  "613250",
+  "616590",
+  "618004",
+  "618652",
+  "619296",
+  "619412",
+  "619568",
+  "619782",
+  "620000",
+  "620118",
+  "621790",
+  "621840",
+  "622320",
+  "622900",
+  "622954",
+  "622956",
+  "623000",
+  "623004",
+  "623602",
+  "624012",
+  "625304",
+  "625348",
+  "625354",
+  "625356",
+  "625756",
+  "627278",
+  "627352",
+  "627566",
+  "629522",
+  "630622",
+  "631298",
+  "632088",
+  "632304",
+  "632306",
+  "632314",
+  "632348",
+  "634268",
+  "634560",
+  "634562",
+  "634998",
+  "635004",
+  "635312",
+  "636284",
+  "636834",
+  "637334",
+  "638214",
+  "639058",
+  "639314",
+  "639602",
+  "639710",
+  "639824",
+  "639878",
+  "639892",
+  "639902",
+  "639926",
+  "639928",
+  "639932",
+  "640096",
+  "640274",
+  "641250",
+  "641262",
+  "641370",
+  "642070",
+  "642104",
+  "642280",
+  "642290",
+  "642296",
+  "642304",
+  "642312",
+  "642314",
+  "642318",
+  "642324",
+  "642328",
+  "642332",
+  "642334",
+  "642338",
+  "642340",
+  "642342",
+  "642346",
+  "642352",
+  "642644",
+  "642880",
+  "643512",
+  "643542",
+  "643624",
+  "643734",
+  "643816",
+  "643938",
+  "644314",
+  "644466",
+  "644994",
+  "645032",
+  "645176",
+  "645624",
+  "645636",
+  "646062",
+  "646070"
+]
+
+// W/o console.jsm
+
+[
+  "748",
+  "1843",
+  "2108",
+  "2109",
+  "4364",
+  "6952",
+  "7943",
+  "10345",
+  "10869",
+  "11097",
+  "12632",
+  "266853",
+  "281358",
+  "296534",
+  "301683",
+  "308417",
+  "332239",
+  "358590",
+  "362175",
+  "371508",
+  "379715",
+  "383721",
+  "384171",
+  "386649",
+  "391555",
+  "393247",
+  "396546",
+  "396752",
+  "402580",
+  "403310",
+  "410914",
+  "421954",
+  "424270",
+  "429384",
+  "440614",
+  "444626",
+  "445646",
+  "448172",
+  "464386",
+  "465236",
+  "466748",
+  "470970",
+  "478335",
+  "478380",
+  "479520",
+  "501358",
+  "508050",
+  "518808",
+  "527578",
+  "553224",
+  "563038",
+  "565748",
+  "576580",
+  "587118",
+  "588488",
+  "589186",
+  "595582",
+  "601070",
+  "602114",
+  "602838",
+  "619296",
+  "619568",
+  "620118",
+  "622954",
+  "622956",
+  "623602",
+  "627278",
+  "629522",
+  "631298",
+  "634268",
+  "636834",
+  "637334",
+  "638214",
+  "639058",
+  "639710",
+  "639824",
+  "639892",
+  "639902",
+  "639926",
+  "639928",
+  "639932",
+  "640274",
+  "642070",
+  "642280",
+  "642290",
+  "642296",
+  "642304",
+  "642312",
+  "642314",
+  "642318",
+  "642324",
+  "642328",
+  "642332",
+  "642334",
+  "642338",
+  "642340",
+  "642342",
+  "642346",
+  "642352",
+  "642644",
+  "642880",
+  "644314",
+  "644466",
+  "644994",
+  "645176",
+  "645624"
+]
+
+// Count of JS using add-ons by file
+
+pretty-print-worker.js,1
+theme-switching.js,7
+event-emitter.js,4
+DevToolsUtils.js,5
+event-parsers.js,1
+dbg-transport.js,1
+dbg-script-actors.js,1
+dbg-browser-actors.js,1
+dbg-server.js,1
+dbg-webconsole-actors.js,1
+dbg-profiler-actors.js,1
+scratchpad.js,1
+main.js,1
+app-actor-front.js,1
+transport.js,1
+child.js,1
+root.js,1
+webbrowser.js,1
+script.js,1
+webconsole.js,1
+gcli.js,1
+profiler.js,1
+styleeditor.js,1
+webapps.js,1
+childtab.js,1
+utils.js,1
+network-helper.js,1
+client.js,1
+css-logic.js,1
+protocol.js,1
+tracer.js,1
+styles.js,1
+string.js,1
+inspector.js,1
+device.js,1
+package.js,1
+estraverse.js,1
+escodegen.js,1
+connection-manager.js,1
+toolbox-overlay.js,1
+
+// All from https://mxr.mozilla.org/addons/search?string=devtools%2F.*js%22&regexp=1&find=&findi=&filter=^[^\0]*%24&hitlimit=&tree=addons
+
+[
+  "1843",
+  "2108",
+  "6952",
+  "7943",
+  "12632",
+  "410914",
+  "440614",
+  "446374",
+  "465236",
+  "553224",
+  "602114",
+  "619568",
+  "639710",
+  "639824",
+  "642070",
+  "645176"
+]
+
+// Count of CSS using add-ons by file
+
+common.css,13
+devtools/css,1
+debugger.css,1
+gcli.css,1
+htmlpanel.css,1
+layoutview.css,1
+markup-view.css,1
+orion-container.css,1
+orion.css,1
+splitview.css,2
+styleeditor.css,1
+webconsole.css,1
+webconsole_networkpanel.css,1
+widgets.css,2
+inspector.css,1
+
+// All from https://mxr.mozilla.org/addons/search?string=devtools%2F.*css%22&regexp=1&find=&findi=&filter=^[^\0]*%24&hitlimit=&tree=addons
+
+[
+  "2108",
+  "49358",
+  "195534",
+  "384171",
+  "421954",
+  "440614",
+  "619002",
+  "619568",
+  "622954",
+  "622956",
+  "639710",
+  "639824",
+  "642070"
+]
