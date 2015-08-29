@@ -11,7 +11,15 @@ hg mv browser/devtools devtools/client
 hg mv toolkit/devtools/server devtools/server
 hg mv toolkit/devtools devtools/shared
 
-hg commit -m "Bug 912121 - Migrate major DevTools directories. r=ochameau"
+hg commit -m "Bug 912121 - Migrate major DevTools directories. r=ochameau
+
+Move major DevTools files to new directories using the following steps:
+
+hg mv browser/devtools devtools/client
+hg mv toolkit/devtools/server devtools/server
+hg mv toolkit/devtools devtools/shared
+
+No other changes are made."
 
 # *** ESLINT ***
 hg mv devtools/client/.eslintrc* devtools
@@ -30,7 +38,11 @@ hg rm devtools/shared/.eslintignore
 replace browser/devtools/ client/ devtools/.eslintignore
 replace toolkit/devtools/ shared/ devtools/.eslintignore
 
-hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset"
+hg commit -m "Bug 912121 - Adjust ESLint files. r=pbrosset
+
+Move ESList files up to /devtools to represent the entire DevTools tree.
+
+Various relative paths and ignore files are also updated."
 
 # *** BUILD CONFIG / TEST MANIFESTS ***
 # hg export -o %m.patch
@@ -96,7 +108,13 @@ hg import ${SCRIPT_DIR}/Bug_912121___Move_responsiveui_home_png_next_to_other_im
 
 hg mv browser/themes/shared/devtools devtools/client/themes
 
-hg commit -m "Bug 912121 - Migrate DevTools themes. r=bgrins"
+hg commit -m "Bug 912121 - Migrate DevTools themes. r=bgrins
+
+Move DevTools themes to a new directory using the following step:
+
+hg mv browser/themes/shared/devtools devtools/client/themes
+
+No other changes are made."
 
 ${SCRIPT_DIR}/rewrite-chrome-skin.py
 gsed -i -e '/devtools/d' browser/themes/osx/jar.mn
