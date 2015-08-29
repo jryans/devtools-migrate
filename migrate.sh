@@ -143,3 +143,7 @@ replace toolkit/devtools/server devtools/server -r . --exclude=obj-*
 replace toolkit/devtools devtools/shared -r . --exclude=obj-*
 
 hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
+
+# *** ADD-ON COMPAT ***
+
+hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_modules_in_add_ons__r_ochameau.patch
