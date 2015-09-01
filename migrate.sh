@@ -147,3 +147,4 @@ hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
 # *** ADD-ON COMPAT ***
 
 hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_modules_in_add_ons__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_DevTools_themes_in_add_ons__r_bgrins.patch

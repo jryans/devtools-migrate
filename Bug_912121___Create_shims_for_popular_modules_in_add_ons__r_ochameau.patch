@@ -4,7 +4,7 @@
 #      Fri Aug 28 22:44:48 2015 -0500
 # Node ID 8b6ac8e69cf7109b6cb57f9de5f514392bd89c2d
 # Parent  c81362eb201675f406b0c21ca1d503b156d1c14a
-Bug 912121 - Create shims for popular modules in add-ons. r=ochameau
+Bug 912121 - Create shims for popular DevTools modules in add-ons. r=ochameau
 
 For popular modules used by many DevTools add-ons, add shim files which wrap the
 modules and make them available at their previous location.
@@ -94,25 +94,25 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
  include('../templates.mozbuild')
- 
+
  DIRS += [
      'actors',
 +    'shims',
  ]
- 
+
  BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
- 
+
  if CONFIG['ENABLE_TESTS']:
      DIRS += ['tests/gtest']
 @@ -44,15 +45,14 @@ SOURCES += [
  DEFINES['GOOGLE_PROTOBUF_NO_RTTI'] = True
- 
+
  FINAL_LIBRARY = 'xul'
- 
+
  DevToolsModules(
      'child.js',
      'content-globals.js',
@@ -122,7 +122,7 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'protocol.js',
      'worker.js'
  )
- 
+
  FAIL_ON_WARNINGS = True
 diff --git a/devtools/server/dbg-server.jsm b/devtools/server/shims/dbg-server.jsm
 rename from devtools/server/dbg-server.jsm
@@ -135,7 +135,7 @@ rename to devtools/server/shims/dbg-server.jsm
  /* This Source Code Form is subject to the terms of the Mozilla Public
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
+
  "use strict";
 +
  /**
@@ -145,30 +145,30 @@ rename to devtools/server/shims/dbg-server.jsm
 + * This file only exists to support add-ons which import this module at a
 + * specific path.
   */
- 
+
 -const Ci = Components.interfaces;
 -const Cc = Components.classes;
  const Cu = Components.utils;
- 
+
 -const { require } = Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
 +const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
 +Deprecated.warning("dbg-server.jsm is deprecated.  Please use " +
 +                   "require(\"devtools/server/main\") to load this " +
 +                   "module.",
 +                   "https://bugzil.la/912121");
- 
+
 -this.EXPORTED_SYMBOLS = ["DebuggerServer", "ActorPool"];
 +this.EXPORTED_SYMBOLS = [
 +  "DebuggerServer",
 +  "ActorPool",
 +  "OriginalLocation",
 +];
- 
+
 -let server = require("devtools/server/main");
 +const { require } =
 +  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
 +const module = require("devtools/server/main");
- 
+
 -this.DebuggerServer = server.DebuggerServer;
 -this.ActorPool = server.ActorPool;
 -this.OriginalLocation = server.OriginalLocation;
@@ -202,7 +202,7 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
  DevToolsModules(
      'connection-manager.js',
 -    'dbg-client.jsm',
@@ -227,7 +227,7 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'transport',
      'webconsole'
  ]
- 
+
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
 diff --git a/devtools/shared/shims/Console.jsm b/devtools/shared/shims/Console.jsm
 new file mode 100644
@@ -346,18 +346,18 @@ rename to devtools/shared/shims/dbg-client.jsm
  /* This Source Code Form is subject to the terms of the Mozilla Public
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
+
  "use strict";
- 
+
 -// Just a compatibility wrapper for addons that are used
 -// to import the jsm instead of the js module
 +/**
 + * This file only exists to support add-ons which import this module at a
 + * specific path.
 + */
- 
+
  const Cu = Components.utils;
- 
+
 -const { require } = Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
 +const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
 +Deprecated.warning("dbg-client.jsm is deprecated.  Please use " +
@@ -366,22 +366,22 @@ rename to devtools/shared/shims/dbg-client.jsm
 +
 +const { require } =
 +  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
- 
+
  this.EXPORTED_SYMBOLS = ["DebuggerTransport",
                           "DebuggerClient",
                           "RootClient",
                           "LongStringClient",
                           "EnvironmentClient",
                           "ObjectClient"];
- 
+
  let client = require("devtools/shared/client/main");
- 
+
  this.DebuggerClient = client.DebuggerClient;
  this.RootClient = client.RootClient;
  this.LongStringClient = client.LongStringClient;
  this.EnvironmentClient = client.EnvironmentClient;
  this.ObjectClient = client.ObjectClient;
- 
+
 -this.DebuggerTransport = require("devtools/shared/transport/transport").DebuggerTransport;
 +this.DebuggerTransport =
 +  require("devtools/shared/transport/transport").DebuggerTransport;
@@ -446,24 +446,24 @@ diff --git a/mobile/android/tests/browser/chrome/test_debugger_server.html b/mob
 --- a/mobile/android/tests/browser/chrome/test_debugger_server.html
 +++ b/mobile/android/tests/browser/chrome/test_debugger_server.html
 @@ -14,18 +14,19 @@ Migrated from Robocop: https://bugzilla.
- 
+
    "use strict";
- 
+
    const { utils: Cu } = Components;
- 
+
    const DEBUGGER_USB_ENABLED = "devtools.remote.usb.enabled";
- 
+
    Cu.import("resource://gre/modules/Services.jsm");
 -  const { DebuggerServer } =
 -    Cu.import("resource://gre/modules/devtools/server/dbg-server.jsm", {});
 +  const { require } =
 +    Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
 +  const { DebuggerServer } = require("devtools/server/main");
- 
+
    let win = Services.wm.getMostRecentWindow("navigator:browser");
- 
+
    win.RemoteDebugger.init();
- 
+
    SimpleTest.registerCleanupFunction(function() {
      Services.prefs.clearUserPref(DEBUGGER_USB_ENABLED);
    });
