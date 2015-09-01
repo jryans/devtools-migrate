@@ -141,6 +141,7 @@ replace browser/devtools devtools/client -r . --exclude=obj-*
 hg revert -C browser/locales/jar.mn
 replace toolkit/devtools/server devtools/server -r . --exclude=obj-*
 replace toolkit/devtools devtools/shared -r . --exclude=obj-*
+replace chrome/toolkit/ chrome/ -r devtools
 
 hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
 
