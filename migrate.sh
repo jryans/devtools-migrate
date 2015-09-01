@@ -80,6 +80,7 @@ location.  Here we rewrite all require and import calls to match the new
 location that these files are installed to."
 
 hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Rewrite_URLs_outside_call_sites__r_ochameau.patch
 
 hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
 

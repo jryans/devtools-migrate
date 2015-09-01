@@ -1,0 +1,122 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1441120285 18000
+#      Tue Sep 01 10:11:25 2015 -0500
+# Node ID 809732da16d1d718a002499d84c2954ee06aa51e
+# Parent  f8a74239f7058abbee66384c0b2aca26c10532c6
+Bug 912121 - Rewrite URLs outside call sites. r=ochameau
+
+The rewrite script used in the previous patch expects URLs to be found as
+arguments to Cu.import() directly, but there are a few cases where they are
+saved as strings first.  Rewrite these manually.
+
+diff --git a/devtools/client/shared/widgets/Graphs.js b/devtools/client/shared/widgets/Graphs.js
+--- a/devtools/client/shared/widgets/Graphs.js
++++ b/devtools/client/shared/widgets/Graphs.js
+@@ -13,17 +13,18 @@ loader.lazyRequireGetter(this, "promise"
+ loader.lazyRequireGetter(this, "EventEmitter",
+   "devtools/shared/event-emitter");
+ 
+ loader.lazyImporter(this, "DevToolsWorker",
+   "resource://gre/modules/devtools/shared/shared/worker.js");
+ 
+ const HTML_NS = "http://www.w3.org/1999/xhtml";
+ const GRAPH_SRC = "chrome://devtools/content/shared/widgets/graphs-frame.xhtml";
+-const WORKER_URL = "resource:///modules/devtools/GraphsWorker.js";
++const WORKER_URL =
++  "resource:///modules/devtools/client/shared/widgets/GraphsWorker.js";
+ 
+ // Generic constants.
+ 
+ const GRAPH_RESIZE_EVENTS_DRAIN = 100; // ms
+ const GRAPH_WHEEL_ZOOM_SENSITIVITY = 0.00075;
+ const GRAPH_WHEEL_SCROLL_SENSITIVITY = 0.1;
+ const GRAPH_WHEEL_MIN_SELECTION_WIDTH = 10; // px
+ 
+diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit/head_dbg.js
+--- a/devtools/server/tests/unit/head_dbg.js
++++ b/devtools/server/tests/unit/head_dbg.js
+@@ -127,18 +127,18 @@ function tryImport(url) {
+     Cu.import(url);
+   } catch (e) {
+     dumpn("Error importing " + url);
+     dumpn(DevToolsUtils.safeErrorString(e));
+     throw e;
+   }
+ }
+ 
+-tryImport("resource://gre/modules/devtools/Loader.jsm");
+-tryImport("resource://gre/modules/devtools/Console.jsm");
++tryImport("resource://gre/modules/devtools/shared/Loader.jsm");
++tryImport("resource://gre/modules/devtools/shared/Console.jsm");
+ 
+ function testExceptionHook(ex) {
+   try {
+     do_report_unexpected_exception(ex);
+   } catch(ex) {
+     return {throw: ex}
+   }
+   return undefined;
+diff --git a/devtools/shared/shared/tests/browser/browser_worker-01.js b/devtools/shared/shared/tests/browser/browser_worker-01.js
+--- a/devtools/shared/shared/tests/browser/browser_worker-01.js
++++ b/devtools/shared/shared/tests/browser/browser_worker-01.js
+@@ -1,15 +1,16 @@
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Tests that the devtools/shared/worker communicates properly
+ // as both CommonJS module and as a JSM.
+ 
+-const WORKER_URL = "resource:///modules/devtools/GraphsWorker.js";
++const WORKER_URL =
++  "resource:///modules/devtools/client/shared/widgets/GraphsWorker.js";
+ 
+ const count = 100000;
+ const WORKER_DATA = (function () {
+   let timestamps = [];
+   for (let i = 0; i < count; i++) {
+     timestamps.push(i);
+   }
+   return timestamps;
+diff --git a/devtools/shared/shared/tests/browser/browser_worker-02.js b/devtools/shared/shared/tests/browser/browser_worker-02.js
+--- a/devtools/shared/shared/tests/browser/browser_worker-02.js
++++ b/devtools/shared/shared/tests/browser/browser_worker-02.js
+@@ -1,15 +1,16 @@
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Tests errors are handled properly by the DevToolsWorker.
+ 
+ const { DevToolsWorker } = require("devtools/shared/shared/worker");
+-const WORKER_URL = "resource:///modules/devtools/GraphsWorker.js";
++const WORKER_URL =
++  "resource:///modules/devtools/client/shared/widgets/GraphsWorker.js";
+ 
+ add_task(function*() {
+   try {
+     let workerNotFound = new DevToolsWorker("resource://i/dont/exist.js");
+     ok(false, "Creating a DevToolsWorker with an invalid URL throws");
+   } catch (e) {
+     ok(true, "Creating a DevToolsWorker with an invalid URL throws");
+   }
+diff --git a/devtools/shared/tests/unit/test_fetch-resource.js b/devtools/shared/tests/unit/test_fetch-resource.js
+--- a/devtools/shared/tests/unit/test_fetch-resource.js
++++ b/devtools/shared/tests/unit/test_fetch-resource.js
+@@ -1,16 +1,16 @@
+ /* vim: set ft=javascript ts=2 et sw=2 tw=80: */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ "use strict";
+ 
+ // Tests for DevToolsUtils.fetch on resource:// URI's.
+ 
+-const URL_FOUND = "resource://gre/modules/devtools/DevToolsUtils.js";
++const URL_FOUND = "resource://gre/modules/devtools/shared/DevToolsUtils.js";
+ const URL_NOT_FOUND = "resource://gre/modules/devtools/this/is/not/here.js";
+ 
+ /**
+  * Test that non-existent files are handled correctly.
+  */
+ add_task(function* test_missing() {
+   yield DevToolsUtils.fetch(URL_NOT_FOUND).then(result => {
+     do_print(result);
