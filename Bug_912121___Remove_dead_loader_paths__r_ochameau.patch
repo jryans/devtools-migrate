@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439504821 18000
-#      Thu Aug 13 17:27:01 2015 -0500
-# Node ID 6faa21df65cd7a911e213afd84c97434cab35625
-# Parent  6e07ff55a1fbdcf076d5adae2b30ea587bb58a26
+# Date 1441121346 18000
+#      Tue Sep 01 10:29:06 2015 -0500
+# Node ID 69f3db6feb24a1873941077490517944049afb8b
+# Parent  7a7780d62ff9d37bc226525ac16ccb787668c68d
 Bug 912121 - Remove dead loader paths. r=ochameau
 
 diff --git a/devtools/client/framework/gDevTools.jsm b/devtools/client/framework/gDevTools.jsm
@@ -231,3 +231,24 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
     * of chrome code.  This is true of remote target environments, like Fennec or
     * B2G.  It is not the default case for desktop Firefox because we offer the
     * Browser Toolbox for chrome debugging there, which uses its own, separate
+diff --git a/devtools/shared/tests/mochitest/test_loader_paths.html b/devtools/shared/tests/mochitest/test_loader_paths.html
+--- a/devtools/shared/tests/mochitest/test_loader_paths.html
++++ b/devtools/shared/tests/mochitest/test_loader_paths.html
+@@ -38,15 +38,15 @@
+         Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
+ 
+       let builtin = new BuiltinProvider();
+       builtin.load();
+       let srcdir = new SrcdirProvider();
+       srcdir.load();
+ 
+       is(builtin.loader.mapping.length,
+-         srcdir.loader.mapping.length + 1,
+-         "The built-in loader should have only one more mapping for testing.");
++         srcdir.loader.mapping.length + 2,
++         "The built-in loader has 2 additional mappings.");
+ 
+       Services.prefs.clearUserPref(SRCDIR_PREF);
+     </script>
+   </body>
+ </html>
