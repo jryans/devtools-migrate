@@ -1,0 +1,85 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1441235331 18000
+#      Wed Sep 02 18:08:51 2015 -0500
+# Node ID cafce6c68e6db8e95c7f23748b14db6bd98bc67c
+# Parent  fbd969b7a3ca35c077f048db279ea3e910a6e917
+Bug 912121 - Misc. DevTools test fixes after migration. r=bgrins
+
+diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
+--- a/devtools/client/commandline/test/browser_cmd_appcache_valid.js
++++ b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
+@@ -106,17 +106,17 @@ function* spawnTest() {
+       },
+     },
+ 
+     {
+       setup: 'appcache validate ' + TEST_URI,
+       check: {
+         input:  'appcache validate ' + TEST_URI,
+               // appcache validate http://sub1.test2.example.com/browser/devtools/client/commandline/test/browser_cmd_appcache_valid_index.html
+-        markup: 'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
++        markup: 'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
+         status: 'VALID',
+         args: {
+           uri: {
+             value: TEST_URI
+           },
+         }
+       },
+       exec: {
+@@ -156,17 +156,17 @@ function* spawnTest() {
+       }
+     },
+ 
+     {
+       setup: 'appcache viewentry --key ' + TEST_URI,
+       check: {
+         input:  'appcache viewentry --key ' + TEST_URI,
+               // appcache viewentry --key http://sub1.test2.example.com/browser/devtools/client/commandline/test/browser_cmd_appcache_valid_index.html
+-        markup: 'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
++        markup: 'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
+         status: 'VALID',
+         args: {}
+       },
+     },
+   ]);
+ 
+   yield helpers.closeToolbar(options);
+   yield helpers.closeTab(options);
+diff --git a/devtools/client/commandline/test/browser_cmd_inject.js b/devtools/client/commandline/test/browser_cmd_inject.js
+--- a/devtools/client/commandline/test/browser_cmd_inject.js
++++ b/devtools/client/commandline/test/browser_cmd_inject.js
+@@ -41,29 +41,29 @@ function test() {
+             }
+           }
+         }
+       },
+       {
+         setup:    'inject http://example.com/browser/devtools/client/commandline/test/browser_cmd_inject.js',
+         check: {
+           input:  'inject http://example.com/browser/devtools/client/commandline/test/browser_cmd_inject.js',
+-          markup: 'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
+-          hints:                                                                                            '',
++          markup: 'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
++          hints:                                                                                           '',
+           status: 'VALID',
+           args: {
+             library: {
+               value: function(library) {
+                 is(library.type, 'url', 'inject type name');
+                 is(library.url.origin, 'http://example.com', 'inject url hostname');
+                 ok(library.url.path.indexOf('_inject.js') != -1, 'inject url path');
+               },
+               status: 'VALID'
+             }
+           }
+         },
+         exec: {
+-          output: [ /http:\/\/example.com\/browser\/browser\/devtools\/commandline\/test\/browser_cmd_inject.js loaded/ ]
++          output: [ /http:\/\/example.com\/browser\/devtools\/client\/commandline\/test\/browser_cmd_inject.js loaded/ ]
+         }
+       }
+     ]);
+   }).then(finish, helpers.handleError);
+ }

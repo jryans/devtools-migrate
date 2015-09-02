@@ -153,3 +153,7 @@ hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
 
 hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_modules_in_add_ons__r_ochameau.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_DevTools_themes_in_add_ons__r_bgrins.patch
+
+# *** TESTS ***
+
+hg import ${SCRIPT_DIR}/Bug_912121___Misc__DevTools_test_fixes_after_migration__r_bgrins.patch
