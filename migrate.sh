@@ -67,6 +67,7 @@ chrome://devtools/content/<Y>
 where <Y> is the source tree path that comes after /devtools/client."
 
 hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_relative_chrome____URLs_in_some_tools__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__chrome_content_uses__r_ochameau.patch
 
 # *** REQUIRE / JS MODULES ***
 hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium_ochameau.patch
