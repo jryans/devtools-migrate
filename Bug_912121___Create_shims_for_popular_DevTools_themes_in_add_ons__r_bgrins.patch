@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441085078 18000
 #      Tue Sep 01 00:24:38 2015 -0500
-# Node ID 4e884b96a3fcf85b7f6d2e68d5ce210f6153443b
-# Parent  8b6ac8e69cf7109b6cb57f9de5f514392bd89c2d
+# Node ID 8985273b4676f06d2cdd3fb7049ab43d5d112f57
+# Parent  4525f2b8d431f6ae0159c6861978b6e4f328a976
 Bug 912121 - Create shims for popular DevTools themes in add-ons. r=bgrins
 
 For popular themes used by many DevTools add-ons, add shim files which wrap the
@@ -37,10 +37,15 @@ diff --git a/devtools/client/themes/shims/common.css b/devtools/client/themes/sh
 new file mode 100644
 --- /dev/null
 +++ b/devtools/client/themes/shims/common.css
-@@ -0,0 +1,5 @@
+@@ -0,0 +1,10 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++
++ /**
++  * This file only exists to support add-ons which import this style sheet at a
++  * specific path.
++  */
 +
 +@import url("chrome://devtools/skin/themes/common.css");
 diff --git a/devtools/client/themes/shims/jar.mn b/devtools/client/themes/shims/jar.mn
