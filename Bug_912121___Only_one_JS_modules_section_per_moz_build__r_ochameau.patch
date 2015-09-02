@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1440038949 18000
 #      Wed Aug 19 21:49:09 2015 -0500
-# Node ID 5b8844e9c4486cfa2c519f0b494e5042867b8d5f
-# Parent  7d5a4d85d586fbb6eb3577cd65bc01134edc0a73
+# Node ID 4b3545b6dc539a41dfb8e4212138140bd175a451
+# Parent  de4a9590989a1f983986a22cc251fc1de088be02
 Bug 912121 - Only one JS modules section per moz.build. r=ochameau
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -978,6 +978,64 @@ diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
      'source/lib/gcli/commands/connect.js',
      'source/lib/gcli/commands/context.js',
      'source/lib/gcli/commands/exec.js',
+diff --git a/devtools/shared/jsbeautify/lib/moz.build b/devtools/shared/jsbeautify/lib/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/shared/jsbeautify/lib/moz.build
+@@ -0,0 +1,10 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.jsbeautify += [
++    'sanitytest.js',
++    'urlencode_unpacker.js',
++]
+diff --git a/devtools/shared/jsbeautify/moz.build b/devtools/shared/jsbeautify/moz.build
+--- a/devtools/shared/jsbeautify/moz.build
++++ b/devtools/shared/jsbeautify/moz.build
+@@ -1,17 +1,16 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'lib',
++    'src',
++]
++
+ XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
+ 
+ EXTRA_JS_MODULES.devtools.jsbeautify += [
+     'beautify.js',
+-    'lib/sanitytest.js',
+-    'lib/urlencode_unpacker.js',
+-    'src/beautify-css.js',
+-    'src/beautify-html.js',
+-    'src/beautify-js.js',
+-    'src/beautify-tests.js'
+ ]
+diff --git a/devtools/shared/jsbeautify/src/moz.build b/devtools/shared/jsbeautify/src/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/shared/jsbeautify/src/moz.build
+@@ -0,0 +1,12 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.jsbeautify += [
++    'beautify-css.js',
++    'beautify-html.js',
++    'beautify-js.js',
++    'beautify-tests.js'
++]
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
