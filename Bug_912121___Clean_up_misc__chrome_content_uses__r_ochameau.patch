@@ -1,15 +1,15 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441231109 18000
-#      Wed Sep 02 16:58:29 2015 -0500
-# Node ID 76defba45dc1c4dcc2886fa4487a4b345fcc59ef
+# Date 1441233982 18000
+#      Wed Sep 02 17:46:22 2015 -0500
+# Node ID 3fd839a274934f7107da865960533df393079da6
 # Parent  847d60a468b399feab1e11362dd4b06d06ff7a7d
 Bug 912121 - Clean up misc. chrome content uses. r=ochameau
 
 diff --git a/devtools/client/app-manager/content/device.xhtml b/devtools/client/app-manager/content/device.xhtml
 --- a/devtools/client/app-manager/content/device.xhtml
 +++ b/devtools/client/app-manager/content/device.xhtml
-@@ -7,17 +7,17 @@
+@@ -7,17 +7,16 @@
    %appMgrDTD;
  ]>
  
@@ -19,7 +19,6 @@ diff --git a/devtools/client/app-manager/content/device.xhtml b/devtools/client/
    <head>
      <meta charset="utf8"/>
 -    <base href="chrome://browser/content/devtools/app-manager/"></base>
-+    <base href="chrome://devtools/content/app-manager/"></base>
      <title>&device.title;</title>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/app-manager/device.css" type="text/css"/>
    </head>
@@ -31,7 +30,7 @@ diff --git a/devtools/client/app-manager/content/device.xhtml b/devtools/client/
 diff --git a/devtools/client/app-manager/content/help.xhtml b/devtools/client/app-manager/content/help.xhtml
 --- a/devtools/client/app-manager/content/help.xhtml
 +++ b/devtools/client/app-manager/content/help.xhtml
-@@ -6,17 +6,17 @@
+@@ -6,17 +6,16 @@
    <!ENTITY % appMgrDTD SYSTEM "chrome://browser/locale/devtools/app-manager.dtd" >
    %appMgrDTD;
  ]>
@@ -41,7 +40,6 @@ diff --git a/devtools/client/app-manager/content/help.xhtml b/devtools/client/ap
    <head>
      <meta charset="utf8"/>
 -    <base href="chrome://browser/content/devtools/app-manager/"></base>
-+    <base href="chrome://devtools/content/app-manager/"></base>
      <title>&help.title;</title>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/app-manager/help.css" type="text/css"/>
    </head>
@@ -50,10 +48,20 @@ diff --git a/devtools/client/app-manager/content/help.xhtml b/devtools/client/ap
  
      <h1>&help.title;</h1>
  
+@@ -36,9 +35,8 @@
+   </body>
+ 
+   <script type="application/javascript;version=1.8">
+     function closeHelp() {
+       window.parent.postMessage(JSON.stringify({name:"closeHelp"}), "*");
+     }
+   </script>
+ </html>
+-
 diff --git a/devtools/client/app-manager/content/projects.xhtml b/devtools/client/app-manager/content/projects.xhtml
 --- a/devtools/client/app-manager/content/projects.xhtml
 +++ b/devtools/client/app-manager/content/projects.xhtml
-@@ -6,17 +6,17 @@
+@@ -6,17 +6,16 @@
    <!ENTITY % appMgrDTD SYSTEM "chrome://browser/locale/devtools/app-manager.dtd" >
    %appMgrDTD;
  ]>
@@ -63,7 +71,6 @@ diff --git a/devtools/client/app-manager/content/projects.xhtml b/devtools/clien
    <head>
      <meta charset="utf8"/>
 -    <base href="chrome://browser/content/devtools/app-manager/"></base>
-+    <base href="chrome://devtools/content/app-manager/"></base>
      <title>&projects.title;</title>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/app-manager/projects.css" type="text/css"/>
      <script type="application/javascript;version=1.8" src="utils.js"></script>
