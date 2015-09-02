@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441121346 18000
 #      Tue Sep 01 10:29:06 2015 -0500
-# Node ID 69f3db6feb24a1873941077490517944049afb8b
-# Parent  7a7780d62ff9d37bc226525ac16ccb787668c68d
+# Node ID 75ad69ab0dc093136860fb15a52b5f7d9dac76fe
+# Parent  4fed6e109bca00be0a37d388283e9bc21abe8bdd
 Bug 912121 - Remove dead loader paths. r=ochameau
 
 diff --git a/devtools/client/framework/gDevTools.jsm b/devtools/client/framework/gDevTools.jsm
@@ -252,3 +252,34 @@ diff --git a/devtools/shared/tests/mochitest/test_loader_paths.html b/devtools/s
      </script>
    </body>
  </html>
+diff --git a/devtools/shared/worker-loader.js b/devtools/shared/worker-loader.js
+--- a/devtools/shared/worker-loader.js
++++ b/devtools/shared/worker-loader.js
+@@ -489,17 +489,23 @@ this.worker = new WorkerDebuggerLoader({
+   modules: {
+     "Debugger": Debugger,
+     "PromiseDebugging": PromiseDebugging,
+     "Services": Object.create(null),
+     "chrome": chrome,
+     "xpcInspector": xpcInspector
+   },
+   paths: {
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
+     "": "resource://gre/modules/commonjs/",
+-    "devtools": "resource:///modules/devtools",
+-    "devtools/server": "resource://gre/modules/devtools/server",
+-    "devtools/toolkit": "resource://gre/modules/devtools",
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
++    "devtools": "resource://gre/modules/devtools",
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
++    "devtools/client": "resource:///modules/devtools/client",
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
+     "promise": "resource://gre/modules/Promise-backend.js",
+-    "source-map": "resource://gre/modules/devtools/source-map",
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
++    "source-map": "resource://gre/modules/devtools/sourcemap/source-map.js",
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
+     "xpcshell-test": "resource://test"
++    // ⚠ DISCUSSION ON DEV-DEVELOPER-TOOLS REQUIRED BEFORE MODIFYING ⚠
+   }
+ });
