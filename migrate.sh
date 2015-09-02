@@ -81,6 +81,7 @@ location that these files are installed to."
 
 hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____r_ochameau.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Rewrite_URLs_outside_call_sites__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Correct_module_ID_for_source_map__r_ochameau_.patch
 
 hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
 
@@ -103,6 +104,8 @@ hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__r_ochameau.patch
 
 # *** LOADER PATHS ***
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
+# TODO: worker loader?
+# TODO: test reload?
 
 # *** THEMES / CHROME SKIN ***
 hg import ${SCRIPT_DIR}/Bug_912121___Move_responsiveui_home_png_next_to_other_images__r_bgrins.patch

@@ -1,0 +1,30 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1441158721 18000
+#      Tue Sep 01 20:52:01 2015 -0500
+# Node ID 1e39e37d614938513f9a69381a33d0fde92ce350
+# Parent  543994ddcc509cef2aaa50de081eebd3462701a3
+Bug 912121 - Correct module ID for source-map. r=ochameau.
+
+diff --git a/devtools/shared/sourcemap/tests/unit/test_api.js b/devtools/shared/sourcemap/tests/unit/test_api.js
+--- a/devtools/shared/sourcemap/tests/unit/test_api.js
++++ b/devtools/shared/sourcemap/tests/unit/test_api.js
+@@ -14,17 +14,17 @@ Components.utils.import('resource://test
+  */
+ define("test/source-map/test-api", ["require", "exports", "module"], function (require, exports, module) {
+ 
+   var sourceMap;
+   try {
+     sourceMap = require('source-map');
+   } catch (e) {
+     var loader = Components.utils.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
+-    sourceMap = loader.devtools.require("devtools/shared/sourcemap/source-map");
++    sourceMap = loader.devtools.require("source-map");
+   }
+ 
+   exports['test that the api is properly exposed in the top level'] = function (assert, util) {
+     assert.equal(typeof sourceMap.SourceMapGenerator, "function");
+     assert.equal(typeof sourceMap.SourceMapConsumer, "function");
+     assert.equal(typeof sourceMap.SourceNode, "function");
+   };
+ 
