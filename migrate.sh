@@ -104,7 +104,6 @@ hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__r_ochameau.patch
 
 # *** LOADER PATHS ***
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
-# TODO: worker loader?
 # TODO: test reload?
 
 # *** THEMES / CHROME SKIN ***

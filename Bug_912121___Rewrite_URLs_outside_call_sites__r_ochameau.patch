@@ -1,8 +1,8 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441159567 18000
-#      Tue Sep 01 21:06:07 2015 -0500
-# Node ID de4a9590989a1f983986a22cc251fc1de088be02
+# Date 1441161792 18000
+#      Tue Sep 01 21:43:12 2015 -0500
+# Node ID 8fd372a675f77a1e8409d522d82235b3f32da3c7
 # Parent  f8a74239f7058abbee66384c0b2aca26c10532c6
 Bug 912121 - Rewrite URLs outside call sites. r=ochameau
 
@@ -57,6 +57,28 @@ diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit
      return {throw: ex}
    }
    return undefined;
+diff --git a/devtools/server/worker.js b/devtools/server/worker.js
+--- a/devtools/server/worker.js
++++ b/devtools/server/worker.js
+@@ -14,17 +14,17 @@ this.rpc = function (method, ...params) 
+     id: id
+   }));
+ 
+   let deferred = Promise.defer();
+   rpcDeferreds[id] = deferred;
+   return deferred.promise;
+ };
+ 
+-loadSubScript("resource://gre/modules/devtools/worker-loader.js");
++loadSubScript("resource://gre/modules/devtools/shared/worker-loader.js");
+ 
+ let Promise = worker.require("promise");
+ let { ActorPool } = worker.require("devtools/server/actors/common");
+ let { ThreadActor } = worker.require("devtools/server/actors/script");
+ let { TabSources } = worker.require("devtools/server/actors/utils/TabSources");
+ let makeDebugger = worker.require("devtools/server/actors/utils/make-debugger");
+ let { DebuggerServer } = worker.require("devtools/server/main");
+ 
 diff --git a/devtools/shared/shared/tests/browser/browser_worker-01.js b/devtools/shared/shared/tests/browser/browser_worker-01.js
 --- a/devtools/shared/shared/tests/browser/browser_worker-01.js
 +++ b/devtools/shared/shared/tests/browser/browser_worker-01.js
