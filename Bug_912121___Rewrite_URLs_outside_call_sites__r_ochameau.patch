@@ -1,8 +1,8 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441120285 18000
-#      Tue Sep 01 10:11:25 2015 -0500
-# Node ID 809732da16d1d718a002499d84c2954ee06aa51e
+# Date 1441159567 18000
+#      Tue Sep 01 21:06:07 2015 -0500
+# Node ID de4a9590989a1f983986a22cc251fc1de088be02
 # Parent  f8a74239f7058abbee66384c0b2aca26c10532c6
 Bug 912121 - Rewrite URLs outside call sites. r=ochameau
 
@@ -120,3 +120,25 @@ diff --git a/devtools/shared/tests/unit/test_fetch-resource.js b/devtools/shared
  add_task(function* test_missing() {
    yield DevToolsUtils.fetch(URL_NOT_FOUND).then(result => {
      do_print(result);
+diff --git a/devtools/shared/tests/unit/test_require_lazy.js b/devtools/shared/tests/unit/test_require_lazy.js
+--- a/devtools/shared/tests/unit/test_require_lazy.js
++++ b/devtools/shared/tests/unit/test_require_lazy.js
+@@ -1,17 +1,17 @@
+ /* -*- js-indent-level: 2; indent-tabs-mode: nil -*- */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Test devtools.lazyRequireGetter
+ 
+ function run_test() {
+   const name = "asyncUtils";
+-  const path = "devtools/async-utils";
++  const path = "devtools/shared/async-utils";
+   const o = {};
+   devtools.lazyRequireGetter(o, name, path);
+   const asyncUtils = require(path);
+   // XXX: do_check_eq only works on primitive types, so we have this
+   // do_check_true of an equality expression.
+   do_check_true(o.asyncUtils === asyncUtils);
+ 
+   // A non-main loader should get a new object via |lazyRequireGetter|, just
