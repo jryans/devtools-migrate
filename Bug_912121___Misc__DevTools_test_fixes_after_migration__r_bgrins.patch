@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441235331 18000
 #      Wed Sep 02 18:08:51 2015 -0500
-# Node ID cafce6c68e6db8e95c7f23748b14db6bd98bc67c
-# Parent  fbd969b7a3ca35c077f048db279ea3e910a6e917
+# Node ID ac38bbd81b5c45ab3ca375ee8f8c31323653d64d
+# Parent  2ee92927fd763c4f3bc3481e3c21eb969023f02e
 Bug 912121 - Misc. DevTools test fixes after migration. r=bgrins
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -83,3 +83,44 @@ diff --git a/devtools/client/commandline/test/browser_cmd_inject.js b/devtools/c
      ]);
    }).then(finish, helpers.handleError);
  }
+diff --git a/devtools/client/sourceeditor/test/browser_codemirror.js b/devtools/client/sourceeditor/test/browser_codemirror.js
+--- a/devtools/client/sourceeditor/test/browser_codemirror.js
++++ b/devtools/client/sourceeditor/test/browser_codemirror.js
+@@ -1,16 +1,15 @@
+ /* vim: set ts=2 et sw=2 tw=80: */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ "use strict";
+ 
+-const HOST = 'mochi.test:8888';
+-const URI  = "http://" + HOST + "/browser/devtools/client/sourceeditor/test/codemirror.html";
++const URI = "chrome://mochitests/content/browser/devtools/client/sourceeditor/test/codemirror.html";
+ loadHelperScript("helper_codemirror_runner.js");
+ 
+ function test() {
+   requestLongerTimeout(3);
+   waitForExplicitFinish();
+ 
+   let tab = gBrowser.addTab();
+   gBrowser.selectedTab = tab;
+diff --git a/devtools/client/sourceeditor/test/browser_vimemacs.js b/devtools/client/sourceeditor/test/browser_vimemacs.js
+--- a/devtools/client/sourceeditor/test/browser_vimemacs.js
++++ b/devtools/client/sourceeditor/test/browser_vimemacs.js
+@@ -1,15 +1,14 @@
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ "use strict";
+ 
+-const HOST = 'mochi.test:8888';
+-const URI  = "http://" + HOST + "/browser/devtools/client/sourceeditor/test/vimemacs.html";
++const URI = "chrome://mochitests/content/browser/devtools/client/sourceeditor/test/vimemacs.html";
+ loadHelperScript("helper_codemirror_runner.js");
+ 
+ function test() {
+   requestLongerTimeout(3);
+   waitForExplicitFinish();
+ 
+   let tab = gBrowser.addTab();
+   gBrowser.selectedTab = tab;
