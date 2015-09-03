@@ -96,7 +96,7 @@ def rewrite_source(path):
     with open(path, 'r') as file:
         contents = file.read()
         changed = False
-        for match in re.finditer(r"(Components.utils.import|Cu.import|require)\([\"']([^;]*?)[\"']", contents):
+        for match in re.finditer(r"(Components.utils.import|Cu.import|require|loadFrameScript|importScripts)\([\"']([^;]*?)[\"']", contents):
             current = match.group(0)
             id = match.group(2)
             is_import = match.group(1) != "require"
@@ -117,6 +117,9 @@ def rewrite_source(path):
                 writable_file.write(contents)
 
 def rewrite_block(current, id, is_import, path):
+    # Ignore empty IDs
+    if len(id) == 0:
+        return None
     # Ignore relative IDs, they should be okay
     if is_relative(id):
         return None
