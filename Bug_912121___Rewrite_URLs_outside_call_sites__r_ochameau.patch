@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441255563 18000
-#      Wed Sep 02 23:46:03 2015 -0500
-# Node ID 61a77fc20a9c63388ed43c2a05bd8599da47cec4
-# Parent  2139bb307329fe29b0f56ae7ef8c334c214f619a
+# Date 1441289912 18000
+#      Thu Sep 03 09:18:32 2015 -0500
+# Node ID eec3e31da70adfe67f5fbce05ce48862d7bd3b86
+# Parent  ac8643da1248152a3ebcb0f6206115781a993900
 Bug 912121 - Rewrite URLs outside call sites. r=ochameau
 
 The rewrite script used in the previous patch expects URLs to be found as
@@ -107,28 +107,6 @@ diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit
      return {throw: ex}
    }
    return undefined;
-diff --git a/devtools/server/worker.js b/devtools/server/worker.js
---- a/devtools/server/worker.js
-+++ b/devtools/server/worker.js
-@@ -14,17 +14,17 @@ this.rpc = function (method, ...params) 
-     id: id
-   }));
- 
-   let deferred = Promise.defer();
-   rpcDeferreds[id] = deferred;
-   return deferred.promise;
- };
- 
--loadSubScript("resource://gre/modules/devtools/worker-loader.js");
-+loadSubScript("resource://gre/modules/devtools/shared/worker-loader.js");
- 
- let Promise = worker.require("promise");
- let { ActorPool } = worker.require("devtools/server/actors/common");
- let { ThreadActor } = worker.require("devtools/server/actors/script");
- let { TabSources } = worker.require("devtools/server/actors/utils/TabSources");
- let makeDebugger = worker.require("devtools/server/actors/utils/make-debugger");
- let { DebuggerServer } = worker.require("devtools/server/main");
- 
 diff --git a/devtools/shared/shared/tests/browser/browser_worker-01.js b/devtools/shared/shared/tests/browser/browser_worker-01.js
 --- a/devtools/shared/shared/tests/browser/browser_worker-01.js
 +++ b/devtools/shared/shared/tests/browser/browser_worker-01.js

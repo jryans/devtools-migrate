@@ -96,7 +96,7 @@ def rewrite_source(path):
     with open(path, 'r') as file:
         contents = file.read()
         changed = False
-        for match in re.finditer(r"(Components.utils.import|Cu.import|require|loadFrameScript|importScripts)\([\"']([^;]*?)[\"']", contents):
+        for match in re.finditer(r"(Components.utils.import|Cu.import|require|loadFrameScript|importScripts|loadSubScript)\([\"']([^;]*?)[\"']", contents):
             current = match.group(0)
             id = match.group(2)
             is_import = match.group(1) != "require"
