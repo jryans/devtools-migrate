@@ -1,14 +1,33 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1440184581 18000
-#      Fri Aug 21 14:16:21 2015 -0500
-# Node ID 1bcd2f0e90d01a24d932f26409029f8c95bbf1ad
-# Parent  59f1743fa1818cc933e557d154dc63a4aa7d88c3
-Bug 912121 - Move responsiveui-home.png next to other images. r=bgrins
+# Date 1441247868 18000
+#      Wed Sep 02 21:37:48 2015 -0500
+# Node ID fb8732a8dd14e8c758a013c8c6a96bea3c06da97
+# Parent  b10bb9768ed0907aac2b7fe4a718c4884582a803
+Bug 912121 - Move straggler images next to other DevTools images. r=bgrins
 
 diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
 --- a/browser/themes/linux/jar.mn
 +++ b/browser/themes/linux/jar.mn
+@@ -285,17 +285,17 @@ browser.jar:
+   skin/classic/browser/devedition/search.svg          (../shared/devedition/search.svg)
+   skin/classic/browser/devedition/urlbar-history-dropmarker.svg            (../shared/devedition/urlbar-history-dropmarker.svg)
+   skin/classic/browser/devedition/urlbar-arrow.png    (../shared/devedition/urlbar-arrow.png)
+   skin/classic/browser/devedition/urlbar-arrow@2x.png (../shared/devedition/urlbar-arrow@2x.png)
+ * skin/classic/browser/devtools/common.css            (../shared/devtools/common.css)
+ * skin/classic/browser/devtools/dark-theme.css        (../shared/devtools/dark-theme.css)
+ * skin/classic/browser/devtools/light-theme.css       (../shared/devtools/light-theme.css)
+   skin/classic/browser/devtools/add.svg               (../shared/devtools/images/add.svg)
+-  skin/classic/browser/devtools/filters.svg           (../shared/devtools/filters.svg)
++  skin/classic/browser/devtools/filters.svg           (../shared/devtools/images/filters.svg)
+   skin/classic/browser/devtools/filter-swatch.svg     (../shared/devtools/images/filter-swatch.svg)
+   skin/classic/browser/devtools/pseudo-class.svg      (../shared/devtools/images/pseudo-class.svg)
+   skin/classic/browser/devtools/controls.png          (../shared/devtools/images/controls.png)
+   skin/classic/browser/devtools/controls@2x.png       (../shared/devtools/images/controls@2x.png)
+   skin/classic/browser/devtools/animation-fast-track.svg (../shared/devtools/images/animation-fast-track.svg)
+   skin/classic/browser/devtools/performance-icons.svg  (../shared/devtools/images/performance-icons.svg)
+   skin/classic/browser/devtools/newtab.png             (../shared/devtools/images/newtab.png)
+   skin/classic/browser/devtools/newtab@2x.png          (../shared/devtools/images/newtab@2x.png)
 @@ -404,16 +404,17 @@ browser.jar:
    skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
    skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
@@ -48,6 +67,25 @@ diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
 diff --git a/browser/themes/osx/jar.mn b/browser/themes/osx/jar.mn
 --- a/browser/themes/osx/jar.mn
 +++ b/browser/themes/osx/jar.mn
+@@ -385,17 +385,17 @@ browser.jar:
+   skin/classic/browser/devedition/search.svg                (../shared/devedition/search.svg)
+   skin/classic/browser/devedition/urlbar-history-dropmarker.svg            (../shared/devedition/urlbar-history-dropmarker.svg)
+   skin/classic/browser/devedition/urlbar-arrow.png          (../shared/devedition/urlbar-arrow.png)
+   skin/classic/browser/devedition/urlbar-arrow@2x.png       (../shared/devedition/urlbar-arrow@2x.png)
+ * skin/classic/browser/devtools/common.css                  (../shared/devtools/common.css)
+ * skin/classic/browser/devtools/dark-theme.css              (../shared/devtools/dark-theme.css)
+ * skin/classic/browser/devtools/light-theme.css             (../shared/devtools/light-theme.css)
+   skin/classic/browser/devtools/add.svg                     (../shared/devtools/images/add.svg)
+-  skin/classic/browser/devtools/filters.svg                 (../shared/devtools/filters.svg)
++  skin/classic/browser/devtools/filters.svg                 (../shared/devtools/images/filters.svg)
+   skin/classic/browser/devtools/filter-swatch.svg           (../shared/devtools/images/filter-swatch.svg)
+   skin/classic/browser/devtools/pseudo-class.svg            (../shared/devtools/images/pseudo-class.svg)
+   skin/classic/browser/devtools/controls.png                (../shared/devtools/images/controls.png)
+   skin/classic/browser/devtools/controls@2x.png             (../shared/devtools/images/controls@2x.png)
+   skin/classic/browser/devtools/animation-fast-track.svg    (../shared/devtools/images/animation-fast-track.svg)
+   skin/classic/browser/devtools/performance-icons.svg       (../shared/devtools/images/performance-icons.svg)
+   skin/classic/browser/devtools/newtab.png                  (../shared/devtools/images/newtab.png)
+   skin/classic/browser/devtools/newtab@2x.png               (../shared/devtools/images/newtab@2x.png)
 @@ -507,16 +507,17 @@ browser.jar:
    skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
    skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
@@ -84,12 +122,34 @@ diff --git a/browser/themes/osx/jar.mn b/browser/themes/osx/jar.mn
    skin/classic/browser/devtools/app-manager/help.css                  (../shared/devtools/app-manager/help.css)
    skin/classic/browser/devtools/app-manager/warning.svg               (../shared/devtools/app-manager/images/warning.svg)
    skin/classic/browser/devtools/app-manager/error.svg                 (../shared/devtools/app-manager/images/error.svg)
+diff --git a/browser/themes/shared/devtools/filters.svg b/browser/themes/shared/devtools/images/filters.svg
+rename from browser/themes/shared/devtools/filters.svg
+rename to browser/themes/shared/devtools/images/filters.svg
 diff --git a/browser/themes/shared/devtools/responsiveui-home.png b/browser/themes/shared/devtools/images/responsivemode/responsiveui-home.png
 rename from browser/themes/shared/devtools/responsiveui-home.png
 rename to browser/themes/shared/devtools/images/responsivemode/responsiveui-home.png
 diff --git a/browser/themes/windows/jar.mn b/browser/themes/windows/jar.mn
 --- a/browser/themes/windows/jar.mn
 +++ b/browser/themes/windows/jar.mn
+@@ -409,17 +409,17 @@ browser.jar:
+         skin/classic/browser/devedition/search.svg                  (../shared/devedition/search.svg)
+         skin/classic/browser/devedition/urlbar-history-dropmarker.svg            (../shared/devedition/urlbar-history-dropmarker.svg)
+         skin/classic/browser/devedition/urlbar-arrow.png            (../shared/devedition/urlbar-arrow.png)
+         skin/classic/browser/devedition/urlbar-arrow@2x.png         (../shared/devedition/urlbar-arrow@2x.png)
+ *       skin/classic/browser/devtools/common.css                    (../shared/devtools/common.css)
+ *       skin/classic/browser/devtools/dark-theme.css                (../shared/devtools/dark-theme.css)
+ *       skin/classic/browser/devtools/light-theme.css               (../shared/devtools/light-theme.css)
+         skin/classic/browser/devtools/add.svg                       (../shared/devtools/images/add.svg)
+-        skin/classic/browser/devtools/filters.svg                   (../shared/devtools/filters.svg)
++        skin/classic/browser/devtools/filters.svg                   (../shared/devtools/images/filters.svg)
+         skin/classic/browser/devtools/filter-swatch.svg             (../shared/devtools/images/filter-swatch.svg)
+         skin/classic/browser/devtools/pseudo-class.svg              (../shared/devtools/images/pseudo-class.svg)
+         skin/classic/browser/devtools/controls.png                  (../shared/devtools/images/controls.png)
+         skin/classic/browser/devtools/controls@2x.png               (../shared/devtools/images/controls@2x.png)
+         skin/classic/browser/devtools/animation-fast-track.svg      (../shared/devtools/images/animation-fast-track.svg)
+         skin/classic/browser/devtools/performance-icons.svg         (../shared/devtools/images/performance-icons.svg)
+         skin/classic/browser/devtools/newtab.png                    (../shared/devtools/images/newtab.png)
+         skin/classic/browser/devtools/newtab@2x.png                 (../shared/devtools/images/newtab@2x.png)
 @@ -529,16 +529,17 @@ browser.jar:
          skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
          skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)

@@ -108,7 +108,7 @@ hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
 # TODO: test reload?
 
 # *** THEMES / CHROME SKIN ***
-hg import ${SCRIPT_DIR}/Bug_912121___Move_responsiveui_home_png_next_to_other_images__r_bgrins.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Move_straggler_images_next_to_other_DevTools_images__r_bgrins.patch
 
 hg mv browser/themes/shared/devtools devtools/client/themes
 
