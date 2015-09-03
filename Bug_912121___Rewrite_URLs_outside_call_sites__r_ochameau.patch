@@ -1,8 +1,8 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441250679 18000
-#      Wed Sep 02 22:24:39 2015 -0500
-# Node ID dff552faa964a82be93a034e8ce6545f257d82ca
+# Date 1441255563 18000
+#      Wed Sep 02 23:46:03 2015 -0500
+# Node ID 61a77fc20a9c63388ed43c2a05bd8599da47cec4
 # Parent  2139bb307329fe29b0f56ae7ef8c334c214f619a
 Bug 912121 - Rewrite URLs outside call sites. r=ochameau
 
@@ -33,6 +33,32 @@ diff --git a/devtools/client/shared/widgets/Graphs.js b/devtools/client/shared/w
  const GRAPH_WHEEL_SCROLL_SENSITIVITY = 0.1;
  const GRAPH_WHEEL_MIN_SELECTION_WIDTH = 10; // px
  
+diff --git a/devtools/client/tilt/tilt-visualizer.js b/devtools/client/tilt/tilt-visualizer.js
+--- a/devtools/client/tilt/tilt-visualizer.js
++++ b/devtools/client/tilt/tilt-visualizer.js
+@@ -49,18 +49,20 @@ const ARCBALL_SENSITIVITY = 0.5;
+ const ARCBALL_ROTATION_STEP = 0.15;
+ const ARCBALL_TRANSLATION_STEP = 35;
+ const ARCBALL_ZOOM_STEP = 0.1;
+ const ARCBALL_ZOOM_MIN = -3000;
+ const ARCBALL_ZOOM_MAX = 500;
+ const ARCBALL_RESET_SPHERICAL_FACTOR = 0.1;
+ const ARCBALL_RESET_LINEAR_FACTOR = 0.01;
+ 
+-const TILT_CRAFTER = "resource:///modules/devtools/tilt/TiltWorkerCrafter.js";
+-const TILT_PICKER = "resource:///modules/devtools/tilt/TiltWorkerPicker.js";
++const TILT_CRAFTER =
++  "resource:///modules/devtools/client/tilt/TiltWorkerCrafter.js";
++const TILT_PICKER =
++  "resource:///modules/devtools/client/tilt/TiltWorkerPicker.js";
+ 
+ 
+ /**
+  * Initializes the visualization presenter and controller.
+  *
+  * @param {Object} aProperties
+  *                 an object containing the following properties:
+  *        {Window} chromeWindow: a reference to the top level window
 diff --git a/devtools/server/actors/pretty-print-worker.js b/devtools/server/actors/pretty-print-worker.js
 --- a/devtools/server/actors/pretty-print-worker.js
 +++ b/devtools/server/actors/pretty-print-worker.js
