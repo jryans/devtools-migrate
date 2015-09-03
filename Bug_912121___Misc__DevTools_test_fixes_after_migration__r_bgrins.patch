@@ -2,7 +2,7 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441235331 18000
 #      Wed Sep 02 18:08:51 2015 -0500
-# Node ID d4148d8832be8a08059cb6498541f868c1ba5ffb
+# Node ID 7953662910382a387d626234fbf6e1b71cbd91ae
 # Parent  6abd028a2ad9d9b63e6e73a81a13f34a016f8018
 Bug 912121 - Misc. DevTools test fixes after migration. r=bgrins
 
@@ -174,3 +174,49 @@ diff --git a/devtools/client/webconsole/test/browser_webconsole_netlogging.js b/
    '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
  
  let lastRequest = null;
+diff --git a/devtools/client/webide/test/chrome.ini b/devtools/client/webide/test/chrome.ini
+--- a/devtools/client/webide/test/chrome.ini
++++ b/devtools/client/webide/test/chrome.ini
+@@ -42,19 +42,21 @@ support-files =
+ 
+ [test_basic.html]
+ [test_newapp.html]
+ [test_import.html]
+ [test_duplicate_import.html]
+ [test_runtime.html]
+ [test_manifestUpdate.html]
+ [test_addons.html]
++skip-if = true # Bug 1201392 - Update add-ons after migration
+ [test_device_runtime.html]
+ [test_device_permissions.html]
+ [test_autoconnect_runtime.html]
+ [test_autoselect_project.html]
+ [test_telemetry.html]
++skip-if = true # Bug 1201392 - Update add-ons after migration
+ [test_device_preferences.html]
+ [test_device_settings.html]
+ [test_fullscreenToolbox.html]
+ [test_zoom.html]
+ [test_build.html]
+ [test_simulators.html]
+diff --git a/devtools/client/webide/test/sidebars/chrome.ini b/devtools/client/webide/test/sidebars/chrome.ini
+--- a/devtools/client/webide/test/sidebars/chrome.ini
++++ b/devtools/client/webide/test/sidebars/chrome.ini
+@@ -8,15 +8,17 @@ support-files =
+   ../device_front_shared.js
+ 
+ [test_newapp.html]
+ [test_import.html]
+ [test_duplicate_import.html]
+ [test_runtime.html]
+ [test_manifestUpdate.html]
+ [test_addons.html]
++skip-if = true # Bug 1201392 - Update add-ons after migration
+ [test_autoconnect_runtime.html]
+ [test_autoselect_project.html]
+ [test_fullscreenToolbox.html]
+ [test_device_preferences.html]
+ [test_device_permissions.html]
+ [test_device_settings.html]
+ [test_telemetry.html]
++skip-if = true # Bug 1201392 - Update add-ons after migration
