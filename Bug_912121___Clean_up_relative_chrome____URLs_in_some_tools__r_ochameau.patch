@@ -1,8 +1,8 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441246914 18000
-#      Wed Sep 02 21:21:54 2015 -0500
-# Node ID 03ba73c4cd5858700e742c3d8d193779a3d0f220
+# Date 1441255955 18000
+#      Wed Sep 02 23:52:35 2015 -0500
+# Node ID 1d00c581eb204b9028f002722971ed5b553e652b
 # Parent  520f58dc8fdda5da2462ce83160c55cf312b1bc4
 Bug 912121 - Clean up relative chrome:// URLs in some tools. r=ochameau
 
@@ -298,7 +298,8 @@ diff --git a/devtools/client/styleinspector/cssruleview.xhtml b/devtools/client/
 diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client/webaudioeditor/webaudioeditor.xul
 --- a/devtools/client/webaudioeditor/webaudioeditor.xul
 +++ b/devtools/client/webaudioeditor/webaudioeditor.xul
-@@ -14,24 +14,24 @@
+@@ -13,25 +13,25 @@
+ ]>
  
  <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
  
@@ -306,7 +307,7 @@ diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client
            src="chrome://devtools/content/shared/theme-switching.js"/>
  
    <script type="application/javascript" src="chrome://devtools/content/shared/d3.js"/>
-   <script type="application/javascript" src="dagre-d3.js"/>
+-  <script type="application/javascript" src="dagre-d3.js"/>
 -  <script type="application/javascript" src="webaudioeditor/includes.js"/>
 -  <script type="application/javascript" src="webaudioeditor/models.js"/>
 -  <script type="application/javascript" src="webaudioeditor/controller.js"/>
@@ -315,6 +316,7 @@ diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client
 -  <script type="application/javascript" src="webaudioeditor/views/inspector.js"/>
 -  <script type="application/javascript" src="webaudioeditor/views/properties.js"/>
 -  <script type="application/javascript" src="webaudioeditor/views/automation.js"/>
++  <script type="application/javascript" src="lib/dagre-d3.js"/>
 +  <script type="application/javascript" src="includes.js"/>
 +  <script type="application/javascript" src="models.js"/>
 +  <script type="application/javascript" src="controller.js"/>
