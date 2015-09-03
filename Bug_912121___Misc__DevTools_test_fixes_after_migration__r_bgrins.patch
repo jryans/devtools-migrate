@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441235331 18000
 #      Wed Sep 02 18:08:51 2015 -0500
-# Node ID ac38bbd81b5c45ab3ca375ee8f8c31323653d64d
-# Parent  2ee92927fd763c4f3bc3481e3c21eb969023f02e
+# Node ID d4148d8832be8a08059cb6498541f868c1ba5ffb
+# Parent  6abd028a2ad9d9b63e6e73a81a13f34a016f8018
 Bug 912121 - Misc. DevTools test fixes after migration. r=bgrins
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -124,3 +124,53 @@ diff --git a/devtools/client/sourceeditor/test/browser_vimemacs.js b/devtools/cl
  
    let tab = gBrowser.addTab();
    gBrowser.selectedTab = tab;
+diff --git a/devtools/client/webconsole/test/browser_webconsole_bug_632817.js b/devtools/client/webconsole/test/browser_webconsole_bug_632817.js
+--- a/devtools/client/webconsole/test/browser_webconsole_bug_632817.js
++++ b/devtools/client/webconsole/test/browser_webconsole_bug_632817.js
+@@ -1,18 +1,19 @@
+ /* vim:set ts=2 sw=2 sts=2 et: */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Tests that network log messages bring up the network panel.
+ 
+ "use strict";
+ 
+-const TEST_NETWORK_REQUEST_URI = "https://example.com/browser/browser/" +
+-                                 "devtools/webconsole/test/test-network-request.html";
++const TEST_NETWORK_REQUEST_URI =
++  "https://example.com/browser/devtools/client/webconsole/test/" +
++  "test-network-request.html";
+ 
+ const TEST_IMG = "http://example.com/browser/devtools/client/webconsole/" +
+                  "test/test-image.png";
+ 
+ const TEST_DATA_JSON_CONTENT =
+   '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
+ 
+ const TEST_URI = "data:text/html;charset=utf-8,Web Console network logging " +
+diff --git a/devtools/client/webconsole/test/browser_webconsole_netlogging.js b/devtools/client/webconsole/test/browser_webconsole_netlogging.js
+--- a/devtools/client/webconsole/test/browser_webconsole_netlogging.js
++++ b/devtools/client/webconsole/test/browser_webconsole_netlogging.js
+@@ -12,18 +12,19 @@
+ 
+ // Tests that network log messages bring up the network panel.
+ 
+ "use strict";
+ 
+ const TEST_URI = "data:text/html;charset=utf-8,Web Console network " +
+                  "logging tests";
+ 
+-const TEST_NETWORK_REQUEST_URI = "http://example.com/browser/browser/" +
+-                 "devtools/webconsole/test/test-network-request.html";
++const TEST_NETWORK_REQUEST_URI =
++  "http://example.com/browser/devtools/client/webconsole/test/" +
++  "test-network-request.html";
+ 
+ const TEST_IMG = "http://example.com/browser/devtools/client/webconsole/" +
+                  "test/test-image.png";
+ 
+ const TEST_DATA_JSON_CONTENT =
+   '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
+ 
+ let lastRequest = null;
