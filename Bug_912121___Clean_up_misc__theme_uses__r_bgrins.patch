@@ -1,0 +1,93 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1441245293 18000
+#      Wed Sep 02 20:54:53 2015 -0500
+# Node ID 4f8cd7c76c3becf0dfd7cd1c475d7122d4c0b32c
+# Parent  3ea9db4cad8fe2857725bf57a6a4c2d2d8818f23
+Bug 912121 - Clean up misc. theme uses. r=bgrins
+
+diff --git a/devtools/client/shared/test/browser_treeWidget_basic.js b/devtools/client/shared/test/browser_treeWidget_basic.js
+--- a/devtools/client/shared/test/browser_treeWidget_basic.js
++++ b/devtools/client/shared/test/browser_treeWidget_basic.js
+@@ -1,17 +1,17 @@
+ /* vim: set ts=2 et sw=2 tw=80: */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Tests that the tree widget api works fine
+ 
+ const TEST_URI = "data:text/html;charset=utf-8,<head><link rel='stylesheet' " +
+   "type='text/css' href='chrome://devtools/skin/themes/common.css'><link " +
+-  "rel='stylesheet' type='text/css' href='chrome://browser/skin/devtools/widg" +
++  "rel='stylesheet' type='text/css' href='chrome://devtools/skin/themes/widg" +
+   "ets.css'></head><body><div></div><span></span></body>";
+ const {TreeWidget} = require("devtools/client/shared/widgets/TreeWidget");
+ 
+ add_task(function*() {
+   yield promiseTab("about:blank");
+   let [host, win, doc] = yield createHost("bottom", TEST_URI);
+ 
+   let tree = new TreeWidget(doc.querySelector("div"), {
+diff --git a/devtools/client/shared/test/browser_treeWidget_keyboard_interaction.js b/devtools/client/shared/test/browser_treeWidget_keyboard_interaction.js
+--- a/devtools/client/shared/test/browser_treeWidget_keyboard_interaction.js
++++ b/devtools/client/shared/test/browser_treeWidget_keyboard_interaction.js
+@@ -1,17 +1,17 @@
+ /* vim: set ts=2 et sw=2 tw=80: */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Tests that keyboard interaction works fine with the tree widget
+ 
+ const TEST_URI = "data:text/html;charset=utf-8,<head><link rel='stylesheet' " +
+   "type='text/css' href='chrome://devtools/skin/themes/common.css'><link " +
+-  "rel='stylesheet' type='text/css' href='chrome://browser/skin/devtools/widg" +
++  "rel='stylesheet' type='text/css' href='chrome://devtools/skin/themes/widg" +
+   "ets.css'></head><body><div></div><span></span></body>";
+ const {TreeWidget} = require("devtools/client/shared/widgets/TreeWidget");
+ const {Promise} = require("resource://gre/modules/Promise.jsm");
+ 
+ add_task(function*() {
+   yield promiseTab("about:blank");
+   let [host, win, doc] = yield createHost("bottom", TEST_URI);
+ 
+diff --git a/devtools/client/shared/test/browser_treeWidget_mouse_interaction.js b/devtools/client/shared/test/browser_treeWidget_mouse_interaction.js
+--- a/devtools/client/shared/test/browser_treeWidget_mouse_interaction.js
++++ b/devtools/client/shared/test/browser_treeWidget_mouse_interaction.js
+@@ -1,17 +1,17 @@
+ /* vim: set ts=2 et sw=2 tw=80: */
+ /* Any copyright is dedicated to the Public Domain.
+    http://creativecommons.org/publicdomain/zero/1.0/ */
+ 
+ // Tests that mouse interaction works fine with tree widget
+ 
+ const TEST_URI = "data:text/html;charset=utf-8,<head><link rel='stylesheet' " +
+   "type='text/css' href='chrome://devtools/skin/themes/common.css'><link " +
+-  "rel='stylesheet' type='text/css' href='chrome://browser/skin/devtools/widg" +
++  "rel='stylesheet' type='text/css' href='chrome://devtools/skin/themes/widg" +
+   "ets.css'></head><body><div></div><span></span></body>";
+ const {TreeWidget} = require("devtools/client/shared/widgets/TreeWidget");
+ const {Promise} = require("resource://gre/modules/Promise.jsm");
+ 
+ add_task(function*() {
+   yield promiseTab("about:blank");
+   let [host, win, doc] = yield createHost("bottom", TEST_URI);
+ 
+diff --git a/devtools/client/shared/theme-switching.js b/devtools/client/shared/theme-switching.js
+--- a/devtools/client/shared/theme-switching.js
++++ b/devtools/client/shared/theme-switching.js
+@@ -1,14 +1,14 @@
+ /* This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ (function() {
+-  const DEVTOOLS_SKIN_URL = "chrome://browser/skin/devtools/";
++  const DEVTOOLS_SKIN_URL = "chrome://devtools/skin/themes/";
+   let documentElement = document.documentElement;
+ 
+   function forceStyle() {
+     let computedStyle = window.getComputedStyle(documentElement);
+     if (!computedStyle) {
+       // Null when documentElement is not ready. This method is anyways not
+       // required then as scrollbars would be in their state without flushing.
+       return;

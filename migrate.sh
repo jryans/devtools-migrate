@@ -140,12 +140,15 @@ chrome://devtools/skin/<Y>
 
 where <Y> is the source tree path that comes after /devtools/client."
 
+hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__theme_uses__r_bgrins.patch
+
 # *** TEST PATHS / COMMENTS ***
 replace browser/devtools devtools/client -r . --exclude=obj-*
 hg revert -C browser/locales/jar.mn
 replace toolkit/devtools/server devtools/server -r . --exclude=obj-*
 replace toolkit/devtools devtools/shared -r . --exclude=obj-*
 replace chrome/toolkit/ chrome/ -r devtools
+replace browser/themes/shared/devtools/ devtools/client/themes/ -r devtools/client
 
 hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
 

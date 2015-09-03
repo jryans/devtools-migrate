@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1440469569 18000
-#      Mon Aug 24 21:26:09 2015 -0500
-# Node ID 69c16d536948b2146b6bcc304a7a3cd5fcd700f2
-# Parent  fe4f21c03155bb68248d919bea9debef76131aa2
+# Date 1441246914 18000
+#      Wed Sep 02 21:21:54 2015 -0500
+# Node ID 03ba73c4cd5858700e742c3d8d193779a3d0f220
+# Parent  520f58dc8fdda5da2462ce83160c55cf312b1bc4
 Bug 912121 - Clean up relative chrome:// URLs in some tools. r=ochameau
 
 diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client/canvasdebugger/canvasdebugger.xul
@@ -141,6 +141,160 @@ diff --git a/devtools/client/performance/performance.xul b/devtools/client/perfo
                  type="checkbox"
                  data-pref="show-platform-data"
                  label="&performanceUI.showPlatformData;"
+diff --git a/devtools/client/shared/widgets/cubic-bezier-frame.xhtml b/devtools/client/shared/widgets/cubic-bezier-frame.xhtml
+--- a/devtools/client/shared/widgets/cubic-bezier-frame.xhtml
++++ b/devtools/client/shared/widgets/cubic-bezier-frame.xhtml
+@@ -4,17 +4,17 @@
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ <!DOCTYPE html>
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+   <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css" type="text/css"/>
+   <link rel="stylesheet" href="chrome://devtools/content/shared/widgets/cubic-bezier.css" type="text/css"/>
+-  <script type="application/javascript;version=1.8" src="theme-switching.js"/>
++  <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
+   <style>
+     html, body {
+       margin: 0;
+       padding: 0;
+       overflow: hidden;
+       width: 410px;
+       height: 370px;
+     }
+diff --git a/devtools/client/shared/widgets/filter-frame.xhtml b/devtools/client/shared/widgets/filter-frame.xhtml
+--- a/devtools/client/shared/widgets/filter-frame.xhtml
++++ b/devtools/client/shared/widgets/filter-frame.xhtml
+@@ -6,17 +6,17 @@
+   <!ENTITY % filterwidgetDTD SYSTEM "chrome://browser/locale/devtools/filterwidget.dtd" >
+   %filterwidgetDTD;
+ ]>
+ <html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+     <link rel="stylesheet" href="chrome://devtools/content/shared/widgets/filter-widget.css" type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css" type="text/css"/>
+-    <script type="application/javascript;version=1.8" src="theme-switching.js"></script>
++    <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"></script>
+   </head>
+   <body>
+ 
+     <div id="container">
+       <div class="filters-list">
+         <div id="filters"></div>
+         <div class="footer">
+           <select value="">
+diff --git a/devtools/client/shared/widgets/graphs-frame.xhtml b/devtools/client/shared/widgets/graphs-frame.xhtml
+--- a/devtools/client/shared/widgets/graphs-frame.xhtml
++++ b/devtools/client/shared/widgets/graphs-frame.xhtml
+@@ -4,17 +4,17 @@
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ <!DOCTYPE html>
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+   <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css" type="text/css"/>
+   <link rel="stylesheet" href="chrome://browser/skin/devtools/widgets.css" ype="text/css"/>
+-  <script type="application/javascript;version=1.8" src="theme-switching.js"/>
++  <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
+   <style>
+     body {
+       overflow: hidden;
+       margin: 0;
+       padding: 0;
+       font-size: 0;
+     }
+   </style>
+diff --git a/devtools/client/shared/widgets/mdn-docs-frame.xhtml b/devtools/client/shared/widgets/mdn-docs-frame.xhtml
+--- a/devtools/client/shared/widgets/mdn-docs-frame.xhtml
++++ b/devtools/client/shared/widgets/mdn-docs-frame.xhtml
+@@ -4,17 +4,17 @@
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ <!DOCTYPE html>
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+   <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css" type="text/css"/>
+   <link rel="stylesheet" href="chrome://devtools/content/shared/widgets/mdn-docs.css" type="text/css"/>
+-  <script type="application/javascript;version=1.8" src="theme-switching.js"/>
++  <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
+ </head>
+ <body class="theme-body">
+ 
+   <div id = "container">
+ 
+     <header>
+       <h1 id="property-name" class="theme-fg-color5"></h1>
+     </header>
+diff --git a/devtools/client/shared/widgets/spectrum-frame.xhtml b/devtools/client/shared/widgets/spectrum-frame.xhtml
+--- a/devtools/client/shared/widgets/spectrum-frame.xhtml
++++ b/devtools/client/shared/widgets/spectrum-frame.xhtml
+@@ -4,17 +4,17 @@
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ <!DOCTYPE html>
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+   <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css" type="text/css"/>
+   <link rel="stylesheet" href="chrome://devtools/content/shared/widgets/spectrum.css" ype="text/css"/>
+-  <script type="application/javascript;version=1.8" src="theme-switching.js"/>
++  <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
+   <style>
+     body {
+       margin: 0;
+       padding: 0;
+     }
+   </style>
+ </head>
+ <body role="application">
+diff --git a/devtools/client/styleinspector/computedview.xhtml b/devtools/client/styleinspector/computedview.xhtml
+--- a/devtools/client/styleinspector/computedview.xhtml
++++ b/devtools/client/styleinspector/computedview.xhtml
+@@ -26,17 +26,17 @@
+   <head>
+ 
+     <title>&computedViewTitle;</title>
+ 
+     <link rel="stylesheet" href="chrome://global/skin/global.css"  type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css"  type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/computedview.css"  type="text/css"/>
+ 
+-    <script type="application/javascript;version=1.8" src="theme-switching.js"/>
++    <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
+ 
+     <script type="application/javascript;version=1.8">
+       window.setPanel = function(panel, iframe) {
+         let {require} = Components.utils.import("resource://gre/modules/devtools/Loader.jsm", {});
+         let inspector = require("devtools/styleinspector/style-inspector");
+         this.computedview = new inspector.ComputedViewTool(panel, window);
+       }
+       window.onunload = function() {
+diff --git a/devtools/client/styleinspector/cssruleview.xhtml b/devtools/client/styleinspector/cssruleview.xhtml
+--- a/devtools/client/styleinspector/cssruleview.xhtml
++++ b/devtools/client/styleinspector/cssruleview.xhtml
+@@ -12,17 +12,17 @@
+       xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+       class="theme-sidebar">
+   <head>
+     <title>&ruleViewTitle;</title>
+     <link rel="stylesheet" href="chrome://global/skin/global.css"  type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css"  type="text/css"/>
+     <link rel="stylesheet" href="chrome://devtools/content/styleinspector/ruleview.css"  type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/ruleview.css"  type="text/css"/>
+-    <script type="application/javascript;version=1.8" src="theme-switching.js"/>
++    <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
+     <script type="application/javascript;version=1.8">
+       window.setPanel = function(panel, iframe) {
+         let {require} = Components.utils.import("resource://gre/modules/devtools/Loader.jsm", {});
+         let inspector = require("devtools/styleinspector/style-inspector");
+         this.ruleview = new inspector.RuleViewTool(panel, window);
+       }
+       window.onunload = function() {
+         if (this.ruleview) {
 diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client/webaudioeditor/webaudioeditor.xul
 --- a/devtools/client/webaudioeditor/webaudioeditor.xul
 +++ b/devtools/client/webaudioeditor/webaudioeditor.xul
