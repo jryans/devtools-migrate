@@ -1,15 +1,37 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441336167 18000
-#      Thu Sep 03 22:09:27 2015 -0500
-# Node ID 940b7e68e2aa6a347c46f15ee3b3b59ba39df3f3
-# Parent  557a303e6b0506528c0b479b3d46cf6379a5c81b
+# Date 1441405236 18000
+#      Fri Sep 04 17:20:36 2015 -0500
+# Node ID c3f5625355fd37cce84b14db2f7b933c7093bee4
+# Parent  3b39b57bf4d0fe6905da53ac03fb2ecdb8802de5
 Bug 912121 - Rewrite URLs outside call sites. rs=devtools
 
 The rewrite script used in the previous patch expects URLs to be found as
 arguments to Cu.import() directly, but there are a few cases where they are
 saved as strings first.  Rewrite these manually.
 
+diff --git a/devtools/client/debugger/debugger-controller.js b/devtools/client/debugger/debugger-controller.js
+--- a/devtools/client/debugger/debugger-controller.js
++++ b/devtools/client/debugger/debugger-controller.js
+@@ -98,17 +98,17 @@ Cu.import("resource://gre/modules/devtoo
+ Cu.import("resource:///modules/devtools/client/shared/widgets/SimpleListWidget.jsm");
+ Cu.import("resource:///modules/devtools/client/shared/widgets/BreadcrumbsWidget.jsm");
+ Cu.import("resource:///modules/devtools/client/shared/widgets/SideMenuWidget.jsm");
+ Cu.import("resource:///modules/devtools/client/shared/widgets/VariablesView.jsm");
+ Cu.import("resource:///modules/devtools/client/shared/widgets/VariablesViewController.jsm");
+ Cu.import("resource:///modules/devtools/client/shared/widgets/ViewHelpers.jsm");
+ 
+ Cu.import("resource:///modules/devtools/client/shared/browser-loader.js");
+-const require = BrowserLoader("resource:///modules/devtools/debugger/", this).require;
++const require = BrowserLoader("resource:///modules/devtools/client/debugger/", this).require;
+ 
+ const {TargetFactory} = require("devtools/client/framework/target");
+ const {Toolbox} = require("devtools/client/framework/toolbox");
+ const DevToolsUtils = require("devtools/shared/DevToolsUtils");
+ const promise = require("devtools/shared/deprecated-sync-thenables");
+ const Editor = require("devtools/client/sourceeditor/editor");
+ const DebuggerEditor = require("devtools/client/sourceeditor/debugger");
+ const {Tooltip} = require("devtools/client/shared/widgets/Tooltip");
 diff --git a/devtools/client/shared/widgets/Graphs.js b/devtools/client/shared/widgets/Graphs.js
 --- a/devtools/client/shared/widgets/Graphs.js
 +++ b/devtools/client/shared/widgets/Graphs.js
@@ -62,7 +84,7 @@ diff --git a/devtools/client/tilt/tilt-visualizer.js b/devtools/client/tilt/tilt
 diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit/head_dbg.js
 --- a/devtools/server/tests/unit/head_dbg.js
 +++ b/devtools/server/tests/unit/head_dbg.js
-@@ -127,18 +127,18 @@ function tryImport(url) {
+@@ -131,18 +131,18 @@ function tryImport(url) {
      Cu.import(url);
    } catch (e) {
      dumpn("Error importing " + url);
@@ -83,6 +105,29 @@ diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit
      return {throw: ex}
    }
    return undefined;
+diff --git a/devtools/shared/heapsnapshot/HeapAnalysesClient.js b/devtools/shared/heapsnapshot/HeapAnalysesClient.js
+--- a/devtools/shared/heapsnapshot/HeapAnalysesClient.js
++++ b/devtools/shared/heapsnapshot/HeapAnalysesClient.js
+@@ -2,17 +2,18 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ "use strict";
+ 
+ const DevToolsUtils = require("devtools/shared/DevToolsUtils");
+ const { DevToolsWorker } = require("devtools/shared/shared/worker");
+ 
+-const WORKER_URL = "resource://gre/modules/devtools/heapsnapshot/HeapAnalysesWorker.js";
++const WORKER_URL =
++  "resource://gre/modules/devtools/shared/heapsnapshot/HeapAnalysesWorker.js";
+ let workerCounter = 0;
+ 
+ /**
+  * A HeapAnalysesClient instance provides a developer-friendly interface for
+  * interacting with a HeapAnalysesWorker. This enables users to be ignorant of
+  * the message passing protocol used to communicate with the worker. The
+  * HeapAnalysesClient owns the worker, and terminating the worker is done by
+  * terminating the client (see the `destroy` method).
 diff --git a/devtools/shared/shared/tests/browser/browser_worker-01.js b/devtools/shared/shared/tests/browser/browser_worker-01.js
 --- a/devtools/shared/shared/tests/browser/browser_worker-01.js
 +++ b/devtools/shared/shared/tests/browser/browser_worker-01.js

@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441385308 18000
-#      Fri Sep 04 11:48:28 2015 -0500
-# Node ID 4d937e6e96fc8fdd069ccaf0e9a4eae83f433c04
-# Parent  85b8d4e894c5f21b815ef9d4644c3d11e0bdc409
+# Date 1441403002 18000
+#      Fri Sep 04 16:43:22 2015 -0500
+# Node ID 75944e6eeca604c170a3ceca1998229d6450922f
+# Parent  9cca53c7baf0d6d6d1d529ea9af48603b2eb02aa
 Bug 912121 - Only one JS modules section per moz.build. rs=devtools
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -124,7 +124,7 @@ diff --git a/devtools/client/memory/modules/moz.build b/devtools/client/memory/m
 new file mode 100644
 --- /dev/null
 +++ b/devtools/client/memory/modules/moz.build
-@@ -0,0 +1,9 @@
+@@ -0,0 +1,8 @@
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
 +# License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -132,25 +132,25 @@ new file mode 100644
 +
 +EXTRA_JS_MODULES.devtools.memory += [
 +    'census-view.js',
-+    'census.js',
 +]
 diff --git a/devtools/client/memory/moz.build b/devtools/client/memory/moz.build
 --- a/devtools/client/memory/moz.build
 +++ b/devtools/client/memory/moz.build
-@@ -1,12 +1,11 @@
+@@ -1,11 +1,14 @@
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
--EXTRA_JS_MODULES.devtools.memory += [
--    'modules/census-view.js',
--    'modules/census.js',
 +DIRS += [
 +    'modules',
++]
++
+ EXTRA_JS_MODULES.devtools.memory += [
+-    'modules/census-view.js',
+     'panel.js',
  ]
  
- XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
  MOCHITEST_CHROME_MANIFESTS += ['test/mochitest/chrome.ini']
 diff --git a/devtools/client/performance/modules/logic/moz.build b/devtools/client/performance/modules/logic/moz.build
 new file mode 100644
