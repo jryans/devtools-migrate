@@ -4,7 +4,7 @@
 #      Fri Aug 28 22:44:48 2015 -0500
 # Node ID 8b6ac8e69cf7109b6cb57f9de5f514392bd89c2d
 # Parent  c81362eb201675f406b0c21ca1d503b156d1c14a
-Bug 912121 - Create shims for popular DevTools modules in add-ons. r=ochameau
+Bug 912121 - Create shims for popular DevTools modules in add-ons. rs=devtools
 
 For popular modules used by many DevTools add-ons, add shim files which wrap the
 modules and make them available at their previous location.

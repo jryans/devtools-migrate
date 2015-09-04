@@ -4,19 +4,19 @@
 #      Tue Sep 01 10:29:06 2015 -0500
 # Node ID 75ad69ab0dc093136860fb15a52b5f7d9dac76fe
 # Parent  4fed6e109bca00be0a37d388283e9bc21abe8bdd
-Bug 912121 - Remove dead loader paths. r=ochameau
+Bug 912121 - Remove dead loader paths. rs=devtools
 
 diff --git a/devtools/client/framework/gDevTools.jsm b/devtools/client/framework/gDevTools.jsm
 --- a/devtools/client/framework/gDevTools.jsm
 +++ b/devtools/client/framework/gDevTools.jsm
 @@ -1320,9 +1320,9 @@ gDevTools.on("tool-unregistered", functi
  });
- 
+
  gDevTools.on("toolbox-ready", gDevToolsBrowser._updateMenuCheckbox);
  gDevTools.on("toolbox-destroyed", gDevToolsBrowser._updateMenuCheckbox);
- 
+
  Services.obs.addObserver(gDevToolsBrowser.destroy, "quit-application", false);
- 
+
  // Load the browser devtools main module as the loader's main module.
 -loader.main("main");
 +loader.main("devtools/client/main");
@@ -28,13 +28,13 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 +/* globals NetUtil, FileUtils, OS */
- 
+
  "use strict";
- 
+
  /**
   * Manages the addon-sdk loader instance used to load the developer tools.
   */
- 
+
  let { Constructor: CC, classes: Cc, interfaces: Ci, utils: Cu } = Components;
 @@ -61,134 +62,117 @@ XPCOMUtils.defineLazyGetter(loaderModule
      return Cu.Sandbox(this, {wantGlobalProperties:["indexedDB"]}).indexedDB;
@@ -42,9 +42,9 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
      return {};
    }
  });
- 
+
  let sharedGlobalBlacklist = ["sdk/indexed-db"];
- 
+
 -// Used when the tools should be loaded from the Firefox package itself (the default)
 +/**
 + * Used when the tools should be loaded from the Firefox package itself.
@@ -104,16 +104,16 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
        sharedGlobal: true,
        sharedGlobalBlacklist: sharedGlobalBlacklist
      });
- 
+
      return promise.resolve(undefined);
    },
- 
+
    unload: function(reason) {
      Loader.unload(this.loader, reason);
      delete this.loader;
    },
  };
- 
+
 -// Used when the tools should be loaded from a mozilla-central checkout.  In addition
 -// to different paths, it needs to write chrome.manifest files to override chrome urls
 -// from the builtin tools.
@@ -128,7 +128,7 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
      let file = new FileUtils.File(path);
      return Services.io.newFileURI(file).spec;
    },
- 
+
    load: function() {
      let srcdir = Services.prefs.getComplexValue("devtools.loader.srcdir",
                                                  Ci.nsISupportsString);
@@ -210,13 +210,13 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
        sharedGlobal: true,
        sharedGlobalBlacklist: sharedGlobalBlacklist
      });
- 
+
      return this._writeManifest(devtoolsDir).then(null, Cu.reportError);
 @@ -436,17 +420,17 @@ DevToolsLoader.prototype = {
      var events = this.require("sdk/system/events");
      events.emit("startupcache-invalidate", {});
      events.emit("devtools-unloaded", {});
- 
+
      this._provider.unload("reload");
      delete this._provider;
      delete this._mainid;
@@ -224,7 +224,7 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
 -    this.main("main");
 +    this.main("devtools/client/main");
    },
- 
+
    /**
     * Sets whether the compartments loaded by this instance should be invisible
     * to the debugger.  Invisibility is needed for loaders that support debugging
@@ -236,18 +236,18 @@ diff --git a/devtools/shared/tests/mochitest/test_loader_paths.html b/devtools/s
 +++ b/devtools/shared/tests/mochitest/test_loader_paths.html
 @@ -38,15 +38,15 @@
          Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
- 
+
        let builtin = new BuiltinProvider();
        builtin.load();
        let srcdir = new SrcdirProvider();
        srcdir.load();
- 
+
        is(builtin.loader.mapping.length,
 -         srcdir.loader.mapping.length + 1,
 -         "The built-in loader should have only one more mapping for testing.");
 +         srcdir.loader.mapping.length + 2,
 +         "The built-in loader has 2 additional mappings.");
- 
+
        Services.prefs.clearUserPref(SRCDIR_PREF);
      </script>
    </body>

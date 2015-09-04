@@ -18,7 +18,7 @@ hg mv browser/devtools devtools/client
 hg mv toolkit/devtools/server devtools/server
 hg mv toolkit/devtools devtools/shared
 
-hg commit -m "Bug 912121 - Migrate major DevTools directories. r=ochameau
+hg commit -m "Bug 912121 - Migrate major DevTools directories. rs=devtools
 
 Move major DevTools files to new directories using the following steps:
 
@@ -53,13 +53,13 @@ Various relative paths and ignore files are also updated."
 
 # *** BUILD CONFIG / TEST MANIFESTS ***
 # hg export -o %m.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Adjust_build_configs_and_test_manifests__r_glandium.patch
 
 # *** CHROME CONTENT ***
 ${SCRIPT_DIR}/rewrite-chrome-content.py
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
-hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar. r=ochameau
+hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar. rs=devtools
 
 Break DevTools content files out of browser.jar and move to a new DevTools
 specific jar.  Update all paths of the form:
@@ -72,26 +72,26 @@ chrome://devtools/content/<Y>
 
 where <Y> is the source tree path that comes after /devtools/client."
 
-hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_relative_chrome____URLs_in_some_tools__r_ochameau.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__chrome_content_uses__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_relative_chrome____URLs_in_some_tools__rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__chrome_content_uses__rs_devtools.patch
 
 # *** REQUIRE / JS MODULES ***
-hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
 # TODO: Error if list has sub-dir files?
 
 ${SCRIPT_DIR}/rewrite-require.py
-hg commit -m "Bug 912121 - Rewrite require / import to match source tree. r=ochameau
+hg commit -m "Bug 912121 - Rewrite require / import to match source tree. rs=devtools
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
 install JS modules at a path that corresponds directly to their source tree
 location.  Here we rewrite all require and import calls to match the new
 location that these files are installed to."
 
-hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____r_ochameau.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Rewrite_URLs_outside_call_sites__r_ochameau.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Correct_module_ID_for_source_map__r_ochameau_.patch
+hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Rewrite_URLs_outside_call_sites__rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Correct_module_ID_for_source_map__r_fitzgen.patch
 
-hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__rs_devtools.patch
 
 find devtools -name moz.build | xargs -L 1 perl -0777 -pi -e "s/EXTRA_JS_MODULES[\w. +=\[\]\"'-]*\[\n(.*?)\]/DevToolsModules(\n\1)/gs"
 
@@ -101,25 +101,25 @@ hg revert -C devtools/shared/acorn/moz.build
 hg revert -C devtools/shared/tern/moz.build
 hg revert -C devtools/shared/sourcemap/moz.build
 
-hg commit -m "Bug 912121 - Use DevToolsModules in devtools moz.build. r=ochameau
+hg commit -m "Bug 912121 - Use DevToolsModules in devtools moz.build. rs=devtools
 
 This step finally installs all DevTools JS modules at a path that corresponds
 directly to their source tree location."
 
-hg import ${SCRIPT_DIR}/Bug_912121___Repair_react_dev_build_with_DevToolsModules__r_ochameau.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Correct_GCLI_JSM_install_location__r_ochameau.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Repair_react_dev_build_with_DevToolsModules__rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Correct_GCLI_JSM_install_location__rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__rs_devtools.patch
 
 # *** LOADER PATHS ***
-hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__r_ochameau.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__rs_devtools.patch
 # TODO: test reload?
 
 # *** THEMES / CHROME SKIN ***
-hg import ${SCRIPT_DIR}/Bug_912121___Move_straggler_images_next_to_other_DevTools_images__r_bgrins.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Move_straggler_images_next_to_other_DevTools_images__rs_devtools.patch
 
 hg mv browser/themes/shared/devtools devtools/client/themes
 
-hg commit -m "Bug 912121 - Migrate DevTools themes. r=bgrins
+hg commit -m "Bug 912121 - Migrate DevTools themes. rs=devtools
 
 Move DevTools themes to a new directory using the following step:
 
@@ -134,7 +134,7 @@ gsed -i -e '/devtools/d' browser/themes/linux/jar.mn
 replace ../shared/devtools/ ../../../devtools/client/themes/ -r browser
 replace ' ../../shared/devtools/' ' ' -r devtools/client/themes
 
-hg commit -m "Bug 912121 - Package DevTools client themes in devtools.jar. r=bgrins
+hg commit -m "Bug 912121 - Package DevTools client themes in devtools.jar. rs=devtools
 
 Break DevTools theme files out of browser.jar and move to a new DevTools
 specific jar.  Update all paths of the form:
@@ -147,7 +147,7 @@ chrome://devtools/skin/<Y>
 
 where <Y> is the source tree path that comes after /devtools/client."
 
-hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__theme_uses__r_bgrins.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__theme_uses__rs_devtools.patch
 
 # *** TEST PATHS / COMMENTS ***
 replace browser/devtools devtools/client -r . --exclude=obj-*
@@ -157,13 +157,13 @@ replace toolkit/devtools devtools/shared -r . --exclude=obj-*
 replace chrome/toolkit/ chrome/ -r devtools
 replace browser/themes/shared/devtools/ devtools/client/themes/ -r devtools/client
 
-hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. r=ochameau"
+hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. rs=devtools"
 
 # *** ADD-ON COMPAT ***
 
-hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_modules_in_add_ons__r_ochameau.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_DevTools_themes_in_add_ons__r_bgrins.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_modules_in_add_ons__rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_DevTools_themes_in_add_ons__rs_devtools.patch
 
 # *** TESTS ***
 
-hg import ${SCRIPT_DIR}/Bug_912121___Misc__DevTools_test_fixes_after_migration__r_bgrins.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Misc__DevTools_test_fixes_after_migration__rs_devtools.patch

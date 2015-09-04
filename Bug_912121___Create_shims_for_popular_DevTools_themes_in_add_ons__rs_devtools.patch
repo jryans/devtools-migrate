@@ -4,7 +4,7 @@
 #      Tue Sep 01 00:24:38 2015 -0500
 # Node ID 8985273b4676f06d2cdd3fb7049ab43d5d112f57
 # Parent  4525f2b8d431f6ae0159c6861978b6e4f328a976
-Bug 912121 - Create shims for popular DevTools themes in add-ons. r=bgrins
+Bug 912121 - Create shims for popular DevTools themes in add-ons. rs=devtools
 
 For popular themes used by many DevTools add-ons, add shim files which wrap the
 themes and make them available at their previous location.
@@ -20,7 +20,7 @@ diff --git a/devtools/client/moz.build b/devtools/client/moz.build
      'webconsole',
      'webide',
  ]
- 
+
 +# Shim old theme paths used by DevTools add-ons
 +if CONFIG['MOZ_BUILD_APP'] == 'browser':
 +    DIRS += ['themes/shims']
@@ -29,9 +29,9 @@ diff --git a/devtools/client/moz.build b/devtools/client/moz.build
      'devtools-clhandler.js',
      'devtools-clhandler.manifest',
  ]
- 
+
  JAR_MANIFESTS += ['jar.mn']
- 
+
  DevToolsModules(
 diff --git a/devtools/client/themes/shims/common.css b/devtools/client/themes/shims/common.css
 new file mode 100644

@@ -4,7 +4,7 @@
 #      Wed Sep 02 17:46:22 2015 -0500
 # Node ID 3fd839a274934f7107da865960533df393079da6
 # Parent  847d60a468b399feab1e11362dd4b06d06ff7a7d
-Bug 912121 - Clean up misc. chrome content uses. r=ochameau
+Bug 912121 - Clean up misc. chrome content uses. rs=devtools
 
 diff --git a/devtools/client/app-manager/content/device.xhtml b/devtools/client/app-manager/content/device.xhtml
 --- a/devtools/client/app-manager/content/device.xhtml
@@ -12,21 +12,21 @@ diff --git a/devtools/client/app-manager/content/device.xhtml b/devtools/client/
 @@ -7,17 +7,16 @@
    %appMgrDTD;
  ]>
- 
- 
+
+
  <html xmlns="http://www.w3.org/1999/xhtml">
- 
+
    <head>
      <meta charset="utf8"/>
 -    <base href="chrome://browser/content/devtools/app-manager/"></base>
      <title>&device.title;</title>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/app-manager/device.css" type="text/css"/>
    </head>
- 
+
    <body onload="UI.init()">
- 
+
      <div id="notConnectedMessage"><span>&device.notConnected;</span></div>
- 
+
 diff --git a/devtools/client/app-manager/content/help.xhtml b/devtools/client/app-manager/content/help.xhtml
 --- a/devtools/client/app-manager/content/help.xhtml
 +++ b/devtools/client/app-manager/content/help.xhtml
@@ -34,23 +34,23 @@ diff --git a/devtools/client/app-manager/content/help.xhtml b/devtools/client/ap
    <!ENTITY % appMgrDTD SYSTEM "chrome://browser/locale/devtools/app-manager.dtd" >
    %appMgrDTD;
  ]>
- 
+
  <html xmlns="http://www.w3.org/1999/xhtml">
- 
+
    <head>
      <meta charset="utf8"/>
 -    <base href="chrome://browser/content/devtools/app-manager/"></base>
      <title>&help.title;</title>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/app-manager/help.css" type="text/css"/>
    </head>
- 
+
    <body>
- 
+
      <h1>&help.title;</h1>
- 
+
 @@ -36,9 +35,8 @@
    </body>
- 
+
    <script type="application/javascript;version=1.8">
      function closeHelp() {
        window.parent.postMessage(JSON.stringify({name:"closeHelp"}), "*");
@@ -65,9 +65,9 @@ diff --git a/devtools/client/app-manager/content/projects.xhtml b/devtools/clien
    <!ENTITY % appMgrDTD SYSTEM "chrome://browser/locale/devtools/app-manager.dtd" >
    %appMgrDTD;
  ]>
- 
+
  <html xmlns="http://www.w3.org/1999/xhtml">
- 
+
    <head>
      <meta charset="utf8"/>
 -    <base href="chrome://browser/content/devtools/app-manager/"></base>
@@ -78,17 +78,17 @@ diff --git a/devtools/client/app-manager/content/projects.xhtml b/devtools/clien
      <script type="application/javascript;version=1.8" src="template.js"></script>
      <script type="application/javascript;version=1.8" src="manifest-editor.js"></script>
    </head>
- 
+
 diff --git a/devtools/client/projecteditor/chrome/content/projecteditor-loader.js b/devtools/client/projecteditor/chrome/content/projecteditor-loader.js
 --- a/devtools/client/projecteditor/chrome/content/projecteditor-loader.js
 +++ b/devtools/client/projecteditor/chrome/content/projecteditor-loader.js
 @@ -7,17 +7,17 @@ const ProjectEditor = require("projected
- 
+
  const SAMPLE_PATH = buildTempDirectoryStructure();
  const SAMPLE_NAME = "DevTools Content Application Name";
  const SAMPLE_PROJECT_URL = "data:text/html;charset=utf-8,<body><h1>Project Overview</h1></body>";
  const SAMPLE_ICON = "chrome://browser/skin/devtools/tool-debugger.svg";
- 
+
  /**
   * Create a workspace for working on projecteditor, available at
 - * chrome://browser/content/devtools/projecteditor-loader.xul.
@@ -96,7 +96,7 @@ diff --git a/devtools/client/projecteditor/chrome/content/projecteditor-loader.j
   * This emulates the integration points that the app manager uses.
   */
  let appManagerEditor;
- 
+
  // Log a message to the project overview URL to make development easier
  function log(msg) {
    if (!appManagerEditor) {
@@ -109,10 +109,10 @@ diff --git a/devtools/client/shared/test/browser_filter-editor-01.js b/devtools/
    widget.setCssValue("blur(   2px  )   contrast(  2  )");
    is(widget.getCssValue(),
       "blur(2px) contrast(200%)", "setCssValue should work for spaced values");
- 
+
    info("Test parsing of string-typed values");
    widget.setCssValue("drop-shadow( 2px  1px 5px black) url( example.svg#filter )");
- 
+
 -  const computedURI = "chrome://browser/content/devtools/example.svg#filter";
 +  const computedURI =
 +    "chrome://devtools/content/shared/widgets/example.svg#filter";
@@ -148,18 +148,18 @@ diff --git a/devtools/client/shared/test/browser_filter-editor-03.js b/devtools/
 @@ -1,16 +1,16 @@
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
- 
+
  "use strict";
- 
+
  // Tests the Filter Editor Widget add, removeAt, updateAt, getValueAt methods
- 
+
 -const BASE_URI = "chrome://browser/content/devtools/";
 +const BASE_URI = "chrome://devtools/content/shared/widgets/";
  const TEST_URI = BASE_URI + "filter-frame.xhtml";
  const {CSSFilterEditorWidget} = require("devtools/shared/widgets/FilterWidget");
  const GRAYSCALE_MAX = 100;
  const INVERT_MIN = 0;
- 
+
  add_task(function*() {
    yield promiseTab("about:blank");
    let [host, win, doc] = yield createHost("bottom", TEST_URI);
@@ -168,13 +168,13 @@ diff --git a/devtools/client/shared/test/browser_filter-editor-05.js b/devtools/
 +++ b/devtools/client/shared/test/browser_filter-editor-05.js
 @@ -122,11 +122,11 @@ add_task(function*() {
       "Label-dragging should not work for string-type filters");
- 
+
    widget._mouseMove({
      pageX: -11,
      altKey: false,
      shiftKey: true
    });
- 
+
 -  is(widget.getValueAt(1), "chrome://browser/content/devtools/test.svg",
 +  is(widget.getValueAt(1), "chrome://devtools/content/shared/widgets/test.svg",
       "Label-dragging on string-type filters shouldn't affect their value");

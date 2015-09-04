@@ -4,7 +4,7 @@
 #      Wed Sep 02 21:37:48 2015 -0500
 # Node ID fb8732a8dd14e8c758a013c8c6a96bea3c06da97
 # Parent  b10bb9768ed0907aac2b7fe4a718c4884582a803
-Bug 912121 - Move straggler images next to other DevTools images. r=bgrins
+Bug 912121 - Move straggler images next to other DevTools images. rs=devtools
 
 diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
 --- a/browser/themes/linux/jar.mn

@@ -4,7 +4,7 @@
 #      Thu Aug 20 21:23:29 2015 -0500
 # Node ID 3a36d8c7b3fe1cfab75d82e98ae2c5997bbc909c
 # Parent  9e004fb146c913d870cc10c64168660c8ec255b2
-Bug 912121 - Update GCLI command paths. r=ochameau
+Bug 912121 - Update GCLI command paths. rs=devtools
 
 diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
 --- a/devtools/client/definitions.js
@@ -25,12 +25,12 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
 +    "devtools/client/inspector/inspector-commands",
 +    "devtools/client/eyedropper/commands.js"
    ],
- 
+
    preventClosingOnKey: true,
    onkey: function(panel) {
      panel.toolbox.highlighterUtils.togglePicker();
    },
- 
+
    isTargetSupported: function(target) {
 @@ -125,17 +125,17 @@ Tools.webConsole = {
    label: l10n("ToolboxTabWebconsole.label", webConsoleStrings),
@@ -43,12 +43,12 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
    inMenu: true,
 -  commands: "devtools/webconsole/console-commands",
 +  commands: "devtools/client/webconsole/console-commands",
- 
+
    preventClosingOnKey: true,
    onkey: function(panel, toolbox) {
      if (toolbox.splitConsole)
        return toolbox.focusConsoleInput();
- 
+
      panel.focusInput();
    },
 @@ -161,17 +161,17 @@ Tools.jsdebugger = {
@@ -62,11 +62,11 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
    inMenu: true,
 -  commands: "devtools/debugger/debugger-commands",
 +  commands: "devtools/client/debugger/debugger-commands",
- 
+
    isTargetSupported: function(target) {
      return true;
    },
- 
+
    build: function(iframeWindow, toolbox) {
      return new DebuggerPanel(iframeWindow, toolbox);
    }
@@ -81,11 +81,11 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
    inMenu: true,
 -  commands: "devtools/styleeditor/styleeditor-commands",
 +  commands: "devtools/client/styleeditor/styleeditor-commands",
- 
+
    isTargetSupported: function(target) {
      return target.hasActor("styleEditor") || target.hasActor("styleSheets");
    },
- 
+
    build: function(iframeWindow, toolbox) {
      return new StyleEditorPanel(iframeWindow, toolbox);
    }
@@ -100,11 +100,11 @@ diff --git a/devtools/client/definitions.js b/devtools/client/definitions.js
    inMenu: false,
 -  commands: "devtools/scratchpad/scratchpad-commands",
 +  commands: "devtools/client/scratchpad/scratchpad-commands",
- 
+
    isTargetSupported: function(target) {
      return target.isRemote;
    },
- 
+
    build: function(iframeWindow, toolbox) {
      return new ScratchpadPanel(iframeWindow, toolbox);
    }
@@ -127,7 +127,7 @@ diff --git a/devtools/client/framework/toolbox.js b/devtools/client/framework/to
    { id: "command-button-screenshot" },
    { id: "command-button-rulers"}
  ];
- 
+
  /**
   * A "Toolbox" is the component that holds all the tools for one specific
 diff --git a/devtools/shared/gcli/commands/index.js b/devtools/shared/gcli/commands/index.js
@@ -136,7 +136,7 @@ diff --git a/devtools/shared/gcli/commands/index.js b/devtools/shared/gcli/comma
 @@ -49,35 +49,35 @@ exports.baseModules = [
    "gcli/commands/pref",
  ];
- 
+
  /**
   * Some commands belong to a tool (see getToolModules). This is a list of the
   * modules that are *not* owned by a tool.
@@ -181,7 +181,7 @@ diff --git a/devtools/shared/gcli/commands/index.js b/devtools/shared/gcli/comma
 +  "devtools/shared/gcli/commands/security",
 +  "devtools/shared/gcli/commands/tools",
  ];
- 
+
  /**
   * Register commands from tools with 'command: [ "some/module" ]' definitions.
   * The map/reduce incantation squashes the array of arrays to a single array.

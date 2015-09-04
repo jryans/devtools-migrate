@@ -4,7 +4,7 @@
 #      Tue Aug 18 18:38:20 2015 -0500
 # Node ID f709f44b0cd417c34d27c3e51a41ba7463d80a23
 # Parent  e904452054f4b77b0221c3d79240aef73d516fb0
-Bug 912121 - Correct GCLI JSM install location. r=ochameau
+Bug 912121 - Correct GCLI JSM install location. rs=devtools
 
 diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
 --- a/devtools/shared/gcli/moz.build
@@ -17,7 +17,7 @@ diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
      'source/lib/gcli/settings.js',
      'source/lib/gcli/system.js',
  ]
- 
+
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.shared.gcli += [
      'gcli.jsm',

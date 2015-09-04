@@ -4,7 +4,7 @@
 #      Wed Aug 19 21:49:09 2015 -0500
 # Node ID 4b3545b6dc539a41dfb8e4212138140bd175a451
 # Parent  de4a9590989a1f983986a22cc251fc1de088be02
-Bug 912121 - Only one JS modules section per moz.build. r=ochameau
+Bug 912121 - Only one JS modules section per moz.build. rs=devtools
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
 install JS modules at a path that corresponds directly to their source tree
@@ -20,9 +20,9 @@ diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
- 
+
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.framework += [
      'gDevTools.jsm',
@@ -101,7 +101,7 @@ diff --git a/devtools/client/performance/moz.build b/devtools/client/performance
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 +DIRS += [
 +    'modules',
 +]
@@ -123,7 +123,7 @@ diff --git a/devtools/client/performance/moz.build b/devtools/client/performance
 -    'panel.js'
 +    'panel.js',
  ]
- 
+
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
  XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
 diff --git a/devtools/client/projecteditor/lib/helpers/moz.build b/devtools/client/projecteditor/lib/helpers/moz.build
@@ -347,7 +347,7 @@ diff --git a/devtools/client/projecteditor/moz.build b/devtools/client/projected
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 +DIRS += ['lib']
 +
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
@@ -421,7 +421,7 @@ diff --git a/devtools/client/responsivedesign/moz.build b/devtools/client/respon
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 +BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
 +
  EXTRA_JS_MODULES.devtools += [
@@ -445,7 +445,7 @@ diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/m
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 -EXTRA_JS_MODULES.devtools += [
 -    'scratchpad-manager.jsm',
 -]
@@ -455,7 +455,7 @@ diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/m
 +    'scratchpad-manager.jsm',
      'scratchpad-panel.js',
  ]
- 
+
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
 diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/content/moz.build
 new file mode 100644
@@ -485,7 +485,7 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 +DIRS += [
 +    'content',
 +    'widgets',
@@ -493,7 +493,7 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 +
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
  XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
- 
+
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.shared += [
      'AppCacheUtils.jsm',
@@ -610,9 +610,9 @@ diff --git a/devtools/client/styleeditor/moz.build b/devtools/client/styleeditor
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
- 
+
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.styleeditor += [
 +    'styleeditor-commands.js',
@@ -659,14 +659,14 @@ diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
  DIRS += [
      'content',
      'components',
 +    'modules',
      'themes',
  ]
- 
+
  BROWSER_CHROME_MANIFESTS += [
      'test/browser.ini',
      'test/sidebars/browser.ini'
@@ -675,7 +675,7 @@ diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
      'test/chrome.ini',
      'test/sidebars/chrome.ini'
  ]
- 
+
 -EXTRA_JS_MODULES.devtools.webide += [
 -    'modules/addons.js',
 -    'modules/app-manager.js',
@@ -786,9 +786,9 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
  include('../templates.mozbuild')
- 
+
 +DIRS += [
 +    'actors',
 +]
@@ -796,20 +796,20 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
  BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
- 
+
  if CONFIG['ENABLE_TESTS']:
      DIRS += ['tests/gtest']
- 
+
  XPIDL_SOURCES += [
 @@ -36,81 +40,19 @@ SOURCES += [
      'ZeroCopyNSIOutputStream.cpp',
  ]
- 
+
  # Disable RTTI in google protocol buffer
  DEFINES['GOOGLE_PROTOBUF_NO_RTTI'] = True
- 
+
  FINAL_LIBRARY = 'xul'
- 
+
 -EXTRA_JS_MODULES.devtools += [
 -    'content-server.jsm',
 -    'dbg-server.jsm',
@@ -824,7 +824,7 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'protocol.js',
      'worker.js'
  ]
- 
+
 -EXTRA_JS_MODULES.devtools.server.actors += [
 -    'actors/actor-registry.js',
 -    'actors/addon.js',
@@ -894,7 +894,7 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 -EXTRA_JS_MODULES.devtools += [
 -    'dbg-client.jsm',
 -]
@@ -946,7 +946,7 @@ diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 -EXTRA_JS_MODULES.devtools.gcli.commands += [
 -    'commands/addon.js',
 -    'commands/appcache.js',
@@ -971,7 +971,7 @@ diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
 +DIRS += [
 +    'commands',
  ]
- 
+
  EXTRA_JS_MODULES.devtools.gcli.commands += [
      'source/lib/gcli/commands/clear.js',
      'source/lib/gcli/commands/commands.js',
@@ -1002,14 +1002,14 @@ diff --git a/devtools/shared/jsbeautify/moz.build b/devtools/shared/jsbeautify/m
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 +DIRS += [
 +    'lib',
 +    'src',
 +]
 +
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
- 
+
  EXTRA_JS_MODULES.devtools.jsbeautify += [
      'beautify.js',
 -    'lib/sanitytest.js',
@@ -1042,10 +1042,10 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 @@ -26,24 +26,21 @@ DIRS += [
      'webconsole'
  ]
- 
+
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
- 
+
  EXTRA_JS_MODULES.devtools += [
      'async-utils.js',
 +    'Console.jsm',
@@ -1092,7 +1092,7 @@ diff --git a/devtools/shared/performance/moz.build b/devtools/shared/performance
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 +DIRS += [
 +    'legacy',
 +]
