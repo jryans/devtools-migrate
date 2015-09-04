@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1440452839 18000
-#      Mon Aug 24 16:47:19 2015 -0500
-# Node ID a20e95fc879c0546d905fc032abca8d17b5a8187
-# Parent  d2b2a31ddfdc5ede2a0f88f75478493b3ac432c6
+# Date 1441336661 18000
+#      Thu Sep 03 22:17:41 2015 -0500
+# Node ID f79bc83530b8027a5033182e340239bfce80bb63
+# Parent  783a597696ef232315414d143719aaf6470dfc3c
 Bug 912121 - Repair react-dev build with DevToolsModules. rs=devtools
 
 diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/content/moz.build
@@ -15,12 +15,12 @@ diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/c
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 -DevToolsModules(
 -    'react.js'
 -)
 +modules = []
-
+ 
  if CONFIG['DEBUG_JS_MODULES']:
 -    DevToolsModules(
 -        'react-dev.js'
@@ -40,14 +40,14 @@ diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/c
 diff --git a/devtools/templates.mozbuild b/devtools/templates.mozbuild
 --- a/devtools/templates.mozbuild
 +++ b/devtools/templates.mozbuild
-@@ -9,14 +9,18 @@ def DevToolsModules(*modules):
+@@ -9,17 +9,21 @@ def DevToolsModules(*modules):
      '''Installs JS modules at a resource:// path that corresponds directly to
      their source tree location.
-
+ 
      For this to work as intended, a moz.build file should be placed in each
      source directory which uses this template to install only the JS files in
      its own directory.  Subdirectories should use their own moz.build.
-
+ 
      By following this pattern, there's less magic to require() and resource://
 -    paths, since they now match the source tree.'''
 +    paths, since they now match the source tree.
@@ -55,8 +55,11 @@ diff --git a/devtools/templates.mozbuild b/devtools/templates.mozbuild
 +    Currently `DevToolsModules` can only be called once per moz.build, so we
 +    build a list manually above.  Bug 1198013 tracks fixing this to make it more
 +    like other moz.build constructs.'''
-
+ 
+     for m in modules:
+         if '/' in m:
+             error('DevToolsModules must be used from the same directory as ' +
+                   'the files to be installed.')
+ 
      base = EXTRA_JS_MODULES
      for dir in RELATIVEDIR.split('/'):
-         base = base[dir]
-     base += [m for m in modules]

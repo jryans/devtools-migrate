@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439502567 18000
-#      Thu Aug 13 16:49:27 2015 -0500
-# Node ID cdb2b1e9cb01acd7d21bf85c083deb2b74ea2a34
-# Parent  ba042939e06bae5f27133d4224a04f65a0492a50
+# Date 1441336989 18000
+#      Thu Sep 03 22:23:09 2015 -0500
+# Node ID a607b72210cfe563e85473781bcf74c4a4fbb606
+# Parent  5f92cbe7a75ac8b54e8f9cd3d3f377cba729cf1d
 Bug 912121 - Define DevToolsModules template for installing JS modules. r=glandium
 
 diff --git a/devtools/client/moz.build b/devtools/client/moz.build
@@ -15,7 +15,7 @@ diff --git a/devtools/client/moz.build b/devtools/client/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +include('../templates.mozbuild')
 +
  DIRS += [
@@ -35,16 +35,16 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +include('../templates.mozbuild')
 +
  BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
-
+ 
  if CONFIG['ENABLE_TESTS']:
      DIRS += ['tests/gtest']
-
+ 
  XPIDL_SOURCES += [
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
@@ -55,7 +55,7 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +include('../templates.mozbuild')
 +
  DIRS += [
@@ -70,7 +70,7 @@ diff --git a/devtools/templates.mozbuild b/devtools/templates.mozbuild
 new file mode 100644
 --- /dev/null
 +++ b/devtools/templates.mozbuild
-@@ -0,0 +1,22 @@
+@@ -0,0 +1,27 @@
 +# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
@@ -88,6 +88,11 @@ new file mode 100644
 +
 +    By following this pattern, there's less magic to require() and resource://
 +    paths, since they now match the source tree.'''
++
++    for m in modules:
++        if '/' in m:
++            error('DevToolsModules must be used from the same directory as ' +
++                  'the files to be installed.')
 +
 +    base = EXTRA_JS_MODULES
 +    for dir in RELATIVEDIR.split('/'):

@@ -77,7 +77,6 @@ hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__chrome_content_uses__rs_devt
 
 # *** REQUIRE / JS MODULES ***
 hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium.patch
-# TODO: Error if list has sub-dir files?
 
 ${SCRIPT_DIR}/rewrite-require.py
 hg commit -m "Bug 912121 - Rewrite require / import to match source tree. rs=devtools
