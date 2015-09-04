@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441289912 18000
-#      Thu Sep 03 09:18:32 2015 -0500
-# Node ID eec3e31da70adfe67f5fbce05ce48862d7bd3b86
-# Parent  ac8643da1248152a3ebcb0f6206115781a993900
+# Date 1441336167 18000
+#      Thu Sep 03 22:09:27 2015 -0500
+# Node ID 940b7e68e2aa6a347c46f15ee3b3b59ba39df3f3
+# Parent  557a303e6b0506528c0b479b3d46cf6379a5c81b
 Bug 912121 - Rewrite URLs outside call sites. rs=devtools
 
 The rewrite script used in the previous patch expects URLs to be found as
@@ -16,23 +16,23 @@ diff --git a/devtools/client/shared/widgets/Graphs.js b/devtools/client/shared/w
 @@ -13,17 +13,18 @@ loader.lazyRequireGetter(this, "promise"
  loader.lazyRequireGetter(this, "EventEmitter",
    "devtools/shared/event-emitter");
-
+ 
  loader.lazyImporter(this, "DevToolsWorker",
    "resource://gre/modules/devtools/shared/shared/worker.js");
-
+ 
  const HTML_NS = "http://www.w3.org/1999/xhtml";
  const GRAPH_SRC = "chrome://devtools/content/shared/widgets/graphs-frame.xhtml";
 -const WORKER_URL = "resource:///modules/devtools/GraphsWorker.js";
 +const WORKER_URL =
 +  "resource:///modules/devtools/client/shared/widgets/GraphsWorker.js";
-
+ 
  // Generic constants.
-
+ 
  const GRAPH_RESIZE_EVENTS_DRAIN = 100; // ms
  const GRAPH_WHEEL_ZOOM_SENSITIVITY = 0.00075;
  const GRAPH_WHEEL_SCROLL_SENSITIVITY = 0.1;
  const GRAPH_WHEEL_MIN_SELECTION_WIDTH = 10; // px
-
+ 
 diff --git a/devtools/client/tilt/tilt-visualizer.js b/devtools/client/tilt/tilt-visualizer.js
 --- a/devtools/client/tilt/tilt-visualizer.js
 +++ b/devtools/client/tilt/tilt-visualizer.js
@@ -44,45 +44,21 @@ diff --git a/devtools/client/tilt/tilt-visualizer.js b/devtools/client/tilt/tilt
  const ARCBALL_ZOOM_MAX = 500;
  const ARCBALL_RESET_SPHERICAL_FACTOR = 0.1;
  const ARCBALL_RESET_LINEAR_FACTOR = 0.01;
-
+ 
 -const TILT_CRAFTER = "resource:///modules/devtools/tilt/TiltWorkerCrafter.js";
 -const TILT_PICKER = "resource:///modules/devtools/tilt/TiltWorkerPicker.js";
 +const TILT_CRAFTER =
 +  "resource:///modules/devtools/client/tilt/TiltWorkerCrafter.js";
 +const TILT_PICKER =
 +  "resource:///modules/devtools/client/tilt/TiltWorkerPicker.js";
-
-
+ 
+ 
  /**
   * Initializes the visualization presenter and controller.
   *
   * @param {Object} aProperties
   *                 an object containing the following properties:
   *        {Window} chromeWindow: a reference to the top level window
-diff --git a/devtools/server/actors/pretty-print-worker.js b/devtools/server/actors/pretty-print-worker.js
---- a/devtools/server/actors/pretty-print-worker.js
-+++ b/devtools/server/actors/pretty-print-worker.js
-@@ -23,18 +23,18 @@
-  * pretty printed code back to the ugly source text.
-  *
-  * In the case of an error, the worker responds with a message of the form:
-  *
-  *     { id, error }
-  */
-
- importScripts("resource://gre/modules/devtools/shared/shared/worker-helper.js");
--importScripts("resource://gre/modules/devtools/shared/acorn/acorn.js");
--importScripts("resource://gre/modules/devtools/shared/sourcemap/source-map.js");
-+importScripts("resource://gre/modules/devtools/acorn/acorn.js");
-+importScripts("resource://gre/modules/devtools/sourcemap/source-map.js");
- importScripts("resource://gre/modules/devtools/shared/pretty-fast/pretty-fast.js");
-
- workerHelper.createTask(self, "pretty-print", ({ url, indent, source }) => {
-   try {
-     const prettified = prettyFast(source, {
-       url: url,
-       indent: " ".repeat(indent)
-     });
 diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit/head_dbg.js
 --- a/devtools/server/tests/unit/head_dbg.js
 +++ b/devtools/server/tests/unit/head_dbg.js
@@ -94,12 +70,12 @@ diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit
      throw e;
    }
  }
-
+ 
 -tryImport("resource://gre/modules/devtools/Loader.jsm");
 -tryImport("resource://gre/modules/devtools/Console.jsm");
 +tryImport("resource://gre/modules/devtools/shared/Loader.jsm");
 +tryImport("resource://gre/modules/devtools/shared/Console.jsm");
-
+ 
  function testExceptionHook(ex) {
    try {
      do_report_unexpected_exception(ex);
@@ -113,14 +89,14 @@ diff --git a/devtools/shared/shared/tests/browser/browser_worker-01.js b/devtool
 @@ -1,15 +1,16 @@
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
-
+ 
  // Tests that the devtools/shared/worker communicates properly
  // as both CommonJS module and as a JSM.
-
+ 
 -const WORKER_URL = "resource:///modules/devtools/GraphsWorker.js";
 +const WORKER_URL =
 +  "resource:///modules/devtools/client/shared/widgets/GraphsWorker.js";
-
+ 
  const count = 100000;
  const WORKER_DATA = (function () {
    let timestamps = [];
@@ -134,14 +110,14 @@ diff --git a/devtools/shared/shared/tests/browser/browser_worker-02.js b/devtool
 @@ -1,15 +1,16 @@
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
-
+ 
  // Tests errors are handled properly by the DevToolsWorker.
-
+ 
  const { DevToolsWorker } = require("devtools/shared/shared/worker");
 -const WORKER_URL = "resource:///modules/devtools/GraphsWorker.js";
 +const WORKER_URL =
 +  "resource:///modules/devtools/client/shared/widgets/GraphsWorker.js";
-
+ 
  add_task(function*() {
    try {
      let workerNotFound = new DevToolsWorker("resource://i/dont/exist.js");
@@ -157,13 +133,13 @@ diff --git a/devtools/shared/tests/unit/test_fetch-resource.js b/devtools/shared
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
  "use strict";
-
+ 
  // Tests for DevToolsUtils.fetch on resource:// URI's.
-
+ 
 -const URL_FOUND = "resource://gre/modules/devtools/DevToolsUtils.js";
 +const URL_FOUND = "resource://gre/modules/devtools/shared/DevToolsUtils.js";
  const URL_NOT_FOUND = "resource://gre/modules/devtools/this/is/not/here.js";
-
+ 
  /**
   * Test that non-existent files are handled correctly.
   */
@@ -177,9 +153,9 @@ diff --git a/devtools/shared/tests/unit/test_require_lazy.js b/devtools/shared/t
  /* -*- js-indent-level: 2; indent-tabs-mode: nil -*- */
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
-
+ 
  // Test devtools.lazyRequireGetter
-
+ 
  function run_test() {
    const name = "asyncUtils";
 -  const path = "devtools/async-utils";
@@ -190,7 +166,7 @@ diff --git a/devtools/shared/tests/unit/test_require_lazy.js b/devtools/shared/t
    // XXX: do_check_eq only works on primitive types, so we have this
    // do_check_true of an equality expression.
    do_check_true(o.asyncUtils === asyncUtils);
-
+ 
    // A non-main loader should get a new object via |lazyRequireGetter|, just
 diff --git a/devtools/shared/touch/simulator.js b/devtools/shared/touch/simulator.js
 --- a/devtools/shared/touch/simulator.js
@@ -199,18 +175,18 @@ diff --git a/devtools/shared/touch/simulator.js b/devtools/shared/touch/simulato
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  "use strict";
-
+ 
  let { Ci } = require("chrome");
  let promise = require("promise");
-
+ 
  const FRAME_SCRIPT =
 -  "resource://gre/modules/devtools/touch/simulator-content.js";
 +  "resource://gre/modules/devtools/shared/touch/simulator-content.js";
-
+ 
  let trackedBrowsers = new WeakMap();
  let savedTouchEventsEnabled =
    Services.prefs.getIntPref("dom.w3c_touch_events.enabled");
-
+ 
  /**
   * Simulate touch events for platforms where they aren't generally available.
   * Defers to the `simulator-content.js` frame script to perform the real work.

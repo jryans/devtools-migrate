@@ -34,11 +34,11 @@ loader_map = {
 }
 
 ignored_prefixes = [
-    "gcli",
-    "acorn",
-    "tern",
-    "source-map",
-    "xpcshell-test"
+    "resource://gre/modules/devtools/gcli",
+    "resource://gre/modules/devtools/acorn",
+    "resource://gre/modules/devtools/tern",
+    "resource://gre/modules/devtools/sourcemap",
+    "resource://test"
 ]
 
 def record_source_to_resource(path):
@@ -126,12 +126,12 @@ def rewrite_block(current, id, is_import, path):
     # Ignore "main" used in addon-sdk files
     if path.startswith("./addon-sdk") and id == "main":
         return None
-    # Allow libs from external repos to remain special for now
-    for prefix in ignored_prefixes:
-        if id.startswith(prefix):
-            return None
     print("Current: %s" % current)
     resource = resolve(id)
+    # Allow libs from external repos to remain special for now
+    for prefix in ignored_prefixes:
+        if resource.startswith(prefix):
+            return None
     print("Resource: %s" % resource)
     # Ignore resources outside of devtools
     if not "devtools" in resource:
