@@ -33,12 +33,17 @@ loader_map = {
     "xpcshell-test": "resource://test"
 }
 
-ignored_prefixes = [
-    "resource://gre/modules/devtools/gcli",
+# Allow libs from external repos to remain special for now
+ignored_resource_prefixes = [
     "resource://gre/modules/devtools/acorn",
     "resource://gre/modules/devtools/tern",
     "resource://gre/modules/devtools/sourcemap",
     "resource://test"
+]
+
+# For some libs, we specify the files to ignore by source path
+ignored_source_prefixes = [
+    "devtools/shared/gcli/source"
 ]
 
 def record_source_to_resource(path):
@@ -129,7 +134,7 @@ def rewrite_block(current, id, is_import, path):
     print("Current: %s" % current)
     resource = resolve(id)
     # Allow libs from external repos to remain special for now
-    for prefix in ignored_prefixes:
+    for prefix in ignored_resource_prefixes:
         if resource.startswith(prefix):
             return None
     print("Resource: %s" % resource)
@@ -144,6 +149,10 @@ def rewrite_block(current, id, is_import, path):
             source = resource_to_source[resource]
         else:
             print("WARNING! No mapping for: %s" % resource)
+            return None
+    # For some libs, we specify the files to ignore by source path
+    for prefix in ignored_source_prefixes:
+        if source.startswith(prefix):
             return None
     if is_import:
         is_client = source.startswith("devtools/client")
@@ -178,4 +187,6 @@ for root, dirs, files in os.walk("."):
         try:
             rewrite_source(os.path.join(root, file))
         except UnicodeDecodeError:
+            continue
+        except FileNotFoundError:
             continue
