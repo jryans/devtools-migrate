@@ -1,6 +1,13 @@
 #!/bin/bash
 
-# Uses "replace" from npm.
+# This script will perform a complete migration of DevTools code over to the
+# new layout and paths described in the README.md.
+
+# To use this script, you will need:
+#   * a Mercurial checkout
+#   * replace from npm
+#   * Python 3
+#   * GNU sed (OS X default sed is not enough)
 
 set -ex
 
@@ -52,7 +59,6 @@ hg import ${SCRIPT_DIR}/Bug_912121___Adjust_build_configs_and_test_manifests__r_
 ${SCRIPT_DIR}/rewrite-chrome-content.py
 gsed -i -e 's/browser.jar/devtools.jar/' devtools/client/jar.mn
 gsed -i -e '/devtools.jar/a%   content devtools %content/' devtools/client/jar.mn
-# TODO: webide jar.mn?
 hg commit -m "Bug 912121 - Package DevTools client content in devtools.jar. r=ochameau
 
 Break DevTools content files out of browser.jar and move to a new DevTools
@@ -71,6 +77,7 @@ hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__chrome_content_uses__r_ocham
 
 # *** REQUIRE / JS MODULES ***
 hg import ${SCRIPT_DIR}/Bug_912121___Define_DevToolsModules_template_for_installing_JS_modules__r_glandium_ochameau.patch
+# TODO: Error if list has sub-dir files?
 
 ${SCRIPT_DIR}/rewrite-require.py
 hg commit -m "Bug 912121 - Rewrite require / import to match source tree. r=ochameau
