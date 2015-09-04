@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1440038949 18000
-#      Wed Aug 19 21:49:09 2015 -0500
-# Node ID 4b3545b6dc539a41dfb8e4212138140bd175a451
-# Parent  de4a9590989a1f983986a22cc251fc1de088be02
+# Date 1441385308 18000
+#      Fri Sep 04 11:48:28 2015 -0500
+# Node ID 4d937e6e96fc8fdd069ccaf0e9a4eae83f433c04
+# Parent  85b8d4e894c5f21b815ef9d4644c3d11e0bdc409
 Bug 912121 - Only one JS modules section per moz.build. rs=devtools
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -11,6 +11,87 @@ install JS modules at a path that corresponds directly to their source tree
 location.  Prior to this step, we must ensure each moz.build only defines a
 single block of JS modules for easier automatic conversion.
 
+diff --git a/devtools/client/debugger/content/moz.build b/devtools/client/debugger/content/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/debugger/content/moz.build
+@@ -0,0 +1,15 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++DIRS += [
++    'stores',
++    'views',
++]
++
++EXTRA_JS_MODULES.devtools.debugger.content += [
++    'constants.js',
++    'globalActions.js',
++    'utils.js'
++]
+diff --git a/devtools/client/debugger/content/stores/moz.build b/devtools/client/debugger/content/stores/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/debugger/content/stores/moz.build
+@@ -0,0 +1,9 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.debugger.content.stores += [
++    'event-listeners.js',
++    'index.js'
++]
+diff --git a/devtools/client/debugger/content/views/moz.build b/devtools/client/debugger/content/views/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/debugger/content/views/moz.build
+@@ -0,0 +1,8 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.debugger.content.views += [
++    'event-listeners-view.js'
++]
+diff --git a/devtools/client/debugger/moz.build b/devtools/client/debugger/moz.build
+--- a/devtools/client/debugger/moz.build
++++ b/devtools/client/debugger/moz.build
+@@ -1,26 +1,15 @@
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'content',
++]
++
+ EXTRA_JS_MODULES.devtools.debugger += [
+     'debugger-commands.js',
+     'panel.js'
+ ]
+ 
+-EXTRA_JS_MODULES.devtools.debugger.content += [
+-    'content/constants.js',
+-    'content/globalActions.js',
+-    'content/utils.js'
+-]
+-
+-EXTRA_JS_MODULES.devtools.debugger.content.views += [
+-    'content/views/event-listeners-view.js'
+-]
+-
+-EXTRA_JS_MODULES.devtools.debugger.content.stores += [
+-    'content/stores/event-listeners.js',
+-    'content/stores/index.js'
+-]
+-
+ BROWSER_CHROME_MANIFESTS += ['test/mochitest/browser.ini']
 diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz.build
 --- a/devtools/client/framework/moz.build
 +++ b/devtools/client/framework/moz.build
@@ -20,9 +101,9 @@ diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
-
+ 
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.framework += [
      'gDevTools.jsm',
@@ -39,6 +120,38 @@ diff --git a/devtools/client/framework/moz.build b/devtools/client/framework/moz
      'toolbox.js',
 +    'ToolboxProcess.jsm',
  ]
+diff --git a/devtools/client/memory/modules/moz.build b/devtools/client/memory/modules/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/memory/modules/moz.build
+@@ -0,0 +1,9 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.memory += [
++    'census-view.js',
++    'census.js',
++]
+diff --git a/devtools/client/memory/moz.build b/devtools/client/memory/moz.build
+--- a/devtools/client/memory/moz.build
++++ b/devtools/client/memory/moz.build
+@@ -1,12 +1,11 @@
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-EXTRA_JS_MODULES.devtools.memory += [
+-    'modules/census-view.js',
+-    'modules/census.js',
++DIRS += [
++    'modules',
+ ]
+ 
+ XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
+ MOCHITEST_CHROME_MANIFESTS += ['test/mochitest/chrome.ini']
 diff --git a/devtools/client/performance/modules/logic/moz.build b/devtools/client/performance/modules/logic/moz.build
 new file mode 100644
 --- /dev/null
@@ -101,7 +214,7 @@ diff --git a/devtools/client/performance/moz.build b/devtools/client/performance
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +DIRS += [
 +    'modules',
 +]
@@ -123,7 +236,7 @@ diff --git a/devtools/client/performance/moz.build b/devtools/client/performance
 -    'panel.js'
 +    'panel.js',
  ]
-
+ 
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
  XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
 diff --git a/devtools/client/projecteditor/lib/helpers/moz.build b/devtools/client/projecteditor/lib/helpers/moz.build
@@ -347,7 +460,7 @@ diff --git a/devtools/client/projecteditor/moz.build b/devtools/client/projected
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +DIRS += ['lib']
 +
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
@@ -421,7 +534,7 @@ diff --git a/devtools/client/responsivedesign/moz.build b/devtools/client/respon
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
 +
  EXTRA_JS_MODULES.devtools += [
@@ -445,7 +558,7 @@ diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/m
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 -EXTRA_JS_MODULES.devtools += [
 -    'scratchpad-manager.jsm',
 -]
@@ -455,7 +568,7 @@ diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/m
 +    'scratchpad-manager.jsm',
      'scratchpad-panel.js',
  ]
-
+ 
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
 diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/content/moz.build
 new file mode 100644
@@ -479,29 +592,28 @@ new file mode 100644
 diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 --- a/devtools/client/shared/moz.build
 +++ b/devtools/client/shared/moz.build
-@@ -1,74 +1,38 @@
+@@ -1,78 +1,41 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +DIRS += [
 +    'content',
++    'fluxify',
 +    'widgets',
 +]
 +
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
  XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
-
+ 
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.shared += [
      'AppCacheUtils.jsm',
-+    'autocomplete-popup.js',
-     'Curl.jsm',
-     'DeveloperToolbar.jsm',
-+    'devices.js',
-     'DOMHelpers.jsm',
+-    'Curl.jsm',
+-    'DeveloperToolbar.jsm',
+-    'DOMHelpers.jsm',
 -    'Jsbeautify.jsm',
 -    'Parser.jsm',
 -    'SplitView.jsm',
@@ -520,8 +632,13 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 -]
 -
 -EXTRA_JS_MODULES.devtools.shared += [
--    'autocomplete-popup.js',
--    'devices.js',
+     'autocomplete-popup.js',
+     'browser-loader.js',
+     'create-dispatcher.js',
++    'Curl.jsm',
++    'DeveloperToolbar.jsm',
+     'devices.js',
++    'DOMHelpers.jsm',
      'doorhanger.js',
      'frame-script-utils.js',
      'getjson.js',
@@ -565,6 +682,8 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 -    'widgets/Tooltip.js',
 -    'widgets/TreeWidget.js',
 -]
+-
+-DIRS += ['fluxify']
 diff --git a/devtools/client/shared/widgets/moz.build b/devtools/client/shared/widgets/moz.build
 new file mode 100644
 --- /dev/null
@@ -610,9 +729,9 @@ diff --git a/devtools/client/styleeditor/moz.build b/devtools/client/styleeditor
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
-
+ 
 -EXTRA_JS_MODULES.devtools += [
 +EXTRA_JS_MODULES.devtools.styleeditor += [
 +    'styleeditor-commands.js',
@@ -659,14 +778,14 @@ diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  DIRS += [
      'content',
      'components',
 +    'modules',
      'themes',
  ]
-
+ 
  BROWSER_CHROME_MANIFESTS += [
      'test/browser.ini',
      'test/sidebars/browser.ini'
@@ -675,7 +794,7 @@ diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
      'test/chrome.ini',
      'test/sidebars/chrome.ini'
  ]
-
+ 
 -EXTRA_JS_MODULES.devtools.webide += [
 -    'modules/addons.js',
 -    'modules/app-manager.js',
@@ -780,15 +899,15 @@ new file mode 100644
 diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 --- a/devtools/server/moz.build
 +++ b/devtools/server/moz.build
-@@ -1,16 +1,20 @@
+@@ -1,95 +1,37 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  include('../templates.mozbuild')
-
+ 
 +DIRS += [
 +    'actors',
 +]
@@ -796,20 +915,19 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
  BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
-
- if CONFIG['ENABLE_TESTS']:
-     DIRS += ['tests/gtest']
-
+ 
  XPIDL_SOURCES += [
-@@ -36,81 +40,19 @@ SOURCES += [
-     'ZeroCopyNSIOutputStream.cpp',
+     'nsIJSInspector.idl',
  ]
-
- # Disable RTTI in google protocol buffer
- DEFINES['GOOGLE_PROTOBUF_NO_RTTI'] = True
-
+ 
+ XPIDL_MODULE = 'jsinspector'
+ 
+ SOURCES += [
+     'nsJSInspector.cpp',
+ ]
+ 
  FINAL_LIBRARY = 'xul'
-
+ 
 -EXTRA_JS_MODULES.devtools += [
 -    'content-server.jsm',
 -    'dbg-server.jsm',
@@ -824,7 +942,7 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'protocol.js',
      'worker.js'
  ]
-
+-
 -EXTRA_JS_MODULES.devtools.server.actors += [
 -    'actors/actor-registry.js',
 -    'actors/addon.js',
@@ -883,8 +1001,6 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 -    'actors/utils/stack.js',
 -    'actors/utils/TabSources.js'
 -]
--
- FAIL_ON_WARNINGS = True
 diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
 --- a/devtools/shared/client/moz.build
 +++ b/devtools/shared/client/moz.build
@@ -894,7 +1010,7 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 -EXTRA_JS_MODULES.devtools += [
 -    'dbg-client.jsm',
 -]
@@ -946,7 +1062,7 @@ diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 -EXTRA_JS_MODULES.devtools.gcli.commands += [
 -    'commands/addon.js',
 -    'commands/appcache.js',
@@ -971,7 +1087,7 @@ diff --git a/devtools/shared/gcli/moz.build b/devtools/shared/gcli/moz.build
 +DIRS += [
 +    'commands',
  ]
-
+ 
  EXTRA_JS_MODULES.devtools.gcli.commands += [
      'source/lib/gcli/commands/clear.js',
      'source/lib/gcli/commands/commands.js',
@@ -1002,14 +1118,14 @@ diff --git a/devtools/shared/jsbeautify/moz.build b/devtools/shared/jsbeautify/m
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +DIRS += [
 +    'lib',
 +    'src',
 +]
 +
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
-
+ 
  EXTRA_JS_MODULES.devtools.jsbeautify += [
      'beautify.js',
 -    'lib/sanitytest.js',
@@ -1039,13 +1155,13 @@ new file mode 100644
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -26,24 +26,21 @@ DIRS += [
+@@ -27,24 +27,21 @@ DIRS += [
      'webconsole'
  ]
-
+ 
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
-
+ 
  EXTRA_JS_MODULES.devtools += [
      'async-utils.js',
 +    'Console.jsm',
@@ -1086,19 +1202,22 @@ new file mode 100644
 diff --git a/devtools/shared/performance/moz.build b/devtools/shared/performance/moz.build
 --- a/devtools/shared/performance/moz.build
 +++ b/devtools/shared/performance/moz.build
-@@ -1,18 +1,15 @@
+@@ -1,21 +1,18 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
 +DIRS += [
 +    'legacy',
 +]
 +
+ XPCSHELL_TESTS_MANIFESTS += ['test/xpcshell.ini']
+ 
  EXTRA_JS_MODULES.devtools.performance += [
    'io.js',
+   'process-communication.js',
    'recorder.js',
    'utils.js',
  ]

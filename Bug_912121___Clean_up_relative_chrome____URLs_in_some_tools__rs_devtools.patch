@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441255955 18000
-#      Wed Sep 02 23:52:35 2015 -0500
-# Node ID 1d00c581eb204b9028f002722971ed5b553e652b
-# Parent  520f58dc8fdda5da2462ce83160c55cf312b1bc4
+# Date 1441341648 18000
+#      Thu Sep 03 23:40:48 2015 -0500
+# Node ID 4baea7a684904c8f509b481c203973bc4d78bcdd
+# Parent  8f77e9387dc45ca940ed30daf569a7ca80c36565
 Bug 912121 - Clean up relative chrome:// URLs in some tools. rs=devtools
 
 diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client/canvasdebugger/canvasdebugger.xul
@@ -14,7 +14,7 @@ diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client
    <!ENTITY % canvasDebuggerDTD SYSTEM "chrome://browser/locale/devtools/canvasdebugger.dtd">
    %canvasDebuggerDTD;
  ]>
-
+ 
  <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
    <script src="chrome://devtools/content/shared/theme-switching.js"/>
    <script type="application/javascript" src="canvasdebugger.js"/>
@@ -22,7 +22,7 @@ diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client
 -  <script type="application/javascript" src="canvasdebugger/snapshotslist.js"/>
 +  <script type="application/javascript" src="callslist.js"/>
 +  <script type="application/javascript" src="snapshotslist.js"/>
-
+ 
    <hbox class="theme-body" flex="1">
      <vbox id="snapshots-pane">
        <toolbar id="snapshots-toolbar"
@@ -53,7 +53,7 @@ diff --git a/devtools/client/debugger/debugger.xul b/devtools/client/debugger/de
 @@ -22,28 +22,28 @@
          width="960" height="480"
          persist="screenX screenY width height sizemode">
-
+ 
    <script type="application/javascript;version=1.8"
            src="chrome://devtools/content/shared/theme-switching.js"/>
    <script type="text/javascript" src="chrome://global/content/globalOverlay.js"/>
@@ -83,24 +83,24 @@ diff --git a/devtools/client/debugger/debugger.xul b/devtools/client/debugger/de
 +  <script type="text/javascript" src="views/stack-frames-view.js"/>
 +  <script type="text/javascript" src="views/stack-frames-classic-view.js"/>
 +  <script type="text/javascript" src="views/filter-view.js"/>
-
+ 
    <commandset id="editMenuCommands"/>
-
+ 
    <commandset id="debuggerCommands"></commandset>
-
+ 
    <popupset id="debuggerPopupset">
      <menupopup id="sourceEditorContextMenu"
                 onpopupshowing="goUpdateGlobalEditMenuItems()">
 diff --git a/devtools/client/performance/performance.xul b/devtools/client/performance/performance.xul
 --- a/devtools/client/performance/performance.xul
 +++ b/devtools/client/performance/performance.xul
-@@ -9,31 +9,31 @@
+@@ -9,29 +9,29 @@
  <?xml-stylesheet href="chrome://browser/skin/devtools/performance.css" type="text/css"?>
  <!DOCTYPE window [
    <!ENTITY % performanceDTD SYSTEM "chrome://browser/locale/devtools/performance.dtd">
    %performanceDTD;
  ]>
-
+ 
  <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
    <script src="chrome://devtools/content/shared/theme-switching.js"/>
 -  <script type="application/javascript" src="performance/performance-controller.js"/>
@@ -113,11 +113,9 @@ diff --git a/devtools/client/performance/performance.xul b/devtools/client/perfo
 -  <script type="application/javascript" src="performance/views/details-js-flamegraph.js"/>
 -  <script type="application/javascript" src="performance/views/details-memory-call-tree.js"/>
 -  <script type="application/javascript" src="performance/views/details-memory-flamegraph.js"/>
--  <script type="application/javascript" src="performance/views/details-optimizations.js"/>
 -  <script type="application/javascript" src="performance/views/details.js"/>
 -  <script type="application/javascript" src="performance/views/recordings.js"/>
 -  <script type="application/javascript" src="performance/views/optimizations-list.js"/>
--  <script type="application/javascript" src="performance/views/frames-list.js"/>
 +  <script type="application/javascript" src="performance-controller.js"/>
 +  <script type="application/javascript" src="performance-view.js"/>
 +  <script type="application/javascript" src="views/overview.js"/>
@@ -128,12 +126,10 @@ diff --git a/devtools/client/performance/performance.xul b/devtools/client/perfo
 +  <script type="application/javascript" src="views/details-js-flamegraph.js"/>
 +  <script type="application/javascript" src="views/details-memory-call-tree.js"/>
 +  <script type="application/javascript" src="views/details-memory-flamegraph.js"/>
-+  <script type="application/javascript" src="views/details-optimizations.js"/>
 +  <script type="application/javascript" src="views/details.js"/>
 +  <script type="application/javascript" src="views/recordings.js"/>
 +  <script type="application/javascript" src="views/optimizations-list.js"/>
-+  <script type="application/javascript" src="views/frames-list.js"/>
-
+ 
    <popupset id="performance-options-popupset">
      <menupopup id="performance-filter-menupopup"/>
      <menupopup id="performance-options-menupopup" position="before_end">
@@ -147,7 +143,7 @@ diff --git a/devtools/client/shared/widgets/cubic-bezier-frame.xhtml b/devtools/
 @@ -4,17 +4,17 @@
     - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
  <!DOCTYPE html>
-
+ 
  <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -179,7 +175,7 @@ diff --git a/devtools/client/shared/widgets/filter-frame.xhtml b/devtools/client
 +    <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"></script>
    </head>
    <body>
-
+ 
      <div id="container">
        <div class="filters-list">
          <div id="filters"></div>
@@ -191,7 +187,7 @@ diff --git a/devtools/client/shared/widgets/graphs-frame.xhtml b/devtools/client
 @@ -4,17 +4,17 @@
     - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
  <!DOCTYPE html>
-
+ 
  <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -213,7 +209,7 @@ diff --git a/devtools/client/shared/widgets/mdn-docs-frame.xhtml b/devtools/clie
 @@ -4,17 +4,17 @@
     - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
  <!DOCTYPE html>
-
+ 
  <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -223,9 +219,9 @@ diff --git a/devtools/client/shared/widgets/mdn-docs-frame.xhtml b/devtools/clie
 +  <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
  </head>
  <body class="theme-body">
-
+ 
    <div id = "container">
-
+ 
      <header>
        <h1 id="property-name" class="theme-fg-color5"></h1>
      </header>
@@ -235,7 +231,7 @@ diff --git a/devtools/client/shared/widgets/spectrum-frame.xhtml b/devtools/clie
 @@ -4,17 +4,17 @@
     - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
  <!DOCTYPE html>
-
+ 
  <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -256,16 +252,16 @@ diff --git a/devtools/client/styleinspector/computedview.xhtml b/devtools/client
 +++ b/devtools/client/styleinspector/computedview.xhtml
 @@ -26,17 +26,17 @@
    <head>
-
+ 
      <title>&computedViewTitle;</title>
-
+ 
      <link rel="stylesheet" href="chrome://global/skin/global.css"  type="text/css"/>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css"  type="text/css"/>
      <link rel="stylesheet" href="chrome://browser/skin/devtools/computedview.css"  type="text/css"/>
-
+ 
 -    <script type="application/javascript;version=1.8" src="theme-switching.js"/>
 +    <script type="application/javascript;version=1.8" src="chrome://devtools/content/shared/theme-switching.js"/>
-
+ 
      <script type="application/javascript;version=1.8">
        window.setPanel = function(panel, iframe) {
          let {require} = Components.utils.import("resource://gre/modules/devtools/Loader.jsm", {});
@@ -300,12 +296,12 @@ diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client
 +++ b/devtools/client/webaudioeditor/webaudioeditor.xul
 @@ -13,25 +13,25 @@
  ]>
-
+ 
  <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
+ 
    <script type="application/javascript;version=1.8"
            src="chrome://devtools/content/shared/theme-switching.js"/>
-
+ 
    <script type="application/javascript" src="chrome://devtools/content/shared/d3.js"/>
 -  <script type="application/javascript" src="dagre-d3.js"/>
 -  <script type="application/javascript" src="webaudioeditor/includes.js"/>
@@ -325,7 +321,7 @@ diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client
 +  <script type="application/javascript" src="views/inspector.js"/>
 +  <script type="application/javascript" src="views/properties.js"/>
 +  <script type="application/javascript" src="views/automation.js"/>
-
+ 
    <vbox class="theme-body" flex="1">
      <hbox id="reload-notice"
            class="notice-container"

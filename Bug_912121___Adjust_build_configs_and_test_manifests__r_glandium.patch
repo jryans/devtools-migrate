@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1439499967 18000
-#      Thu Aug 13 16:06:07 2015 -0500
-# Node ID c92a7072536d8d179654251f27a4c4424ed5dfef
-# Parent  a3432bc57c2d20c31857f41d897a2993c0424d3a
+# Date 1441341123 18000
+#      Thu Sep 03 23:32:03 2015 -0500
+# Node ID f74924cc3cba8ac899359297d6492601d9370c4e
+# Parent  72ab30cc79a5b3d0c3631c71ee6859061c2f814d
 Bug 912121 - Adjust build configs and test manifests. r=glandium
 
 This step resumes shipping client and server DevTools components to the correct
@@ -14,10 +14,10 @@ diff --git a/browser/app.mozbuild b/browser/app.mozbuild
 +++ b/browser/app.mozbuild
 @@ -12,9 +12,8 @@ if CONFIG['MOZ_EXTENSIONS']:
  DIRS += ['/%s' % CONFIG['MOZ_BRANDING_DIRECTORY']]
-
+ 
  if CONFIG['MOZ_WEBAPP_RUNTIME']:
      DIRS += ['/webapprt']
-
+ 
  # Never add dirs after browser because they apparently won't get
  # packaged properly on Mac.
  DIRS += ['/browser']
@@ -36,15 +36,15 @@ diff --git a/browser/moz.build b/browser/moz.build
      'extensions',
 +    '/devtools/client',
  ]
-
+ 
  DIRS += [
 -    'devtools',
      'app',
  ]
-
+ 
  if CONFIG['MAKENSISU']:
      DIRS += ['installer/windows']
-
+ 
  DIST_SUBDIR = 'browser'
  export('DIST_SUBDIR')
 diff --git a/devtools/client/framework/test/browser.ini b/devtools/client/framework/test/browser.ini
@@ -57,7 +57,7 @@ diff --git a/devtools/client/framework/test/browser.ini b/devtools/client/framew
  [browser_toolbox_theme_registration.js]
  [browser_toolbox_options_enable_serviceworkers_testing.js]
  [browser_toolbox_selected_tool_unavailable.js]
-
+ 
  # We want this test to run for mochitest-dt as well, so we include it here:
 -[../../../base/content/test/general/browser_parsable_css.js]
 -
@@ -65,7 +65,7 @@ diff --git a/devtools/client/framework/test/browser.ini b/devtools/client/framew
 diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 --- a/devtools/server/moz.build
 +++ b/devtools/server/moz.build
-@@ -64,16 +64,17 @@ EXTRA_JS_MODULES.devtools.server.actors
+@@ -45,16 +45,17 @@ EXTRA_JS_MODULES.devtools.server.actors 
      'actors/common.js',
      'actors/csscoverage.js',
      'actors/device.js',
@@ -83,35 +83,35 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'actors/object.js',
      'actors/performance-entries.js',
      'actors/performance-recording.js',
-diff --git a/devtools/server/tests/gtest/moz.build b/devtools/server/tests/gtest/moz.build
---- a/devtools/server/tests/gtest/moz.build
-+++ b/devtools/server/tests/gtest/moz.build
+diff --git a/devtools/shared/heapsnapshot/tests/gtest/moz.build b/devtools/shared/heapsnapshot/tests/gtest/moz.build
+--- a/devtools/shared/heapsnapshot/tests/gtest/moz.build
++++ b/devtools/shared/heapsnapshot/tests/gtest/moz.build
 @@ -2,17 +2,17 @@
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, you can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  Library('devtoolstests')
-
+ 
  LOCAL_INCLUDES += [
--    '/toolkit/devtools/server',
+-    '/toolkit/devtools/heapsnapshot',
 +    '../..',
  ]
-
+ 
  UNIFIED_SOURCES = [
      'DeserializedNodeUbiNodes.cpp',
+     'DeserializedStackFrameUbiStackFrames.cpp',
      'DoesCrossZoneBoundaries.cpp',
      'DoesntCrossZoneBoundaries.cpp',
      'SerializesEdgeNames.cpp',
-     'SerializesEverythingInHeapGraphOnce.cpp',
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -10,17 +10,16 @@ DIRS += [
-     'client',
+@@ -11,17 +11,16 @@ DIRS += [
      'discovery',
      'gcli',
+     'heapsnapshot',
      'jsbeautify',
      'performance',
      'pretty-fast',
@@ -126,11 +126,11 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'transport',
      'webconsole'
  ]
-@@ -41,12 +40,8 @@ EXTRA_JS_MODULES.devtools += [
+@@ -42,12 +41,8 @@ EXTRA_JS_MODULES.devtools += [
      'path.js',
      'worker-loader.js',
  ]
-
+ 
  EXTRA_JS_MODULES.devtools += [
      'Console.jsm',
      'Loader.jsm',
@@ -149,7 +149,7 @@ diff --git a/devtools/shared/shared/tests/browser/browser.ini b/devtools/shared/
  support-files =
 -  ../../../server/tests/browser/head.js
 +  ../../../../server/tests/browser/head.js
-
+ 
  [browser_async_storage.js]
  [browser_worker-01.js]
  [browser_worker-02.js]
@@ -162,7 +162,7 @@ diff --git a/toolkit/moz.build b/toolkit/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  DIRS += [
      'components',
      'content',
@@ -178,14 +178,14 @@ diff --git a/toolkit/moz.build b/toolkit/moz.build
 diff --git a/toolkit/toolkit.mozbuild b/toolkit/toolkit.mozbuild
 --- a/toolkit/toolkit.mozbuild
 +++ b/toolkit/toolkit.mozbuild
-@@ -136,16 +136,18 @@ DIRS += [
+@@ -137,16 +137,18 @@ DIRS += [
      '/security/manager',
      '/toolkit',
  ]
-
+ 
  if CONFIG['MOZ_PREF_EXTENSIONS']:
      DIRS += ['/extensions/pref']
-
+ 
  DIRS += [
 +    '/devtools/server',
 +    '/devtools/shared',
@@ -194,6 +194,6 @@ diff --git a/toolkit/toolkit.mozbuild b/toolkit/toolkit.mozbuild
      '/js/ductwork/debugger',
      '/other-licenses/snappy',
  ]
-
+ 
  if CONFIG['MOZ_GIO_COMPONENT']:
      DIRS += ['/extensions/gio']

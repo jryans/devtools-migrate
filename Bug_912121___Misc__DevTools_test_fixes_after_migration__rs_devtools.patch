@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441235331 18000
-#      Wed Sep 02 18:08:51 2015 -0500
-# Node ID 7953662910382a387d626234fbf6e1b71cbd91ae
-# Parent  6abd028a2ad9d9b63e6e73a81a13f34a016f8018
+# Date 1441344521 18000
+#      Fri Sep 04 00:28:41 2015 -0500
+# Node ID 44493b1bbe4cfc3fd1aac88fdec5bc98cf9c5de8
+# Parent  8a9b497c8575f5d04844bdd2f6e09f72fb245725
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -12,7 +12,7 @@ diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/de
 @@ -106,17 +106,17 @@ function* spawnTest() {
        },
      },
-
+ 
      {
        setup: 'appcache validate ' + TEST_URI,
        check: {
@@ -31,7 +31,7 @@ diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/de
 @@ -156,17 +156,17 @@ function* spawnTest() {
        }
      },
-
+ 
      {
        setup: 'appcache viewentry --key ' + TEST_URI,
        check: {
@@ -44,7 +44,7 @@ diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/de
        },
      },
    ]);
-
+ 
    yield helpers.closeToolbar(options);
    yield helpers.closeTab(options);
 diff --git a/devtools/client/commandline/test/browser_cmd_inject.js b/devtools/client/commandline/test/browser_cmd_inject.js
@@ -90,18 +90,18 @@ diff --git a/devtools/client/sourceeditor/test/browser_codemirror.js b/devtools/
  /* vim: set ts=2 et sw=2 tw=80: */
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
-
+ 
  "use strict";
-
+ 
 -const HOST = 'mochi.test:8888';
 -const URI  = "http://" + HOST + "/browser/devtools/client/sourceeditor/test/codemirror.html";
 +const URI = "chrome://mochitests/content/browser/devtools/client/sourceeditor/test/codemirror.html";
  loadHelperScript("helper_codemirror_runner.js");
-
+ 
  function test() {
    requestLongerTimeout(3);
    waitForExplicitFinish();
-
+ 
    let tab = gBrowser.addTab();
    gBrowser.selectedTab = tab;
 diff --git a/devtools/client/sourceeditor/test/browser_vimemacs.js b/devtools/client/sourceeditor/test/browser_vimemacs.js
@@ -110,18 +110,18 @@ diff --git a/devtools/client/sourceeditor/test/browser_vimemacs.js b/devtools/cl
 @@ -1,15 +1,14 @@
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
-
+ 
  "use strict";
-
+ 
 -const HOST = 'mochi.test:8888';
 -const URI  = "http://" + HOST + "/browser/devtools/client/sourceeditor/test/vimemacs.html";
 +const URI = "chrome://mochitests/content/browser/devtools/client/sourceeditor/test/vimemacs.html";
  loadHelperScript("helper_codemirror_runner.js");
-
+ 
  function test() {
    requestLongerTimeout(3);
    waitForExplicitFinish();
-
+ 
    let tab = gBrowser.addTab();
    gBrowser.selectedTab = tab;
 diff --git a/devtools/client/webconsole/test/browser_webconsole_bug_632817.js b/devtools/client/webconsole/test/browser_webconsole_bug_632817.js
@@ -131,56 +131,56 @@ diff --git a/devtools/client/webconsole/test/browser_webconsole_bug_632817.js b/
  /* vim:set ts=2 sw=2 sts=2 et: */
  /* Any copyright is dedicated to the Public Domain.
     http://creativecommons.org/publicdomain/zero/1.0/ */
-
+ 
  // Tests that network log messages bring up the network panel.
-
+ 
  "use strict";
-
+ 
 -const TEST_NETWORK_REQUEST_URI = "https://example.com/browser/browser/" +
 -                                 "devtools/webconsole/test/test-network-request.html";
 +const TEST_NETWORK_REQUEST_URI =
 +  "https://example.com/browser/devtools/client/webconsole/test/" +
 +  "test-network-request.html";
-
+ 
  const TEST_IMG = "http://example.com/browser/devtools/client/webconsole/" +
                   "test/test-image.png";
-
+ 
  const TEST_DATA_JSON_CONTENT =
    '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
-
+ 
  const TEST_URI = "data:text/html;charset=utf-8,Web Console network logging " +
 diff --git a/devtools/client/webconsole/test/browser_webconsole_netlogging.js b/devtools/client/webconsole/test/browser_webconsole_netlogging.js
 --- a/devtools/client/webconsole/test/browser_webconsole_netlogging.js
 +++ b/devtools/client/webconsole/test/browser_webconsole_netlogging.js
 @@ -12,18 +12,19 @@
-
+ 
  // Tests that network log messages bring up the network panel.
-
+ 
  "use strict";
-
+ 
  const TEST_URI = "data:text/html;charset=utf-8,Web Console network " +
                   "logging tests";
-
+ 
 -const TEST_NETWORK_REQUEST_URI = "http://example.com/browser/browser/" +
 -                 "devtools/webconsole/test/test-network-request.html";
 +const TEST_NETWORK_REQUEST_URI =
 +  "http://example.com/browser/devtools/client/webconsole/test/" +
 +  "test-network-request.html";
-
+ 
  const TEST_IMG = "http://example.com/browser/devtools/client/webconsole/" +
                   "test/test-image.png";
-
+ 
  const TEST_DATA_JSON_CONTENT =
    '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
-
+ 
  let lastRequest = null;
 diff --git a/devtools/client/webide/test/chrome.ini b/devtools/client/webide/test/chrome.ini
 --- a/devtools/client/webide/test/chrome.ini
 +++ b/devtools/client/webide/test/chrome.ini
-@@ -42,19 +42,21 @@ support-files =
-
+@@ -43,19 +43,21 @@ support-files =
  [test_basic.html]
  [test_newapp.html]
+ skip-if = buildapp == 'b2g' || (os == "mac" && (os_version == "10.8" || os_version == "10.10") && debug) || (os == "win" && os_version == "10.0") # Bug 1135315, bug 1197053
  [test_import.html]
  [test_duplicate_import.html]
  [test_runtime.html]
@@ -202,10 +202,10 @@ diff --git a/devtools/client/webide/test/chrome.ini b/devtools/client/webide/tes
 diff --git a/devtools/client/webide/test/sidebars/chrome.ini b/devtools/client/webide/test/sidebars/chrome.ini
 --- a/devtools/client/webide/test/sidebars/chrome.ini
 +++ b/devtools/client/webide/test/sidebars/chrome.ini
-@@ -8,15 +8,17 @@ support-files =
-   ../device_front_shared.js
-
+@@ -9,15 +9,17 @@ support-files =
+ 
  [test_newapp.html]
+ skip-if = buildapp == 'b2g' || (os == "mac" && (os_version == "10.8" || os_version == "10.10") && debug) || (os == "win" && os_version == "10.0") # Bug 1135315, bug 1197053
  [test_import.html]
  [test_duplicate_import.html]
  [test_runtime.html]
