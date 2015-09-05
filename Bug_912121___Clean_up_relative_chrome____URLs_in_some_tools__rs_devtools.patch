@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441341648 18000
-#      Thu Sep 03 23:40:48 2015 -0500
-# Node ID 4baea7a684904c8f509b481c203973bc4d78bcdd
-# Parent  8f77e9387dc45ca940ed30daf569a7ca80c36565
+# Date 1441427606 18000
+#      Fri Sep 04 23:33:26 2015 -0500
+# Node ID 038f11bc07a0a4da8c55e643f52da5fb4a67aa38
+# Parent  975697b71fbeaf97899d5e5b00a61bc546a039d1
 Bug 912121 - Clean up relative chrome:// URLs in some tools. rs=devtools
 
 diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client/canvasdebugger/canvasdebugger.xul
@@ -91,6 +91,28 @@ diff --git a/devtools/client/debugger/debugger.xul b/devtools/client/debugger/de
    <popupset id="debuggerPopupset">
      <menupopup id="sourceEditorContextMenu"
                 onpopupshowing="goUpdateGlobalEditMenuItems()">
+diff --git a/devtools/client/memory/memory.xhtml b/devtools/client/memory/memory.xhtml
+--- a/devtools/client/memory/memory.xhtml
++++ b/devtools/client/memory/memory.xhtml
+@@ -15,17 +15,17 @@
+     <link rel="stylesheet" href="chrome://devtools/content/shared/widgets/widgets.css" type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/common.css" type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/widgets.css" type="text/css"/>
+     <link rel="stylesheet" href="chrome://browser/skin/devtools/memory.css" type="text/css"/>
+ 
+     <script type="application/javascript;version=1.8"
+             src="chrome://devtools/content/shared/theme-switching.js"></script>
+     <script type="application/javascript;version=1.8"
+-            src="memory/controller.js"></script>
++            src="controller.js"></script>
+   </head>
+   <body class="theme-body">
+     <toolbar class="devtools-toolbar">
+       <toolbarbutton id="snapshot-button" class="devtools-toolbarbutton"
+                      tabindex="0"/>
+       <spacer flex="1"></spacer>
+     </toolbar>
+     <splitter class="devtools-horizontal-splitter"/>
 diff --git a/devtools/client/performance/performance.xul b/devtools/client/performance/performance.xul
 --- a/devtools/client/performance/performance.xul
 +++ b/devtools/client/performance/performance.xul
