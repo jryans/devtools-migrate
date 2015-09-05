@@ -35,6 +35,19 @@ For the moment this structure has some redundant / silly paths such as
 `/devtools/shared/shared`. These issues will be handled in a [follow
 up][shared], as they are more manual.
 
+## Building
+
+To build all of DevTools, use:
+
+```
+mach build devtools/*
+```
+
+or specify some subdirectory, as usual.
+
+Just `devtools` is unfortunately not enough: no products directly include the
+entire DevTools tree, so the build system won't understand you.
+
 ## JS Modules
 
 ### Build Config
