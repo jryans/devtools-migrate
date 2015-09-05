@@ -72,6 +72,7 @@ chrome://devtools/content/<Y>
 
 where <Y> is the source tree path that comes after /devtools/client."
 
+hg import ${SCRIPT_DIR}/Bug_912121___Package_DevTools_with_browser__rs_devtools.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_relative_chrome____URLs_in_some_tools__rs_devtools.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Clean_up_misc__chrome_content_uses__rs_devtools.patch
 

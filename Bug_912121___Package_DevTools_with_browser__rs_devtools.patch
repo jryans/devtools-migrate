@@ -1,0 +1,32 @@
+# HG changeset patch
+# User J. Ryan Stinnett <jryans@gmail.com>
+# Date 1441421203 18000
+#      Fri Sep 04 21:46:43 2015 -0500
+# Node ID 975697b71fbeaf97899d5e5b00a61bc546a039d1
+# Parent  6b2b3b8bdc39d28755edb51e3e0506df1f153cd7
+Bug 912121 - Package DevTools with browser. rs=devtools
+
+diff --git a/browser/installer/package-manifest.in b/browser/installer/package-manifest.in
+--- a/browser/installer/package-manifest.in
++++ b/browser/installer/package-manifest.in
+@@ -684,16 +684,20 @@
+ @RESPATH@/browser/chrome/icons/default/default48.png
+ #endif
+ 
+ ; [Webide Files]
+ @RESPATH@/browser/chrome/webide@JAREXT@
+ @RESPATH@/browser/chrome/webide.manifest
+ @RESPATH@/browser/@PREF_DIR@/webide-prefs.js
+ 
++; DevTools
++@RESPATH@/browser/chrome/devtools@JAREXT@
++@RESPATH@/browser/chrome/devtools.manifest
++
+ ; shell icons
+ #ifdef XP_UNIX
+ #ifndef XP_MACOSX
+ ; shell icons
+ @RESPATH@/browser/icons/*.png
+ #ifdef MOZ_UPDATER
+ ; updater icon
+ @RESPATH@/icons/updater.png
