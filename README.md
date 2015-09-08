@@ -54,7 +54,8 @@ entire DevTools tree, so the build system won't understand you.
 
 JS modules are still installed via `moz.build` files.  You should use the new
 syntax `DevToolsModules` (added by this migration) instead of
-`EXTRA_JS_MODULES`.
+`EXTRA_JS_MODULES`.  Also, this new syntax is a function you call, rather than
+an array you append to.  See the example below.
 
 Also, a `moz.build` file using `DevToolsModules` *must* live in the same
 directory as the files to be installed.  Don't list files from a subdirectory in
@@ -66,6 +67,23 @@ directly to locations in the source tree, instead of being totally arbitrary.
 A few libraries we import have not been updated to follow these rules, pending
 further [discussion][libs] about how they should handled.
 
+Example:
+
+* File: `/devtools/server/actors/layout.js`
+* In `/devtools/server/actors/moz.build`:
+
+```
+# New way, please do this!
+DevToolsModules(
+    'layout.js'
+)
+
+# Old way, don't use this!
+EXTRA_JS_MODULES.devtools.server.actors += [
+    'layout.js',
+]
+```
+
 ### require()
 
 To `require()` a file, the module ID is exactly its source tree path.
@@ -73,7 +91,9 @@ To `require()` a file, the module ID is exactly its source tree path.
 Example:
 
 * File: `/devtools/server/actors/layout.js`
-* Usage: `require("devtools/server/actors/layout")` (or lazy version)
+* Usage:
+  * `require("devtools/server/actors/layout")`
+  * `loader.lazyRequireGetter(this, "layout", "devtools/server/actors/layout")`
 
 ### Cu.import()
 
@@ -84,12 +104,15 @@ before.
 Example:
 
 * File: `/devtools/shared/Loader.jsm`
-* Usage: `Cu.import("resource://gre/modules/devtools/shared/Loader.jsm")` (or lazy version)
+* Usage:
+  * `Cu.import("resource://gre/modules/devtools/shared/Loader.jsm")`
 
 Example:
 
 * File: `/devtools/client/framework/gDevTools.jsm`
-* Usage: `Cu.import("resource:///modules/devtools/client/framework/gDevTools.jsm")` (or lazy version)
+* Usage:
+  * `Cu.import("resource:///modules/devtools/client/framework/gDevTools.jsm")`
+  * `loader.lazyImporter(this, "gDevTools", "resource:///modules/devtools/client/framework/gDevTools.jsm")`
 
 ## Chrome Content
 
