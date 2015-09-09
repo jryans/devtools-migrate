@@ -2,8 +2,8 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441344521 18000
 #      Fri Sep 04 00:28:41 2015 -0500
-# Node ID 44493b1bbe4cfc3fd1aac88fdec5bc98cf9c5de8
-# Parent  8a9b497c8575f5d04844bdd2f6e09f72fb245725
+# Node ID 942bdd35213a5ab176c7b1464cd6603107d0922e
+# Parent  3f71226c3c0db43c2a281549a05e623f79d36759
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -220,3 +220,31 @@ diff --git a/devtools/client/webide/test/sidebars/chrome.ini b/devtools/client/w
  [test_device_settings.html]
  [test_telemetry.html]
 +skip-if = true # Bug 1201392 - Update add-ons after migration
+diff --git a/devtools/server/tests/mochitest/test_inspector-anonymous.html b/devtools/server/tests/mochitest/test_inspector-anonymous.html
+--- a/devtools/server/tests/mochitest/test_inspector-anonymous.html
++++ b/devtools/server/tests/mochitest/test_inspector-anonymous.html
+@@ -14,21 +14,20 @@ https://bugzilla.mozilla.org/show_bug.cg
+ window.onload = function() {
+   const Ci = Components.interfaces;
+   const {InspectorFront} =
+     require("devtools/server/actors/inspector");
+   const {_documentWalker} =
+     require("devtools/server/actors/inspector");
+   const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+ 
+-  Services.prefs.setBoolPref("dom.webcomponents.enabled", true);
++  SpecialPowers.pushPrefEnv({"set": [
++    ["dom.webcomponents.enabled", true]
++  ]});
+   SimpleTest.waitForExplicitFinish();
+-  SimpleTest.registerCleanupFunction(() => {
+-    Services.prefs.clearUserPref("dom.webcomponents.enabled");
+-  });
+ 
+   let gWalker = null;
+   let gClient = null;
+ 
+   addTest(function setup() {
+     info ("Setting up inspector and walker actors.");
+ 
+     let url = document.getElementById("inspectorContent").href;
