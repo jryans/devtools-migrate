@@ -46,7 +46,8 @@ mach build devtools/*
 or specify some subdirectory, as usual.
 
 Just `devtools` is unfortunately not enough: no products directly include the
-entire DevTools tree, so the build system won't understand you.
+entire DevTools tree, so the build system won't understand you.  I'm hopeful we
+can improve this in a [follow up][build].
 
 ## JS Modules
 
@@ -99,7 +100,11 @@ Example:
 
 To `import()` a file, the `resource://` path is derived directly from the source
 tree path, but does have the `gre` difference between client and server as
-before.
+before.  In more detail:
+
+* `/devtools/client/<X>`: `resource:///modules/devtools/client/<X>`
+* `/devtools/server/<X>`: `resource://gre/modules/devtools/server/<X>`
+* `/devtools/shared/<X>`: `resource://gre/modules/devtools/shared/<X>`
 
 Example:
 
@@ -222,3 +227,4 @@ manually, applying all the guidelines described in this file as you go.
 [l10n]: https://bugzilla.mozilla.org/show_bug.cgi?id=1182722
 [shared]: https://bugzilla.mozilla.org/show_bug.cgi?id=1196047
 [libs]: https://bugzilla.mozilla.org/show_bug.cgi?id=1201710
+[build]: https://bugzilla.mozilla.org/show_bug.cgi?id=1202977
