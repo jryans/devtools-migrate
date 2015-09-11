@@ -89,7 +89,6 @@ location that these files are installed to."
 
 hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____rs_devtools.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Rewrite_URLs_outside_call_sites__rs_devtools.patch
-hg import ${SCRIPT_DIR}/Bug_912121___Correct_module_ID_for_source_map__r_fitzgen.patch
 
 hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__rs_devtools.patch
 
