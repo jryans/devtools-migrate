@@ -87,7 +87,6 @@ install JS modules at a path that corresponds directly to their source tree
 location.  Here we rewrite all require and import calls to match the new
 location that these files are installed to."
 
-hg import ${SCRIPT_DIR}/Bug_912121___require___in_workers_should_stay_as_resource_____rs_devtools.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Rewrite_URLs_outside_call_sites__rs_devtools.patch
 
 hg import ${SCRIPT_DIR}/Bug_912121___Only_one_JS_modules_section_per_moz_build__rs_devtools.patch
@@ -111,7 +110,7 @@ hg import ${SCRIPT_DIR}/Bug_912121___Update_GCLI_command_paths__rs_devtools.patc
 
 # *** LOADER PATHS ***
 hg import ${SCRIPT_DIR}/Bug_912121___Remove_dead_loader_paths__rs_devtools.patch
-# TODO: test reload?
+hg import ${SCRIPT_DIR}/Bug_912121___Update_srcdir_manifest_paths_in_loader__r_ochameau.patch
 
 # *** THEMES / CHROME SKIN ***
 hg import ${SCRIPT_DIR}/Bug_912121___Move_straggler_images_next_to_other_DevTools_images__rs_devtools.patch

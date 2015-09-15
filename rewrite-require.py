@@ -82,8 +82,11 @@ resolve_map = [[x, loader_map[x]] for x in resolve_map]
 def is_relative(id):
     return id[0] == "."
 
+def is_resource(id):
+    return id.startswith("resource://")
+
 def resolve(id):
-    if id.startswith("resource://"):
+    if is_resource(id):
         return normalize_ext(id)
     for id_base, resource_base in resolve_map:
         if id.startswith(id_base):
@@ -154,7 +157,7 @@ def rewrite_block(current, id, is_import, path):
     for prefix in ignored_source_prefixes:
         if source.startswith(prefix):
             return None
-    if is_import:
+    if is_import or is_resource(id):
         is_client = source.startswith("devtools/client")
         if is_client:
             updated_id = "resource:///modules/" + source
