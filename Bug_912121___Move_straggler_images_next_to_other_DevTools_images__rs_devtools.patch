@@ -2,15 +2,15 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1441247868 18000
 #      Wed Sep 02 21:37:48 2015 -0500
-# Node ID fb8732a8dd14e8c758a013c8c6a96bea3c06da97
-# Parent  b10bb9768ed0907aac2b7fe4a718c4884582a803
+# Node ID 221b146502e98449977fd58bd40977e38d656f0c
+# Parent  691b7cc11c5222eb96ee18ae90d02b3ea24b8c70
 Bug 912121 - Move straggler images next to other DevTools images. rs=devtools
 
 diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
 --- a/browser/themes/linux/jar.mn
 +++ b/browser/themes/linux/jar.mn
-@@ -285,17 +285,17 @@ browser.jar:
-   skin/classic/browser/devedition/search.svg          (../shared/devedition/search.svg)
+@@ -282,17 +282,17 @@ browser.jar:
+   skin/classic/browser/translation-16@2x.png          (../shared/translation/translation-16@2x.png)
    skin/classic/browser/devedition/urlbar-history-dropmarker.svg            (../shared/devedition/urlbar-history-dropmarker.svg)
    skin/classic/browser/devedition/urlbar-arrow.png    (../shared/devedition/urlbar-arrow.png)
    skin/classic/browser/devedition/urlbar-arrow@2x.png (../shared/devedition/urlbar-arrow@2x.png)
@@ -28,7 +28,25 @@ diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
    skin/classic/browser/devtools/performance-icons.svg  (../shared/devtools/images/performance-icons.svg)
    skin/classic/browser/devtools/newtab.png             (../shared/devtools/images/newtab.png)
    skin/classic/browser/devtools/newtab@2x.png          (../shared/devtools/images/newtab@2x.png)
-@@ -404,16 +404,17 @@ browser.jar:
+@@ -330,16 +330,17 @@ browser.jar:
+   skin/classic/browser/devtools/alerticon-warning@2x.png      (../shared/devtools/images/alerticon-warning@2x.png)
+ * skin/classic/browser/devtools/ruleview.css          (../shared/devtools/ruleview.css)
+ * skin/classic/browser/devtools/webconsole.css                  (../shared/devtools/webconsole.css)
+   skin/classic/browser/devtools/webconsole.svg                  (../shared/devtools/images/webconsole.svg)
+   skin/classic/browser/devtools/commandline.css              (../shared/devtools/commandline.css)
+   skin/classic/browser/devtools/markup-view.css       (../shared/devtools/markup-view.css)
+   skin/classic/browser/devtools/editor-error.png       (../shared/devtools/images/editor-error.png)
+   skin/classic/browser/devtools/editor-breakpoint.png  (../shared/devtools/images/editor-breakpoint.png)
++  skin/classic/browser/devtools/editor-breakpoint@2x.png        (../shared/devtools/images/editor-breakpoint@2x.png)
+   skin/classic/browser/devtools/editor-debug-location.png (../shared/devtools/images/editor-debug-location.png)
+   skin/classic/browser/devtools/editor-debug-location@2x.png (../shared/devtools/images/editor-debug-location@2x.png)
+   skin/classic/browser/devtools/breadcrumbs-divider@2x.png      (../shared/devtools/images/breadcrumbs-divider@2x.png)
+   skin/classic/browser/devtools/breadcrumbs-scrollbutton.png    (../shared/devtools/images/breadcrumbs-scrollbutton.png)
+   skin/classic/browser/devtools/breadcrumbs-scrollbutton@2x.png (../shared/devtools/images/breadcrumbs-scrollbutton@2x.png)
+   skin/classic/browser/devtools/animationinspector.css          (../shared/devtools/animationinspector.css)
+ * skin/classic/browser/devtools/canvasdebugger.css    (../shared/devtools/canvasdebugger.css)
+   skin/classic/browser/devtools/debugger.css          (../shared/devtools/debugger.css)
+@@ -401,33 +402,33 @@ browser.jar:
    skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
    skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
    skin/classic/browser/devtools/responsiveui-rotate.png          (../shared/devtools/images/responsivemode/responsiveui-rotate.png)
@@ -46,7 +64,24 @@ diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
    skin/classic/browser/devtools/dock-side@2x.png          (../shared/devtools/images/dock-side@2x.png)
  * skin/classic/browser/devtools/floating-scrollbars.css   (../shared/devtools/floating-scrollbars.css)
    skin/classic/browser/devtools/floating-scrollbars-light.css (../shared/devtools/floating-scrollbars-light.css)
-@@ -446,17 +447,16 @@ browser.jar:
+ * skin/classic/browser/devtools/inspector.css               (../shared/devtools/inspector.css)
+   skin/classic/browser/devtools/profiler-stopwatch.svg      (../shared/devtools/images/profiler-stopwatch.svg)
+   skin/classic/browser/devtools/profiler-stopwatch-checked.svg      (../shared/devtools/images/profiler-stopwatch-checked.svg)
+   skin/classic/browser/devtools/tool-options.svg            (../shared/devtools/images/tool-options.svg)
+   skin/classic/browser/devtools/tool-webconsole.svg         (../shared/devtools/images/tool-webconsole.svg)
+   skin/classic/browser/devtools/tool-debugger.svg           (../shared/devtools/images/tool-debugger.svg)
+   skin/classic/browser/devtools/tool-debugger-paused.svg    (../shared/devtools/images/tool-debugger-paused.svg)
+   skin/classic/browser/devtools/tool-inspector.svg          (../shared/devtools/images/tool-inspector.svg)
+-  skin/classic/browser/devtools/tool-inspector.svg          (../shared/devtools/images/tool-inspector.svg)
+   skin/classic/browser/devtools/tool-shadereditor.svg       (../shared/devtools/images/tool-shadereditor.svg)
+   skin/classic/browser/devtools/tool-styleeditor.svg        (../shared/devtools/images/tool-styleeditor.svg)
+   skin/classic/browser/devtools/tool-storage.svg            (../shared/devtools/images/tool-storage.svg)
+   skin/classic/browser/devtools/tool-profiler.svg           (../shared/devtools/images/tool-profiler.svg)
+   skin/classic/browser/devtools/tool-profiler-active.svg    (../shared/devtools/images/tool-profiler-active.svg)
+   skin/classic/browser/devtools/tool-network.svg            (../shared/devtools/images/tool-network.svg)
+   skin/classic/browser/devtools/tool-scratchpad.svg         (../shared/devtools/images/tool-scratchpad.svg)
+   skin/classic/browser/devtools/tool-webaudio.svg           (../shared/devtools/images/tool-webaudio.svg)
+@@ -443,17 +444,16 @@ browser.jar:
    skin/classic/browser/devtools/vview-open-inspector@2x.png (../shared/devtools/images/vview-open-inspector@2x.png)
    skin/classic/browser/devtools/cubic-bezier-swatch.png     (../shared/devtools/images/cubic-bezier-swatch.png)
    skin/classic/browser/devtools/cubic-bezier-swatch@2x.png  (../shared/devtools/images/cubic-bezier-swatch@2x.png)
@@ -67,8 +102,8 @@ diff --git a/browser/themes/linux/jar.mn b/browser/themes/linux/jar.mn
 diff --git a/browser/themes/osx/jar.mn b/browser/themes/osx/jar.mn
 --- a/browser/themes/osx/jar.mn
 +++ b/browser/themes/osx/jar.mn
-@@ -385,17 +385,17 @@ browser.jar:
-   skin/classic/browser/devedition/search.svg                (../shared/devedition/search.svg)
+@@ -377,17 +377,17 @@ browser.jar:
+   skin/classic/browser/translation-16@2x.png                (../shared/translation/translation-16@2x.png)
    skin/classic/browser/devedition/urlbar-history-dropmarker.svg            (../shared/devedition/urlbar-history-dropmarker.svg)
    skin/classic/browser/devedition/urlbar-arrow.png          (../shared/devedition/urlbar-arrow.png)
    skin/classic/browser/devedition/urlbar-arrow@2x.png       (../shared/devedition/urlbar-arrow@2x.png)
@@ -86,7 +121,7 @@ diff --git a/browser/themes/osx/jar.mn b/browser/themes/osx/jar.mn
    skin/classic/browser/devtools/performance-icons.svg       (../shared/devtools/images/performance-icons.svg)
    skin/classic/browser/devtools/newtab.png                  (../shared/devtools/images/newtab.png)
    skin/classic/browser/devtools/newtab@2x.png               (../shared/devtools/images/newtab@2x.png)
-@@ -507,16 +507,17 @@ browser.jar:
+@@ -499,31 +499,31 @@ browser.jar:
    skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
    skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
    skin/classic/browser/devtools/responsiveui-rotate.png          (../shared/devtools/images/responsivemode/responsiveui-rotate.png)
@@ -104,7 +139,22 @@ diff --git a/browser/themes/osx/jar.mn b/browser/themes/osx/jar.mn
    skin/classic/browser/devtools/dock-side@2x.png          (../shared/devtools/images/dock-side@2x.png)
  * skin/classic/browser/devtools/inspector.css               (../shared/devtools/inspector.css)
    skin/classic/browser/devtools/profiler-stopwatch.svg      (../shared/devtools/images/profiler-stopwatch.svg)
-@@ -547,17 +548,16 @@ browser.jar:
+   skin/classic/browser/devtools/profiler-stopwatch-checked.svg      (../shared/devtools/images/profiler-stopwatch-checked.svg)
+   skin/classic/browser/devtools/tool-options.svg            (../shared/devtools/images/tool-options.svg)
+   skin/classic/browser/devtools/tool-webconsole.svg         (../shared/devtools/images/tool-webconsole.svg)
+   skin/classic/browser/devtools/tool-debugger.svg           (../shared/devtools/images/tool-debugger.svg)
+   skin/classic/browser/devtools/tool-debugger-paused.svg    (../shared/devtools/images/tool-debugger-paused.svg)
+   skin/classic/browser/devtools/tool-inspector.svg          (../shared/devtools/images/tool-inspector.svg)
+-  skin/classic/browser/devtools/tool-inspector.svg          (../shared/devtools/images/tool-inspector.svg)
+   skin/classic/browser/devtools/tool-shadereditor.svg       (../shared/devtools/images/tool-shadereditor.svg)
+   skin/classic/browser/devtools/tool-styleeditor.svg        (../shared/devtools/images/tool-styleeditor.svg)
+   skin/classic/browser/devtools/tool-storage.svg            (../shared/devtools/images/tool-storage.svg)
+   skin/classic/browser/devtools/tool-profiler.svg           (../shared/devtools/images/tool-profiler.svg)
+   skin/classic/browser/devtools/tool-profiler-active.svg    (../shared/devtools/images/tool-profiler-active.svg)
+   skin/classic/browser/devtools/tool-network.svg            (../shared/devtools/images/tool-network.svg)
+   skin/classic/browser/devtools/tool-scratchpad.svg         (../shared/devtools/images/tool-scratchpad.svg)
+   skin/classic/browser/devtools/tool-webaudio.svg           (../shared/devtools/images/tool-webaudio.svg)
+@@ -539,17 +539,16 @@ browser.jar:
    skin/classic/browser/devtools/vview-open-inspector@2x.png (../shared/devtools/images/vview-open-inspector@2x.png)
    skin/classic/browser/devtools/cubic-bezier-swatch.png     (../shared/devtools/images/cubic-bezier-swatch.png)
    skin/classic/browser/devtools/cubic-bezier-swatch@2x.png  (../shared/devtools/images/cubic-bezier-swatch@2x.png)
@@ -131,8 +181,8 @@ rename to browser/themes/shared/devtools/images/responsivemode/responsiveui-home
 diff --git a/browser/themes/windows/jar.mn b/browser/themes/windows/jar.mn
 --- a/browser/themes/windows/jar.mn
 +++ b/browser/themes/windows/jar.mn
-@@ -409,17 +409,17 @@ browser.jar:
-         skin/classic/browser/devedition/search.svg                  (../shared/devedition/search.svg)
+@@ -402,17 +402,17 @@ browser.jar:
+         skin/classic/browser/translation-16@2x.png                  (../shared/translation/translation-16@2x.png)
          skin/classic/browser/devedition/urlbar-history-dropmarker.svg            (../shared/devedition/urlbar-history-dropmarker.svg)
          skin/classic/browser/devedition/urlbar-arrow.png            (../shared/devedition/urlbar-arrow.png)
          skin/classic/browser/devedition/urlbar-arrow@2x.png         (../shared/devedition/urlbar-arrow@2x.png)
@@ -150,7 +200,7 @@ diff --git a/browser/themes/windows/jar.mn b/browser/themes/windows/jar.mn
          skin/classic/browser/devtools/performance-icons.svg         (../shared/devtools/images/performance-icons.svg)
          skin/classic/browser/devtools/newtab.png                    (../shared/devtools/images/newtab.png)
          skin/classic/browser/devtools/newtab@2x.png                 (../shared/devtools/images/newtab@2x.png)
-@@ -529,16 +529,17 @@ browser.jar:
+@@ -522,16 +522,17 @@ browser.jar:
          skin/classic/browser/devtools/responsive-horizontal-resizer.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer.png)
          skin/classic/browser/devtools/responsive-horizontal-resizer@2x.png  (../shared/devtools/images/responsivemode/responsive-horizontal-resizer@2x.png)
          skin/classic/browser/devtools/responsiveui-rotate.png       (../shared/devtools/images/responsivemode/responsiveui-rotate.png)
@@ -168,7 +218,7 @@ diff --git a/browser/themes/windows/jar.mn b/browser/themes/windows/jar.mn
          skin/classic/browser/devtools/dock-side@2x.png              (../shared/devtools/images/dock-side@2x.png)
  *       skin/classic/browser/devtools/floating-scrollbars.css       (../shared/devtools/floating-scrollbars.css)
          skin/classic/browser/devtools/floating-scrollbars-light.css (../shared/devtools/floating-scrollbars-light.css)
-@@ -570,17 +571,16 @@ browser.jar:
+@@ -563,17 +564,16 @@ browser.jar:
          skin/classic/browser/devtools/vview-open-inspector@2x.png   (../shared/devtools/images/vview-open-inspector@2x.png)
          skin/classic/browser/devtools/cubic-bezier-swatch.png       (../shared/devtools/images/cubic-bezier-swatch.png)
          skin/classic/browser/devtools/cubic-bezier-swatch@2x.png    (../shared/devtools/images/cubic-bezier-swatch@2x.png)
