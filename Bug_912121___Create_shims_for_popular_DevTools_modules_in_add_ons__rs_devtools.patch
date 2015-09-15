@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1440819888 18000
-#      Fri Aug 28 22:44:48 2015 -0500
-# Node ID 8b6ac8e69cf7109b6cb57f9de5f514392bd89c2d
-# Parent  c81362eb201675f406b0c21ca1d503b156d1c14a
+# Date 1442281047 18000
+#      Mon Sep 14 20:37:27 2015 -0500
+# Node ID 3e21a93a973d52775180368c70f17eb86ed84158
+# Parent  235b14adc94cf3d00fa95fc92a1f1fab97eae9f9
 Bug 912121 - Create shims for popular DevTools modules in add-ons. rs=devtools
 
 For popular modules used by many DevTools add-ons, add shim files which wrap the
@@ -15,7 +15,7 @@ issue.
 diff --git a/devtools/client/moz.build b/devtools/client/moz.build
 --- a/devtools/client/moz.build
 +++ b/devtools/client/moz.build
-@@ -21,16 +21,17 @@ DIRS += [
+@@ -22,16 +22,17 @@ DIRS += [
      'netmonitor',
      'performance',
      'projecteditor',
@@ -37,7 +37,7 @@ diff --git a/devtools/client/shims/gDevTools.jsm b/devtools/client/shims/gDevToo
 new file mode 100644
 --- /dev/null
 +++ b/devtools/client/shims/gDevTools.jsm
-@@ -0,0 +1,31 @@
+@@ -0,0 +1,36 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -51,11 +51,16 @@ new file mode 100644
 +
 +const Cu = Components.utils;
 +
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("This path to gDevTools.jsm is deprecated.  Please use " +
-+                   "Cu.import(\"resource:///modules/devtools/client/" +
-+                   "framework/gDevTools.jsm\") to load this module.",
-+                   "https://bugzil.la/912121");
++const { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
++
++const WARNING_PREF = "devtools.migration.warnings";
++if (Services.prefs.getBoolPref(WARNING_PREF)) {
++  const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
++  Deprecated.warning("This path to gDevTools.jsm is deprecated.  Please use " +
++                     "Cu.import(\"resource:///modules/devtools/client/" +
++                     "framework/gDevTools.jsm\") to load this module.",
++                     "https://bugzil.la/912121");
++}
 +
 +this.EXPORTED_SYMBOLS = [
 +  "gDevTools",
@@ -94,25 +99,25 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  include('../templates.mozbuild')
-
+ 
  DIRS += [
      'actors',
 +    'shims',
  ]
-
+ 
  BROWSER_CHROME_MANIFESTS += ['tests/browser/browser.ini']
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
  XPCSHELL_TESTS_MANIFESTS += ['tests/unit/xpcshell.ini']
-
- if CONFIG['ENABLE_TESTS']:
-     DIRS += ['tests/gtest']
-@@ -44,15 +45,14 @@ SOURCES += [
- DEFINES['GOOGLE_PROTOBUF_NO_RTTI'] = True
-
+ 
+ XPIDL_SOURCES += [
+     'nsIJSInspector.idl',
+@@ -25,13 +26,12 @@ SOURCES += [
+ ]
+ 
  FINAL_LIBRARY = 'xul'
-
+ 
  DevToolsModules(
      'child.js',
      'content-globals.js',
@@ -122,20 +127,18 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'protocol.js',
      'worker.js'
  )
-
- FAIL_ON_WARNINGS = True
 diff --git a/devtools/server/dbg-server.jsm b/devtools/server/shims/dbg-server.jsm
 rename from devtools/server/dbg-server.jsm
 rename to devtools/server/shims/dbg-server.jsm
 --- a/devtools/server/dbg-server.jsm
 +++ b/devtools/server/shims/dbg-server.jsm
-@@ -1,26 +1,32 @@
+@@ -1,26 +1,37 @@
 -/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*- */
 -/* vim: set ft=javascript ts=2 et sw=2 tw=80: */
  /* This Source Code Form is subject to the terms of the Mozilla Public
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+ 
  "use strict";
 +
  /**
@@ -145,33 +148,38 @@ rename to devtools/server/shims/dbg-server.jsm
 + * This file only exists to support add-ons which import this module at a
 + * specific path.
   */
-
+ 
 -const Ci = Components.interfaces;
 -const Cc = Components.classes;
  const Cu = Components.utils;
-
+ 
 -const { require } = Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("dbg-server.jsm is deprecated.  Please use " +
-+                   "require(\"devtools/server/main\") to load this " +
-+                   "module.",
-+                   "https://bugzil.la/912121");
-
++const { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
+ 
 -this.EXPORTED_SYMBOLS = ["DebuggerServer", "ActorPool"];
++const WARNING_PREF = "devtools.migration.warnings";
++if (Services.prefs.getBoolPref(WARNING_PREF)) {
++  const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
++  Deprecated.warning("dbg-server.jsm is deprecated.  Please use " +
++                     "require(\"devtools/server/main\") to load this " +
++                     "module.",
++                     "https://bugzil.la/912121");
++}
+ 
+-let server = require("devtools/server/main");
 +this.EXPORTED_SYMBOLS = [
 +  "DebuggerServer",
 +  "ActorPool",
 +  "OriginalLocation",
 +];
-
--let server = require("devtools/server/main");
-+const { require } =
-+  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
-+const module = require("devtools/server/main");
-
+ 
 -this.DebuggerServer = server.DebuggerServer;
 -this.ActorPool = server.ActorPool;
 -this.OriginalLocation = server.OriginalLocation;
++const { require } =
++  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
++const module = require("devtools/server/main");
++
 +for (let symbol of this.EXPORTED_SYMBOLS) {
 +  this[symbol] = module[symbol];
 +}
@@ -202,7 +210,7 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+ 
  DevToolsModules(
      'connection-manager.js',
 -    'dbg-client.jsm',
@@ -211,8 +219,8 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -14,16 +14,17 @@ DIRS += [
-     'gcli',
+@@ -15,16 +15,17 @@ DIRS += [
+     'heapsnapshot',
      'jsbeautify',
      'performance',
      'pretty-fast',
@@ -227,13 +235,13 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'transport',
      'webconsole'
  ]
-
+ 
  MOCHITEST_CHROME_MANIFESTS += ['tests/mochitest/chrome.ini']
 diff --git a/devtools/shared/shims/Console.jsm b/devtools/shared/shims/Console.jsm
 new file mode 100644
 --- /dev/null
 +++ b/devtools/shared/shims/Console.jsm
-@@ -0,0 +1,30 @@
+@@ -0,0 +1,35 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -247,11 +255,16 @@ new file mode 100644
 +
 +const Cu = Components.utils;
 +
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("This path to Console.jsm is deprecated.  Please use " +
-+                   "Cu.import(\"resource://gre/modules/devtools/shared/" +
-+                   "Console.jsm\") to load this module.",
-+                   "https://bugzil.la/912121");
++const { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
++
++const WARNING_PREF = "devtools.migration.warnings";
++if (Services.prefs.getBoolPref(WARNING_PREF)) {
++  const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
++  Deprecated.warning("This path to Console.jsm is deprecated.  Please use " +
++                     "Cu.import(\"resource://gre/modules/devtools/shared/" +
++                     "Console.jsm\") to load this module.",
++                     "https://bugzil.la/912121");
++}
 +
 +this.EXPORTED_SYMBOLS = [
 +  "console",
@@ -268,7 +281,7 @@ diff --git a/devtools/shared/shims/Loader.jsm b/devtools/shared/shims/Loader.jsm
 new file mode 100644
 --- /dev/null
 +++ b/devtools/shared/shims/Loader.jsm
-@@ -0,0 +1,34 @@
+@@ -0,0 +1,39 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -282,11 +295,16 @@ new file mode 100644
 +
 +const Cu = Components.utils;
 +
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("This path to Loader.jsm is deprecated.  Please use " +
-+                   "Cu.import(\"resource://gre/modules/devtools/shared/" +
-+                   "Loader.jsm\") to load this module.",
-+                   "https://bugzil.la/912121");
++const { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
++
++const WARNING_PREF = "devtools.migration.warnings";
++if (Services.prefs.getBoolPref(WARNING_PREF)) {
++  const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
++  Deprecated.warning("This path to Loader.jsm is deprecated.  Please use " +
++                     "Cu.import(\"resource://gre/modules/devtools/shared/" +
++                     "Loader.jsm\") to load this module.",
++                     "https://bugzil.la/912121");
++}
 +
 +this.EXPORTED_SYMBOLS = [
 +  "DevToolsLoader",
@@ -307,7 +325,7 @@ diff --git a/devtools/shared/shims/Simulator.jsm b/devtools/shared/shims/Simulat
 new file mode 100644
 --- /dev/null
 +++ b/devtools/shared/shims/Simulator.jsm
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,34 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -321,11 +339,16 @@ new file mode 100644
 +
 +const Cu = Components.utils;
 +
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("This path to Simulator.jsm is deprecated.  Please use " +
-+                   "Cu.import(\"resource://gre/modules/devtools/shared/" +
-+                   "apps/Simulator.jsm\") to load this module.",
-+                   "https://bugzil.la/912121");
++const { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
++
++const WARNING_PREF = "devtools.migration.warnings";
++if (Services.prefs.getBoolPref(WARNING_PREF)) {
++  const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
++  Deprecated.warning("This path to Simulator.jsm is deprecated.  Please use " +
++                     "Cu.import(\"resource://gre/modules/devtools/shared/" +
++                     "apps/Simulator.jsm\") to load this module.",
++                     "https://bugzil.la/912121");
++}
 +
 +this.EXPORTED_SYMBOLS = [
 +  "Simulator",
@@ -342,46 +365,51 @@ rename from devtools/shared/client/dbg-client.jsm
 rename to devtools/shared/shims/dbg-client.jsm
 --- a/devtools/shared/client/dbg-client.jsm
 +++ b/devtools/shared/shims/dbg-client.jsm
-@@ -1,29 +1,38 @@
+@@ -1,29 +1,43 @@
  /* This Source Code Form is subject to the terms of the Mozilla Public
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+ 
  "use strict";
-
+ 
 -// Just a compatibility wrapper for addons that are used
 -// to import the jsm instead of the js module
 +/**
 + * This file only exists to support add-ons which import this module at a
 + * specific path.
 + */
-
+ 
  const Cu = Components.utils;
-
+ 
 -const { require } = Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("dbg-client.jsm is deprecated.  Please use " +
-+                   "require(\"devtools/shared/client/main\") to load this " +
-+                   "module.", "https://bugzil.la/912121");
++const { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
++
++const WARNING_PREF = "devtools.migration.warnings";
++if (Services.prefs.getBoolPref(WARNING_PREF)) {
++  const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
++  Deprecated.warning("dbg-client.jsm is deprecated.  Please use " +
++                     "require(\"devtools/shared/client/main\") to load this " +
++                     "module.", "https://bugzil.la/912121");
++}
 +
 +const { require } =
 +  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
-
+ 
  this.EXPORTED_SYMBOLS = ["DebuggerTransport",
                           "DebuggerClient",
                           "RootClient",
                           "LongStringClient",
                           "EnvironmentClient",
                           "ObjectClient"];
-
+ 
  let client = require("devtools/shared/client/main");
-
+ 
  this.DebuggerClient = client.DebuggerClient;
  this.RootClient = client.RootClient;
  this.LongStringClient = client.LongStringClient;
  this.EnvironmentClient = client.EnvironmentClient;
  this.ObjectClient = client.ObjectClient;
-
+ 
 -this.DebuggerTransport = require("devtools/shared/transport/transport").DebuggerTransport;
 +this.DebuggerTransport =
 +  require("devtools/shared/transport/transport").DebuggerTransport;
@@ -389,7 +417,7 @@ diff --git a/devtools/shared/shims/event-emitter.js b/devtools/shared/shims/even
 new file mode 100644
 --- /dev/null
 +++ b/devtools/shared/shims/event-emitter.js
-@@ -0,0 +1,30 @@
+@@ -0,0 +1,42 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -401,25 +429,37 @@ new file mode 100644
 + * specific path.
 + */
 +
-+const Cu = Components.utils;
++(function (factory) { // Module boilerplate
++  if (this.module && module.id.indexOf("event-emitter") >= 0) { // require
++    factory.call(this, require, exports, module);
++  } else { // Cu.import
++    const Cu = Components.utils;
++    const { require } =
++      Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
++    this.isWorker = false;
++    this.promise = Cu.import("resource://gre/modules/Promise.jsm", {}).Promise;
++    factory.call(this, require, this, { exports: this });
++    this.EXPORTED_SYMBOLS = ["EventEmitter"];
++  }
++}).call(this, function (require, exports, module) {
++  const { Cu } = require("chrome");
++  const Services = require("Services");
++  const WARNING_PREF = "devtools.migration.warnings";
++  // Cu and Services aren't accessible from workers
++  if (Cu && Services && Services.prefs &&
++      Services.prefs.getBoolPref(WARNING_PREF)) {
++    const { Deprecated } =
++      Cu.import("resource://gre/modules/Deprecated.jsm", {});
++    Deprecated.warning("This path to event-emitter.js is deprecated.  Please " +
++                       "use require(\"devtools/shared/event-emitter\") to " +
++                       "load this module.",
++                       "https://bugzil.la/912121");
++  }
 +
-+const { Deprecated } = Cu.import("resource://gre/modules/Deprecated.jsm", {});
-+Deprecated.warning("This path to event-emitter.js is deprecated.  Please use " +
-+                   "require(\"devtools/shared/event-emitter\") to load this " +
-+                   "module.",
-+                   "https://bugzil.la/912121");
-+
-+this.EXPORTED_SYMBOLS = [
-+  "EventEmitter",
-+];
-+
-+const { require } =
-+  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
-+const module = require("devtools/shared/event-emitter");
-+
-+for (let symbol of this.EXPORTED_SYMBOLS) {
-+  this[symbol] = module[symbol];
-+}
++  const EventEmitter = require("devtools/shared/event-emitter");
++  this.EventEmitter = EventEmitter;
++  module.exports = EventEmitter;
++});
 diff --git a/devtools/shared/shims/moz.build b/devtools/shared/shims/moz.build
 new file mode 100644
 --- /dev/null
@@ -446,24 +486,48 @@ diff --git a/mobile/android/tests/browser/chrome/test_debugger_server.html b/mob
 --- a/mobile/android/tests/browser/chrome/test_debugger_server.html
 +++ b/mobile/android/tests/browser/chrome/test_debugger_server.html
 @@ -14,18 +14,19 @@ Migrated from Robocop: https://bugzilla.
-
+ 
    "use strict";
-
+ 
    const { utils: Cu } = Components;
-
+ 
    const DEBUGGER_USB_ENABLED = "devtools.remote.usb.enabled";
-
+ 
    Cu.import("resource://gre/modules/Services.jsm");
 -  const { DebuggerServer } =
 -    Cu.import("resource://gre/modules/devtools/server/dbg-server.jsm", {});
 +  const { require } =
 +    Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
 +  const { DebuggerServer } = require("devtools/server/main");
-
+ 
    let win = Services.wm.getMostRecentWindow("navigator:browser");
-
+ 
    win.RemoteDebugger.init();
-
+ 
    SimpleTest.registerCleanupFunction(function() {
      Services.prefs.clearUserPref(DEBUGGER_USB_ENABLED);
    });
+diff --git a/modules/libpref/init/all.js b/modules/libpref/init/all.js
+--- a/modules/libpref/init/all.js
++++ b/modules/libpref/init/all.js
+@@ -888,16 +888,20 @@ pref("devtools.gcli.underscoreSrc", "htt
+ // Set imgur upload client ID
+ pref("devtools.gcli.imgurClientID", '0df414e888d7240');
+ // Imgur's upload URL
+ pref("devtools.gcli.imgurUploadURL", "https://api.imgur.com/3/image");
+ 
+ // GCLI commands directory
+ pref("devtools.commands.dir", "");
+ 
++// Deprecation warnings after DevTools file migration.  Bug 1204127 tracks
++// enabling this.
++pref("devtools.migration.warnings", false);
++
+ // view source
+ pref("view_source.syntax_highlight", true);
+ pref("view_source.wrap_long_lines", false);
+ pref("view_source.editor.external", false);
+ pref("view_source.editor.path", "");
+ // allows to add further arguments to the editor; use the %LINE% placeholder
+ // for jumping to a specific line (e.g. "/line:%LINE%" or "--goto %LINE%")
+ pref("view_source.editor.args", "");

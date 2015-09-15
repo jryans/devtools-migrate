@@ -160,7 +160,7 @@ hg commit -m "Bug 912121 - Update misc. DevTools paths and comments. rs=devtools
 
 # *** ADD-ON COMPAT ***
 
-hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_modules_in_add_ons__rs_devtools.patch
+hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_DevTools_modules_in_add_ons__rs_devtools.patch
 hg import ${SCRIPT_DIR}/Bug_912121___Create_shims_for_popular_DevTools_themes_in_add_ons__rs_devtools.patch
 
 # *** TESTS ***
