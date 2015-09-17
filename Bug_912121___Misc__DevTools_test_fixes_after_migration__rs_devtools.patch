@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441344521 18000
-#      Fri Sep 04 00:28:41 2015 -0500
-# Node ID 942bdd35213a5ab176c7b1464cd6603107d0922e
-# Parent  3f71226c3c0db43c2a281549a05e623f79d36759
+# Date 1442449311 18000
+#      Wed Sep 16 19:21:51 2015 -0500
+# Node ID b9a249a82e7e150c3b3830a39237e5b8ce5a81ef
+# Parent  fba6e1617f683f57bcf54f8ac8e3b1f60b3435ab
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -248,3 +248,15 @@ diff --git a/devtools/server/tests/mochitest/test_inspector-anonymous.html b/dev
      info ("Setting up inspector and walker actors.");
  
      let url = document.getElementById("inspectorContent").href;
+diff --git a/devtools/shared/tests/mochitest/chrome.ini b/devtools/shared/tests/mochitest/chrome.ini
+--- a/devtools/shared/tests/mochitest/chrome.ini
++++ b/devtools/shared/tests/mochitest/chrome.ini
+@@ -1,7 +1,8 @@
+ [DEFAULT]
+ tags = devtools
+ skip-if = buildapp == 'b2g' || os == 'android'
+ 
+ [test_eventemitter_basic.html]
+ [test_devtools_extensions.html]
++skip-if = os == 'linux' && debug # Bug 1205739
+ [test_loader_paths.html]
