@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1442449311 18000
-#      Wed Sep 16 19:21:51 2015 -0500
-# Node ID b9a249a82e7e150c3b3830a39237e5b8ce5a81ef
-# Parent  fba6e1617f683f57bcf54f8ac8e3b1f60b3435ab
+# Date 1442525553 18000
+#      Thu Sep 17 16:32:33 2015 -0500
+# Node ID 82f96abf398b8aeb452b60d114f5130185f6f87d
+# Parent  d51699996a010855f62e6b64db9a121ae002eed3
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -173,7 +173,7 @@ diff --git a/devtools/client/webconsole/test/browser_webconsole_netlogging.js b/
  const TEST_DATA_JSON_CONTENT =
    '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
  
- let lastRequest = null;
+ var lastRequest = null;
 diff --git a/devtools/client/webide/test/chrome.ini b/devtools/client/webide/test/chrome.ini
 --- a/devtools/client/webide/test/chrome.ini
 +++ b/devtools/client/webide/test/chrome.ini
@@ -202,7 +202,7 @@ diff --git a/devtools/client/webide/test/chrome.ini b/devtools/client/webide/tes
 diff --git a/devtools/client/webide/test/sidebars/chrome.ini b/devtools/client/webide/test/sidebars/chrome.ini
 --- a/devtools/client/webide/test/sidebars/chrome.ini
 +++ b/devtools/client/webide/test/sidebars/chrome.ini
-@@ -9,15 +9,17 @@ support-files =
+@@ -9,16 +9,18 @@ support-files =
  
  [test_newapp.html]
  skip-if = buildapp == 'b2g' || (os == "mac" && (os_version == "10.8" || os_version == "10.10") && debug) || (os == "win" && os_version == "10.0") # Bug 1135315, bug 1197053
@@ -217,6 +217,7 @@ diff --git a/devtools/client/webide/test/sidebars/chrome.ini b/devtools/client/w
  [test_fullscreenToolbox.html]
  [test_device_preferences.html]
  [test_device_permissions.html]
+ [test_device_runtime.html]
  [test_device_settings.html]
  [test_telemetry.html]
 +skip-if = true # Bug 1201392 - Update add-ons after migration

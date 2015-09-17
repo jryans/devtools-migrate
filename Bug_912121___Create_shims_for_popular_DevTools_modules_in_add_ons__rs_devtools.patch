@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1442281047 18000
-#      Mon Sep 14 20:37:27 2015 -0500
-# Node ID 3e21a93a973d52775180368c70f17eb86ed84158
-# Parent  235b14adc94cf3d00fa95fc92a1f1fab97eae9f9
+# Date 1442525322 18000
+#      Thu Sep 17 16:28:42 2015 -0500
+# Node ID 613b1345fc2d718ede14b86ac80db1e62e27688b
+# Parent  1e7c65bb8bdffd6802e9a3cdefdcbe55ec846afc
 Bug 912121 - Create shims for popular DevTools modules in add-ons. rs=devtools
 
 For popular modules used by many DevTools add-ons, add shim files which wrap the
@@ -166,7 +166,7 @@ rename to devtools/server/shims/dbg-server.jsm
 +                     "https://bugzil.la/912121");
 +}
  
--let server = require("devtools/server/main");
+-var server = require("devtools/server/main");
 +this.EXPORTED_SYMBOLS = [
 +  "DebuggerServer",
 +  "ActorPool",
@@ -219,9 +219,9 @@ diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -15,16 +15,17 @@ DIRS += [
-     'heapsnapshot',
+@@ -16,16 +16,17 @@ DIRS += [
      'jsbeautify',
+     'layout',
      'performance',
      'pretty-fast',
      'qrcode',
@@ -402,7 +402,8 @@ rename to devtools/shared/shims/dbg-client.jsm
                           "EnvironmentClient",
                           "ObjectClient"];
  
- let client = require("devtools/shared/client/main");
+-var client = require("devtools/shared/client/main");
++let client = require("devtools/shared/client/main");
  
  this.DebuggerClient = client.DebuggerClient;
  this.RootClient = client.RootClient;
@@ -510,14 +511,14 @@ diff --git a/mobile/android/tests/browser/chrome/test_debugger_server.html b/mob
 diff --git a/modules/libpref/init/all.js b/modules/libpref/init/all.js
 --- a/modules/libpref/init/all.js
 +++ b/modules/libpref/init/all.js
-@@ -888,16 +888,20 @@ pref("devtools.gcli.underscoreSrc", "htt
- // Set imgur upload client ID
- pref("devtools.gcli.imgurClientID", '0df414e888d7240');
- // Imgur's upload URL
+@@ -893,16 +893,20 @@ pref("devtools.gcli.imgurClientID", '0df
  pref("devtools.gcli.imgurUploadURL", "https://api.imgur.com/3/image");
  
  // GCLI commands directory
  pref("devtools.commands.dir", "");
+ 
+ // Allows setting the performance marks for which telemetry metrics will be recorded.
+ pref("devtools.telemetry.supported_performance_marks", "contentInteractive,navigationInteractive,navigationLoaded,visuallyLoaded,fullyLoaded,mediaEnumerated,scanEnd");
  
 +// Deprecation warnings after DevTools file migration.  Bug 1204127 tracks
 +// enabling this.

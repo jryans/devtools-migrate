@@ -126,9 +126,7 @@ hg mv browser/themes/shared/devtools devtools/client/themes
 No other changes are made."
 
 ${SCRIPT_DIR}/rewrite-chrome-skin.py
-gsed -i -e '/devtools/d' browser/themes/osx/jar.mn
-gsed -i -e '/devtools/d' browser/themes/windows/jar.mn
-gsed -i -e '/devtools/d' browser/themes/linux/jar.mn
+gsed -i -e '/devtools/d' browser/themes/shared/jar.inc.mn
 replace ../shared/devtools/ ../../../devtools/client/themes/ -r browser
 replace ' ../../shared/devtools/' ' ' -r devtools/client/themes
 

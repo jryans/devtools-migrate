@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441341123 18000
-#      Thu Sep 03 23:32:03 2015 -0500
-# Node ID f74924cc3cba8ac899359297d6492601d9370c4e
-# Parent  72ab30cc79a5b3d0c3631c71ee6859061c2f814d
+# Date 1442518536 18000
+#      Thu Sep 17 14:35:36 2015 -0500
+# Node ID d1efcbe1659e3cfcc48a422b013195ffcd0f8679
+# Parent  ef7c2c4c2271e93013bcaebd547a4aa425923a43
 Bug 912121 - Adjust build configs and test manifests. r=glandium
 
 This step resumes shipping client and server DevTools components to the correct
@@ -74,15 +74,15 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
      'actors/eventlooplag.js',
      'actors/framerate.js',
      'actors/gcli.js',
-+    'actors/highlighter.css',
-     'actors/highlighter.js',
++    'actors/highlighters.css',
+     'actors/highlighters.js',
      'actors/inspector.js',
      'actors/layout.js',
      'actors/memory.js',
+     'actors/memprof.js',
      'actors/monitor.js',
      'actors/object.js',
      'actors/performance-entries.js',
-     'actors/performance-recording.js',
 diff --git a/devtools/shared/heapsnapshot/tests/gtest/moz.build b/devtools/shared/heapsnapshot/tests/gtest/moz.build
 --- a/devtools/shared/heapsnapshot/tests/gtest/moz.build
 +++ b/devtools/shared/heapsnapshot/tests/gtest/moz.build
@@ -126,8 +126,7 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'transport',
      'webconsole'
  ]
-@@ -42,12 +41,8 @@ EXTRA_JS_MODULES.devtools += [
-     'path.js',
+@@ -42,19 +41,11 @@ EXTRA_JS_MODULES.devtools += [
      'worker-loader.js',
  ]
  
@@ -135,9 +134,17 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'Console.jsm',
      'Loader.jsm',
  ]
--
+ 
 -EXTRA_JS_MODULES.devtools.server.actors += [
--    'server/actors/highlighter.css'
+-    'server/actors/highlighters.css'
+-]
+-
+ EXTRA_JS_MODULES.devtools.layout += [
+     'layout/utils.js'
+ ]
+-
+-EXTRA_JS_MODULES.devtools.layout += [
+-    'layout/utils.js'
 -]
 diff --git a/devtools/shared/shared/tests/browser/browser.ini b/devtools/shared/shared/tests/browser/browser.ini
 --- a/devtools/shared/shared/tests/browser/browser.ini
@@ -178,7 +185,7 @@ diff --git a/toolkit/moz.build b/toolkit/moz.build
 diff --git a/toolkit/toolkit.mozbuild b/toolkit/toolkit.mozbuild
 --- a/toolkit/toolkit.mozbuild
 +++ b/toolkit/toolkit.mozbuild
-@@ -137,16 +137,18 @@ DIRS += [
+@@ -138,16 +138,18 @@ DIRS += [
      '/security/manager',
      '/toolkit',
  ]

@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441770247 18000
-#      Tue Sep 08 22:44:07 2015 -0500
-# Node ID 6c8be3d72415759898b570769a1c9f3e28b63d58
-# Parent  8a5f7380f5ce42a03bd4a59638c8451d308ffdb2
+# Date 1442522298 18000
+#      Thu Sep 17 15:38:18 2015 -0500
+# Node ID 8c66a8d81254089d02de455d467789a62bba9cd5
+# Parent  34f0624d54593ad89756b4731f23cd91e9fbc146
 Bug 912121 - Remove dead loader paths. rs=devtools
 
 diff --git a/devtools/client/framework/gDevTools.jsm b/devtools/client/framework/gDevTools.jsm
@@ -35,7 +35,7 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
   * Manages the addon-sdk loader instance used to load the developer tools.
   */
  
- let { Constructor: CC, classes: Cc, interfaces: Ci, utils: Cu } = Components;
+ var { Constructor: CC, classes: Cc, interfaces: Ci, utils: Cu } = Components;
 @@ -62,136 +63,117 @@ XPCOMUtils.defineLazyGetter(loaderModule
      return Cu.Sandbox(this, {wantGlobalProperties:["indexedDB"]}).indexedDB;
    } catch(e) {
@@ -43,7 +43,7 @@ diff --git a/devtools/shared/Loader.jsm b/devtools/shared/Loader.jsm
    }
  });
  
- let sharedGlobalBlacklist = ["sdk/indexed-db"];
+ var sharedGlobalBlacklist = ["sdk/indexed-db"];
  
 -// Used when the tools should be loaded from the Firefox package itself (the default)
 +/**

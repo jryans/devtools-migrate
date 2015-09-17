@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441933077 18000
-#      Thu Sep 10 19:57:57 2015 -0500
-# Node ID 5767d57694e01d0a6255156804953a201de9ddb7
-# Parent  f76e627e494e484d8e71ef8beb92c09d3e128e1e
+# Date 1442520801 18000
+#      Thu Sep 17 15:13:21 2015 -0500
+# Node ID 96ac5eef805682f4a39065bd74bb08fcdb0f7a1b
+# Parent  289d9fdef4184f68d502022089b8e52462863176
 Bug 912121 - Only one JS modules section per moz.build. rs=devtools
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -156,7 +156,7 @@ diff --git a/devtools/client/performance/modules/logic/moz.build b/devtools/clie
 new file mode 100644
 --- /dev/null
 +++ b/devtools/client/performance/modules/logic/moz.build
-@@ -0,0 +1,12 @@
+@@ -0,0 +1,13 @@
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
 +# License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -166,6 +166,7 @@ new file mode 100644
 +    'frame-utils.js',
 +    'jit.js',
 +    'marker-utils.js',
++    'telemetry.js',
 +    'tree-model.js',
 +    'waterfall-utils.js',
 +]
@@ -209,7 +210,7 @@ new file mode 100644
 diff --git a/devtools/client/performance/moz.build b/devtools/client/performance/moz.build
 --- a/devtools/client/performance/moz.build
 +++ b/devtools/client/performance/moz.build
-@@ -1,24 +1,15 @@
+@@ -1,26 +1,16 @@
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -220,10 +221,12 @@ diff --git a/devtools/client/performance/moz.build b/devtools/client/performance
 +]
 +
  EXTRA_JS_MODULES.devtools.performance += [
+     'events.js',
 -    'modules/global.js',
 -    'modules/logic/frame-utils.js',
 -    'modules/logic/jit.js',
 -    'modules/logic/marker-utils.js',
+-    'modules/logic/telemetry.js',
 -    'modules/logic/tree-model.js',
 -    'modules/logic/waterfall-utils.js',
 -    'modules/markers.js',
@@ -233,8 +236,7 @@ diff --git a/devtools/client/performance/moz.build b/devtools/client/performance
 -    'modules/widgets/markers-overview.js',
 -    'modules/widgets/tree-view.js',
 -    'modules/widgets/waterfall-ticks.js',
--    'panel.js'
-+    'panel.js',
+     'panel.js'
  ]
  
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
@@ -813,11 +815,11 @@ diff --git a/devtools/client/webide/moz.build b/devtools/client/webide/moz.build
      'webide-prefs.js',
  ]
 -
-diff --git a/devtools/server/actors/moz.build b/devtools/server/actors/moz.build
+diff --git a/devtools/server/actors/highlighters/moz.build b/devtools/server/actors/highlighters/moz.build
 new file mode 100644
 --- /dev/null
-+++ b/devtools/server/actors/moz.build
-@@ -0,0 +1,57 @@
++++ b/devtools/server/actors/highlighters/moz.build
+@@ -0,0 +1,20 @@
 +# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
@@ -825,6 +827,46 @@ new file mode 100644
 +# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 +
 +DIRS += [
++    'utils',
++]
++
++EXTRA_JS_MODULES.devtools.server.actors.highlighters += [
++    'auto-refresh.js',
++    'box-model.js',
++    'css-transform.js',
++    'geometry-editor.js',
++    'rect.js',
++    'rulers.js',
++    'selector.js',
++    'simple-outline.js'
++]
+diff --git a/devtools/server/actors/highlighters/utils/moz.build b/devtools/server/actors/highlighters/utils/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/server/actors/highlighters/utils/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.server.actors.highlighters.utils += [
++    'markup.js'
++]
+diff --git a/devtools/server/actors/moz.build b/devtools/server/actors/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/server/actors/moz.build
+@@ -0,0 +1,59 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++DIRS += [
++    'highlighters',
 +    'utils',
 +]
 +
@@ -845,11 +887,12 @@ new file mode 100644
 +    'eventlooplag.js',
 +    'framerate.js',
 +    'gcli.js',
-+    'highlighter.css',
-+    'highlighter.js',
++    'highlighters.css',
++    'highlighters.js',
 +    'inspector.js',
 +    'layout.js',
 +    'memory.js',
++    'memprof.js',
 +    'monitor.js',
 +    'object.js',
 +    'performance-entries.js',
@@ -899,7 +942,7 @@ new file mode 100644
 diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 --- a/devtools/server/moz.build
 +++ b/devtools/server/moz.build
-@@ -1,95 +1,37 @@
+@@ -1,111 +1,37 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
@@ -960,11 +1003,12 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 -    'actors/eventlooplag.js',
 -    'actors/framerate.js',
 -    'actors/gcli.js',
--    'actors/highlighter.css',
--    'actors/highlighter.js',
+-    'actors/highlighters.css',
+-    'actors/highlighters.js',
 -    'actors/inspector.js',
 -    'actors/layout.js',
 -    'actors/memory.js',
+-    'actors/memprof.js',
 -    'actors/monitor.js',
 -    'actors/object.js',
 -    'actors/performance-entries.js',
@@ -1000,6 +1044,21 @@ diff --git a/devtools/server/moz.build b/devtools/server/moz.build
 -    'actors/utils/ScriptStore.js',
 -    'actors/utils/stack.js',
 -    'actors/utils/TabSources.js'
+-]
+-
+-EXTRA_JS_MODULES.devtools.server.actors.highlighters += [
+-    'actors/highlighters/auto-refresh.js',
+-    'actors/highlighters/box-model.js',
+-    'actors/highlighters/css-transform.js',
+-    'actors/highlighters/geometry-editor.js',
+-    'actors/highlighters/rect.js',
+-    'actors/highlighters/rulers.js',
+-    'actors/highlighters/selector.js',
+-    'actors/highlighters/simple-outline.js'
+-]
+-
+-EXTRA_JS_MODULES.devtools.server.actors.highlighters.utils += [
+-    'actors/highlighters/utils/markup.js'
 -]
 diff --git a/devtools/shared/client/moz.build b/devtools/shared/client/moz.build
 --- a/devtools/shared/client/moz.build
@@ -1152,10 +1211,42 @@ new file mode 100644
 +    'beautify-js.js',
 +    'beautify-tests.js'
 +]
+diff --git a/devtools/shared/layout/moz.build b/devtools/shared/layout/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/shared/layout/moz.build
+@@ -0,0 +1,9 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.layout += [
++    'utils.js'
++]
 diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 --- a/devtools/shared/moz.build
 +++ b/devtools/shared/moz.build
-@@ -27,24 +27,21 @@ DIRS += [
+@@ -9,16 +9,17 @@ include('../templates.mozbuild')
+ DIRS += [
+     'acorn',
+     'apps',
+     'client',
+     'discovery',
+     'gcli',
+     'heapsnapshot',
+     'jsbeautify',
++    'layout',
+     'performance',
+     'pretty-fast',
+     'qrcode',
+     'security',
+     'sourcemap',
+     'shared',
+     'styleinspector',
+     'tern',
+@@ -27,27 +28,20 @@ DIRS += [
      'webconsole'
  ]
  
@@ -1171,7 +1262,6 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
      'DevToolsUtils.js',
      'event-emitter.js',
      'event-parsers.js',
-     'layout-helpers.js',
 +    'Loader.jsm',
      'output-parser.js',
      'path.js',
@@ -1181,6 +1271,10 @@ diff --git a/devtools/shared/moz.build b/devtools/shared/moz.build
 -EXTRA_JS_MODULES.devtools += [
 -    'Console.jsm',
 -    'Loader.jsm',
+-]
+-
+-EXTRA_JS_MODULES.devtools.layout += [
+-    'layout/utils.js'
 -]
 diff --git a/devtools/shared/performance/legacy/moz.build b/devtools/shared/performance/legacy/moz.build
 new file mode 100644

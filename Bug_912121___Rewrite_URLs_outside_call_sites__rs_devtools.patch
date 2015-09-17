@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441405236 18000
-#      Fri Sep 04 17:20:36 2015 -0500
-# Node ID c3f5625355fd37cce84b14db2f7b933c7093bee4
-# Parent  3b39b57bf4d0fe6905da53ac03fb2ecdb8802de5
+# Date 1442519304 18000
+#      Thu Sep 17 14:48:24 2015 -0500
+# Node ID 289d9fdef4184f68d502022089b8e52462863176
+# Parent  841b1ef11bc1f9133a460426e238465fcc55d507
 Bug 912121 - Rewrite URLs outside call sites. rs=devtools
 
 The rewrite script used in the previous patch expects URLs to be found as
@@ -84,7 +84,7 @@ diff --git a/devtools/client/tilt/tilt-visualizer.js b/devtools/client/tilt/tilt
 diff --git a/devtools/server/tests/unit/head_dbg.js b/devtools/server/tests/unit/head_dbg.js
 --- a/devtools/server/tests/unit/head_dbg.js
 +++ b/devtools/server/tests/unit/head_dbg.js
-@@ -131,18 +131,18 @@ function tryImport(url) {
+@@ -168,18 +168,18 @@ function tryImport(url) {
      Cu.import(url);
    } catch (e) {
      dumpn("Error importing " + url);
@@ -120,7 +120,7 @@ diff --git a/devtools/shared/heapsnapshot/HeapAnalysesClient.js b/devtools/share
 -const WORKER_URL = "resource://gre/modules/devtools/heapsnapshot/HeapAnalysesWorker.js";
 +const WORKER_URL =
 +  "resource://gre/modules/devtools/shared/heapsnapshot/HeapAnalysesWorker.js";
- let workerCounter = 0;
+ var workerCounter = 0;
  
  /**
   * A HeapAnalysesClient instance provides a developer-friendly interface for
@@ -221,15 +221,15 @@ diff --git a/devtools/shared/touch/simulator.js b/devtools/shared/touch/simulato
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  "use strict";
  
- let { Ci } = require("chrome");
- let promise = require("promise");
+ var { Ci } = require("chrome");
+ var promise = require("promise");
  
  const FRAME_SCRIPT =
 -  "resource://gre/modules/devtools/touch/simulator-content.js";
 +  "resource://gre/modules/devtools/shared/touch/simulator-content.js";
  
- let trackedBrowsers = new WeakMap();
- let savedTouchEventsEnabled =
+ var trackedBrowsers = new WeakMap();
+ var savedTouchEventsEnabled =
    Services.prefs.getIntPref("dom.w3c_touch_events.enabled");
  
  /**

@@ -108,7 +108,7 @@ def write_manifest_entries(path):
 
 # Scan theme jar.mn files to record the mapping of paths in the source tree to
 # chrome:// URIs.
-record_source_to_chrome("browser/themes/osx/jar.mn")
+record_source_to_chrome("browser/themes/shared/jar.inc.mn")
 
 # Visit all files in the tree to update various require and import paths to be
 # based on source tree locations instead of arbitrary names
