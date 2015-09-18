@@ -2,7 +2,7 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1442525553 18000
 #      Thu Sep 17 16:32:33 2015 -0500
-# Node ID 82f96abf398b8aeb452b60d114f5130185f6f87d
+# Node ID 81a448d9e2404968805a2eabb4f66c7d10028f01
 # Parent  d51699996a010855f62e6b64db9a121ae002eed3
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
@@ -174,6 +174,31 @@ diff --git a/devtools/client/webconsole/test/browser_webconsole_netlogging.js b/
    '{ id: "test JSON data", myArray: [ "foo", "bar", "baz", "biff" ] }';
  
  var lastRequest = null;
+diff --git a/devtools/client/webconsole/test/browser_webconsole_netlogging_reset_filter.js b/devtools/client/webconsole/test/browser_webconsole_netlogging_reset_filter.js
+--- a/devtools/client/webconsole/test/browser_webconsole_netlogging_reset_filter.js
++++ b/devtools/client/webconsole/test/browser_webconsole_netlogging_reset_filter.js
+@@ -2,18 +2,19 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ // Tests that network log messages bring up the network panel and select the
+ // right request even if it was previously filtered off.
+ 
+ "use strict";
+ 
+-const TEST_FILE_URI = "http://example.com/browser/browser/" +
+-                      "devtools/webconsole/test/test-network.html";
++const TEST_FILE_URI =
++  "http://example.com/browser/devtools/client/webconsole/test/" +
++  "test-network.html";
+ const TEST_URI = "data:text/html;charset=utf8,<p>test file URI";
+ 
+ let hud;
+ 
+ let test = asyncTest(function* () {
+   let requests = [];
+   let { browser } = yield loadTab(TEST_URI);
+ 
 diff --git a/devtools/client/webide/test/chrome.ini b/devtools/client/webide/test/chrome.ini
 --- a/devtools/client/webide/test/chrome.ini
 +++ b/devtools/client/webide/test/chrome.ini
