@@ -2,7 +2,7 @@
 # User J. Ryan Stinnett <jryans@gmail.com>
 # Date 1442525553 18000
 #      Thu Sep 17 16:32:33 2015 -0500
-# Node ID 81a448d9e2404968805a2eabb4f66c7d10028f01
+# Node ID a7af8c24f67920e6a765f7ec8a26992f20431cb8
 # Parent  d51699996a010855f62e6b64db9a121ae002eed3
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
@@ -246,6 +246,43 @@ diff --git a/devtools/client/webide/test/sidebars/chrome.ini b/devtools/client/w
  [test_device_settings.html]
  [test_telemetry.html]
 +skip-if = true # Bug 1201392 - Update add-ons after migration
+diff --git a/devtools/server/tests/mochitest/memprof-helpers.js b/devtools/server/tests/mochitest/memprof-helpers.js
+--- a/devtools/server/tests/mochitest/memprof-helpers.js
++++ b/devtools/server/tests/mochitest/memprof-helpers.js
+@@ -1,27 +1,26 @@
+ let Cu = Components.utils;
+ let Cc = Components.classes;
+ let Ci = Components.interfaces;
+ 
+-Cu.import("resource://gre/modules/Services.jsm");
++let { Services } = Cu.import("resource://gre/modules/Services.jsm", {});
+ 
+ // Always log packets when running tests.
+ Services.prefs.setBoolPref("devtools.debugger.log", true);
+ SimpleTest.registerCleanupFunction(function() {
+   Services.prefs.clearUserPref("devtools.debugger.log");
+ });
+ 
+-Cu.import("resource://gre/modules/devtools/shared/client/dbg-client.jsm");
+-Cu.import("resource://gre/modules/devtools/server/dbg-server.jsm");
++let { Task } = Cu.import("resource://gre/modules/Task.jsm", {});
++let { require } =
++  Cu.import("resource://gre/modules/devtools/shared/Loader.jsm", {});
+ 
+-Cu.import("resource://gre/modules/Task.jsm");
+-Cu.import("resource://gre/modules/devtools/shared/Loader.jsm");
+-let { require } = devtools;
+-
++let { DebuggerClient } = require("devtools/shared/client/main");
++let { DebuggerServer } = require("devtools/server/main");
+ let { MemprofFront } = require("devtools/server/actors/memprof");
+ 
+ function startServerAndGetSelectedTabMemprof() {
+   DebuggerServer.init();
+   DebuggerServer.addBrowserActors();
+   var client = new DebuggerClient(DebuggerServer.connectPipe());
+ 
+   return new Promise((resolve, reject) => {
 diff --git a/devtools/server/tests/mochitest/test_inspector-anonymous.html b/devtools/server/tests/mochitest/test_inspector-anonymous.html
 --- a/devtools/server/tests/mochitest/test_inspector-anonymous.html
 +++ b/devtools/server/tests/mochitest/test_inspector-anonymous.html
