@@ -1,8 +1,8 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1442519304 18000
-#      Thu Sep 17 14:48:24 2015 -0500
-# Node ID 289d9fdef4184f68d502022089b8e52462863176
+# Date 1442601038 18000
+#      Fri Sep 18 13:30:38 2015 -0500
+# Node ID 4711dfa32e8ee6aa0b3e098a41ebdcb2b4afba33
 # Parent  841b1ef11bc1f9133a460426e238465fcc55d507
 Bug 912121 - Rewrite URLs outside call sites. rs=devtools
 
@@ -235,3 +235,25 @@ diff --git a/devtools/shared/touch/simulator.js b/devtools/shared/touch/simulato
  /**
   * Simulate touch events for platforms where they aren't generally available.
   * Defers to the `simulator-content.js` frame script to perform the real work.
+diff --git a/devtools/shared/webconsole/server-logger.js b/devtools/shared/webconsole/server-logger.js
+--- a/devtools/shared/webconsole/server-logger.js
++++ b/devtools/shared/webconsole/server-logger.js
+@@ -108,17 +108,17 @@ var ServerLoggingListener = Class({
+   }),
+ 
+   // Parent Child Relationship
+ 
+   attachParentProcess: function() {
+     trace.log("ServerLoggingListener.attachParentProcess;");
+ 
+     this.owner.conn.setupInParent({
+-      module: "devtools/toolkit/webconsole/server-logger-monitor",
++      module: "devtools/shared/webconsole/server-logger-monitor",
+       setupParent: "setupParentProcess"
+     });
+ 
+     let mm = this.owner.conn.parentMessageManager;
+     let { addMessageListener, sendSyncMessage } = mm;
+ 
+     // It isn't possible to register HTTP-* event observer inside
+     // a child process (in case of e10s), so listen for messages
