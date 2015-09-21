@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1442525553 18000
-#      Thu Sep 17 16:32:33 2015 -0500
-# Node ID a7af8c24f67920e6a765f7ec8a26992f20431cb8
-# Parent  d51699996a010855f62e6b64db9a121ae002eed3
+# Date 1442736771 18000
+#      Sun Sep 20 03:12:51 2015 -0500
+# Node ID 883fa31525f21c8a0a226504e368892222b3221f
+# Parent  c7902f6885fbeae1f309da0de6de4124d230f60a
 Bug 912121 - Misc. DevTools test fixes after migration. rs=devtools
 
 diff --git a/devtools/client/commandline/test/browser_cmd_appcache_valid.js b/devtools/client/commandline/test/browser_cmd_appcache_valid.js
@@ -311,6 +311,83 @@ diff --git a/devtools/server/tests/mochitest/test_inspector-anonymous.html b/dev
      info ("Setting up inspector and walker actors.");
  
      let url = document.getElementById("inspectorContent").href;
+diff --git a/devtools/shared/apps/tests/unit/xpcshell.ini b/devtools/shared/apps/tests/unit/xpcshell.ini
+--- a/devtools/shared/apps/tests/unit/xpcshell.ini
++++ b/devtools/shared/apps/tests/unit/xpcshell.ini
+@@ -1,11 +1,11 @@
+ [DEFAULT]
+ tags = devtools
+ head = head_apps.js
+ tail = tail_apps.js
+-skip-if = toolkit == 'android'
++skip-if = toolkit == 'android' || (toolkit == 'gonk' && debug) # Bug 1206586
+ support-files =
+   data/app.zip
+   data/app-engineering.zip
+ 
+ [test_webappsActor.js]
+ skip-if = buildapp == "b2g"
+diff --git a/devtools/shared/qrcode/tests/unit/xpcshell.ini b/devtools/shared/qrcode/tests/unit/xpcshell.ini
+--- a/devtools/shared/qrcode/tests/unit/xpcshell.ini
++++ b/devtools/shared/qrcode/tests/unit/xpcshell.ini
+@@ -1,6 +1,7 @@
+-[DEFAULT]
+-tags = devtools
+-head =
+-tail =
+-
+-[test_encode.js]
++[DEFAULT]
++tags = devtools
++head =
++tail =
++skip-if = toolkit == 'gonk' && debug # Bug 1206586
++
++[test_encode.js]
+diff --git a/devtools/shared/security/tests/unit/xpcshell.ini b/devtools/shared/security/tests/unit/xpcshell.ini
+--- a/devtools/shared/security/tests/unit/xpcshell.ini
++++ b/devtools/shared/security/tests/unit/xpcshell.ini
+@@ -1,12 +1,13 @@
+ [DEFAULT]
+ tags = devtools
+ head = head_dbg.js
+ tail =
++skip-if = toolkit == 'gonk' && debug # Bug 1206586
+ 
+ support-files=
+   testactors.js
+ 
+ [test_cert.js]
+ [test_encryption.js]
+ [test_oob_cert_auth.js]
+ # Failures on B2G emulator debug and Android opt
+diff --git a/devtools/shared/shared/tests/unit/xpcshell.ini b/devtools/shared/shared/tests/unit/xpcshell.ini
+--- a/devtools/shared/shared/tests/unit/xpcshell.ini
++++ b/devtools/shared/shared/tests/unit/xpcshell.ini
+@@ -1,5 +1,6 @@
+ [DEFAULT]
+ head =
+ tail =
++skip-if = toolkit == 'gonk' && debug # Bug 1206586
+ 
+ [test_indentation.js]
+diff --git a/devtools/shared/sourcemap/tests/unit/xpcshell.ini b/devtools/shared/sourcemap/tests/unit/xpcshell.ini
+--- a/devtools/shared/sourcemap/tests/unit/xpcshell.ini
++++ b/devtools/shared/sourcemap/tests/unit/xpcshell.ini
+@@ -1,12 +1,13 @@
+ [DEFAULT]
+ tags = devtools
+ head = head_sourcemap.js
+ tail =
++skip-if = toolkit == 'gonk' && debug # Bug 1206586
+ 
+ [test_util.js]
+ [test_source_node.js]
+ [test_source_map_generator.js]
+ [test_source_map_consumer.js]
+ [test_quick_sort.js]
+ [test_dog_fooding.js]
+ [test_binary_search.js]
 diff --git a/devtools/shared/tests/mochitest/chrome.ini b/devtools/shared/tests/mochitest/chrome.ini
 --- a/devtools/shared/tests/mochitest/chrome.ini
 +++ b/devtools/shared/tests/mochitest/chrome.ini
