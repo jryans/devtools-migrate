@@ -1,15 +1,15 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441336661 18000
-#      Thu Sep 03 22:17:41 2015 -0500
-# Node ID f79bc83530b8027a5033182e340239bfce80bb63
-# Parent  783a597696ef232315414d143719aaf6470dfc3c
+# Date 1442623925 18000
+#      Fri Sep 18 19:52:05 2015 -0500
+# Node ID 337248bdfaba2655859e4a6fbf975977f6a6f479
+# Parent  33e6c7ef5d4dafaef9341854aed8c77478bd9350
 Bug 912121 - Repair react-dev build with DevToolsModules. rs=devtools
 
-diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/content/moz.build
---- a/devtools/client/shared/content/moz.build
-+++ b/devtools/client/shared/content/moz.build
-@@ -1,14 +1,21 @@
+diff --git a/devtools/client/shared/vendor/moz.build b/devtools/client/shared/vendor/moz.build
+--- a/devtools/client/shared/vendor/moz.build
++++ b/devtools/client/shared/vendor/moz.build
+@@ -1,15 +1,22 @@
  # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
@@ -17,22 +17,23 @@ diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/c
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
 -DevToolsModules(
--    'react.js'
--)
 +modules = []
- 
- if CONFIG['DEBUG_JS_MODULES']:
--    DevToolsModules(
--        'react-dev.js'
--    )
++
++if CONFIG['DEBUG_JS_MODULES']:
 +    modules += [
 +        'react-dev.js',
 +    ]
 +
 +modules += [
-+    'react.js',
+     'react.js',
+     'redux.js',
+-)
 +]
-+
+ 
+-if CONFIG['DEBUG_JS_MODULES']:
+-    DevToolsModules(
+-        'content/react-dev.js'
+-    )
 +# Currently `DevToolsModules` can only be called once per moz.build, so we build
 +# a list manually above.  Bug 1198013 tracks fixing this to make it more like
 +# other moz.build constructs.

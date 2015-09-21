@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1441427606 18000
-#      Fri Sep 04 23:33:26 2015 -0500
-# Node ID 038f11bc07a0a4da8c55e643f52da5fb4a67aa38
-# Parent  975697b71fbeaf97899d5e5b00a61bc546a039d1
+# Date 1442622196 18000
+#      Fri Sep 18 19:23:16 2015 -0500
+# Node ID 0943ec77a8a551ea4a5582c7f4f726ad974a3b91
+# Parent  6677872912423c508ada0baedbb70447e8130d13
 Bug 912121 - Clean up relative chrome:// URLs in some tools. rs=devtools
 
 diff --git a/devtools/client/canvasdebugger/canvasdebugger.xul b/devtools/client/canvasdebugger/canvasdebugger.xul
@@ -316,16 +316,15 @@ diff --git a/devtools/client/styleinspector/cssruleview.xhtml b/devtools/client/
 diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client/webaudioeditor/webaudioeditor.xul
 --- a/devtools/client/webaudioeditor/webaudioeditor.xul
 +++ b/devtools/client/webaudioeditor/webaudioeditor.xul
-@@ -13,25 +13,25 @@
- ]>
+@@ -14,24 +14,24 @@
  
  <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
  
    <script type="application/javascript;version=1.8"
            src="chrome://devtools/content/shared/theme-switching.js"/>
  
-   <script type="application/javascript" src="chrome://devtools/content/shared/d3.js"/>
--  <script type="application/javascript" src="dagre-d3.js"/>
+   <script type="application/javascript" src="chrome://devtools/content/shared/vendor/d3.js"/>
+   <script type="application/javascript" src="chrome://devtools/content/shared/vendor/dagre-d3.js"/>
 -  <script type="application/javascript" src="webaudioeditor/includes.js"/>
 -  <script type="application/javascript" src="webaudioeditor/models.js"/>
 -  <script type="application/javascript" src="webaudioeditor/controller.js"/>
@@ -334,7 +333,6 @@ diff --git a/devtools/client/webaudioeditor/webaudioeditor.xul b/devtools/client
 -  <script type="application/javascript" src="webaudioeditor/views/inspector.js"/>
 -  <script type="application/javascript" src="webaudioeditor/views/properties.js"/>
 -  <script type="application/javascript" src="webaudioeditor/views/automation.js"/>
-+  <script type="application/javascript" src="lib/dagre-d3.js"/>
 +  <script type="application/javascript" src="includes.js"/>
 +  <script type="application/javascript" src="models.js"/>
 +  <script type="application/javascript" src="controller.js"/>

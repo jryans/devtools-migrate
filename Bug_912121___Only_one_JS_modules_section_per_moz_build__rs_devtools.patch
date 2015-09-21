@@ -1,9 +1,9 @@
 # HG changeset patch
 # User J. Ryan Stinnett <jryans@gmail.com>
-# Date 1442520801 18000
-#      Thu Sep 17 15:13:21 2015 -0500
-# Node ID 96ac5eef805682f4a39065bd74bb08fcdb0f7a1b
-# Parent  289d9fdef4184f68d502022089b8e52462863176
+# Date 1442623549 18000
+#      Fri Sep 18 19:45:49 2015 -0500
+# Node ID fb60dcb173284c97b2a94ab3964eff3d2ef62f52
+# Parent  8580e0bc71eef91092302b1c6c90334908daf455
 Bug 912121 - Only one JS modules section per moz.build. rs=devtools
 
 In a following patch, all DevTools moz.build files will use DevToolsModules to
@@ -11,18 +11,32 @@ install JS modules at a path that corresponds directly to their source tree
 location.  Prior to this step, we must ensure each moz.build only defines a
 single block of JS modules for easier automatic conversion.
 
+diff --git a/devtools/client/debugger/content/actions/moz.build b/devtools/client/debugger/content/actions/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/debugger/content/actions/moz.build
+@@ -0,0 +1,8 @@
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.debugger.content.actions += [
++    'event-listeners.js',
++]
 diff --git a/devtools/client/debugger/content/moz.build b/devtools/client/debugger/content/moz.build
 new file mode 100644
 --- /dev/null
 +++ b/devtools/client/debugger/content/moz.build
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,16 @@
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
 +# License, v. 2.0. If a copy of the MPL was not distributed with this
 +# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 +
 +DIRS += [
-+    'stores',
++    'actions',
++    'reducers',
 +    'views',
 +]
 +
@@ -31,17 +45,17 @@ new file mode 100644
 +    'globalActions.js',
 +    'utils.js'
 +]
-diff --git a/devtools/client/debugger/content/stores/moz.build b/devtools/client/debugger/content/stores/moz.build
+diff --git a/devtools/client/debugger/content/reducers/moz.build b/devtools/client/debugger/content/reducers/moz.build
 new file mode 100644
 --- /dev/null
-+++ b/devtools/client/debugger/content/stores/moz.build
++++ b/devtools/client/debugger/content/reducers/moz.build
 @@ -0,0 +1,9 @@
 +# vim: set filetype=python:
 +# This Source Code Form is subject to the terms of the Mozilla Public
 +# License, v. 2.0. If a copy of the MPL was not distributed with this
 +# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 +
-+EXTRA_JS_MODULES.devtools.debugger.content.stores += [
++EXTRA_JS_MODULES.devtools.debugger.content.reducers += [
 +    'event-listeners.js',
 +    'index.js'
 +]
@@ -61,7 +75,7 @@ new file mode 100644
 diff --git a/devtools/client/debugger/moz.build b/devtools/client/debugger/moz.build
 --- a/devtools/client/debugger/moz.build
 +++ b/devtools/client/debugger/moz.build
-@@ -1,26 +1,15 @@
+@@ -1,30 +1,15 @@
  # vim: set filetype=python:
  # This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -86,9 +100,13 @@ diff --git a/devtools/client/debugger/moz.build b/devtools/client/debugger/moz.b
 -    'content/views/event-listeners-view.js'
 -]
 -
--EXTRA_JS_MODULES.devtools.debugger.content.stores += [
--    'content/stores/event-listeners.js',
--    'content/stores/index.js'
+-EXTRA_JS_MODULES.devtools.debugger.content.reducers += [
+-    'content/reducers/event-listeners.js',
+-    'content/reducers/index.js'
+-]
+-
+-EXTRA_JS_MODULES.devtools.debugger.content.actions += [
+-    'content/actions/event-listeners.js',
 -]
 -
  BROWSER_CHROME_MANIFESTS += ['test/mochitest/browser.ini']
@@ -572,47 +590,22 @@ diff --git a/devtools/client/scratchpad/moz.build b/devtools/client/scratchpad/m
  ]
  
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
-diff --git a/devtools/client/shared/content/moz.build b/devtools/client/shared/content/moz.build
-new file mode 100644
---- /dev/null
-+++ b/devtools/client/shared/content/moz.build
-@@ -0,0 +1,14 @@
-+# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
-+# vim: set filetype=python:
-+# This Source Code Form is subject to the terms of the Mozilla Public
-+# License, v. 2.0. If a copy of the MPL was not distributed with this
-+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
-+
-+EXTRA_JS_MODULES.devtools.shared.content += [
-+    'react.js'
-+]
-+
-+if CONFIG['DEBUG_JS_MODULES']:
-+    EXTRA_JS_MODULES.devtools.shared.content += [
-+        'react-dev.js'
-+    ]
 diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 --- a/devtools/client/shared/moz.build
 +++ b/devtools/client/shared/moz.build
-@@ -1,78 +1,41 @@
- # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
- # vim: set filetype=python:
- # This Source Code Form is subject to the terms of the Mozilla Public
- # License, v. 2.0. If a copy of the MPL was not distributed with this
+@@ -5,67 +5,36 @@
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
-+DIRS += [
-+    'content',
-+    'fluxify',
-+    'widgets',
-+]
-+
  BROWSER_CHROME_MANIFESTS += ['test/browser.ini']
  XPCSHELL_TESTS_MANIFESTS += ['test/unit/xpcshell.ini']
  
+ DIRS += [
+     'redux',
+     'vendor',
+-]
+-
 -EXTRA_JS_MODULES.devtools += [
-+EXTRA_JS_MODULES.devtools.shared += [
-     'AppCacheUtils.jsm',
+-    'AppCacheUtils.jsm',
 -    'Curl.jsm',
 -    'DeveloperToolbar.jsm',
 -    'DOMHelpers.jsm',
@@ -631,12 +624,13 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 -    'widgets/VariablesView.jsm',
 -    'widgets/VariablesViewController.jsm',
 -    'widgets/ViewHelpers.jsm',
--]
--
--EXTRA_JS_MODULES.devtools.shared += [
++    'widgets',
+ ]
+ 
+ EXTRA_JS_MODULES.devtools.shared += [
++    'AppCacheUtils.jsm',
      'autocomplete-popup.js',
      'browser-loader.js',
-     'create-dispatcher.js',
 +    'Curl.jsm',
 +    'DeveloperToolbar.jsm',
      'devices.js',
@@ -659,15 +653,6 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
      'undo.js'
  ]
 -
--EXTRA_JS_MODULES.devtools.shared.content += [
--    'content/react.js'
--]
--
--if CONFIG['DEBUG_JS_MODULES']:
--    EXTRA_JS_MODULES.devtools.shared.content += [
--        'content/react-dev.js'
--    ]
--
 -EXTRA_JS_MODULES.devtools.shared.widgets += [
 -    'widgets/BarGraphWidget.js',
 -    'widgets/CubicBezierPresets.js',
@@ -684,8 +669,46 @@ diff --git a/devtools/client/shared/moz.build b/devtools/client/shared/moz.build
 -    'widgets/Tooltip.js',
 -    'widgets/TreeWidget.js',
 -]
+diff --git a/devtools/client/shared/redux/middleware/moz.build b/devtools/client/shared/redux/middleware/moz.build
+new file mode 100644
+--- /dev/null
++++ b/devtools/client/shared/redux/middleware/moz.build
+@@ -0,0 +1,11 @@
++# -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
++# vim: set filetype=python:
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++EXTRA_JS_MODULES.devtools.shared.redux.middleware += [
++    'log.js',
++    'thunk.js',
++    'wait-service.js',
++]
+diff --git a/devtools/client/shared/redux/moz.build b/devtools/client/shared/redux/moz.build
+--- a/devtools/client/shared/redux/moz.build
++++ b/devtools/client/shared/redux/moz.build
+@@ -1,16 +1,14 @@
+ # -*- Mode: python; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 40 -*-
+ # vim: set filetype=python:
+ # This Source Code Form is subject to the terms of the Mozilla Public
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++DIRS += [
++    'middleware',
++]
++
+ EXTRA_JS_MODULES.devtools.shared.redux += [
+     'create-store.js',
+     'reducers.js',
+ ]
 -
--DIRS += ['fluxify']
+-EXTRA_JS_MODULES.devtools.shared.redux.middleware += [
+-    'middleware/log.js',
+-    'middleware/thunk.js',
+-    'middleware/wait-service.js',
+-]
 diff --git a/devtools/client/shared/widgets/moz.build b/devtools/client/shared/widgets/moz.build
 new file mode 100644
 --- /dev/null
