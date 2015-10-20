@@ -31,7 +31,7 @@ There are several benefits to this including:
 ### Cu.import()
 
 To `import()` a file, the `resource://` path is exactly the source tree path.  
-The previous details about sometimes needing `gre` no longer applies.  
+The previous details about sometimes needing `gre` no longer apply.  
 
 In more detail:
 
@@ -132,4 +132,4 @@ We'll soon enable deprecation warnings when loading these files by their old
 paths in [bug 1204127][deprecation].
 
 [resource]: https://bugzilla.mozilla.org/show_bug.cgi?id=1203159
-[deprecation] https://bugzilla.mozilla.org/show_bug.cgi?id=1204127
+[deprecation]: https://bugzilla.mozilla.org/show_bug.cgi?id=1204127
