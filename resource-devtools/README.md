@@ -114,11 +114,12 @@ Such add-ons would need to make the same replacements as patches do above.
 
 If you have already updated your add-ons for the earlier file migration and are
 maintaining two paths for 43 and earlier vs. 44 and later, I would suggest just
-replacing the 44 and later path.  One reason this change was made in 44 was to
-avoid creating yet a 3rd set of paths for add-ons to maintain.
+replacing the 44 path with these changes.  One reason this change was made in 44
+was to avoid creating yet a 3rd set of paths for add-ons to maintain.
 
-For the moment, the same small set of shimmed files are available all paths
-they have lived at over time:
+For the moment, the same set of shimmed files are available at all paths
+they have lived at over time (43 and earlier, early 44, and late 44), so for the
+following files, add-ons will continue to work:
 
 * `Console.jsm`
 * `dbg-client.jsm`
@@ -129,7 +130,7 @@ they have lived at over time:
 * `Simulator.jsm`
 
 We'll soon enable deprecation warnings when loading these files by their old
-paths in [bug 1204127][deprecation].
+paths in [bug 1204127][deprecation], so upgrading is still a good idea.
 
 [resource]: https://bugzilla.mozilla.org/show_bug.cgi?id=1203159
 [deprecation]: https://bugzilla.mozilla.org/show_bug.cgi?id=1204127
